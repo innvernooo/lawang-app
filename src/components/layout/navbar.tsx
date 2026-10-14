@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <>
       <div className="navbar flex justify-between bg-white shadow-sm top-0 sticky z-50">
-        <a href={'/home'}>
+        <a href={'/'}>
           <Image
             src={'/lawang.svg'}
             alt="Lawang logo"
