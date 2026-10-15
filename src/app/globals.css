@@ -1,9 +1,10 @@
 @import 'tailwindcss';
 @plugin "daisyui";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #e5e2e2;
+    --foreground: #191313;
+  }
 }
 
 @theme inline {
@@ -14,13 +15,6 @@
   --color-brand-300: #d83e7f;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
