@@ -165,7 +165,7 @@ export default function ScrollTextBanner() {
     <section
       ref={root}
       aria-label="Tentang platform event"
-      className="relative mt-5 h-40 md:h-50 lg:h-70 overflow-hidden text-[#fffce1] motion-reduce:h-auto"
+      className="relative mt-5 h-44 md:h-48 lg:h-52 xl:h-64 overflow-hidden text-[#fffce1] motion-reduce:h-auto"
     >
       <div
         ref={track}

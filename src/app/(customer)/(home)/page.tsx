@@ -2,7 +2,7 @@ import HeroBanner from '@/components/home/heroBanner';
 import { Libre_Baskerville, Sansita } from 'next/font/google';
 import { HiSpeakerphone } from 'react-icons/hi';
 import ScrollTextBanner from '@/components/home/scrollTextBanner';
-import BasicCarousel from '@/components/home/tierSevents';
+import BasicCarousel from '@/components/home/upcomingEvents';
 
 const libre = Libre_Baskerville({
   weight: '700',
@@ -19,10 +19,10 @@ export default function homePage() {
     <>
       <HeroBanner />
       <ScrollTextBanner />
-      <div className='mt-5 flex gap-2 items-center'>
-        <HiSpeakerphone className='text-black text-3xl animate-bounce'/>
-        <h1 className={`text-black text-4xl ${sansita.className}`}>
-          <b className="text-brand-300">Tier S</b> Events Untukmu
+      <div className='my-5 flex gap-2 items-center'>
+        <HiSpeakerphone className='text-black text-2xl lg:text-3xl animate-bounce'/>
+        <h1 className={`text-brand-200 text-2xl md:text-xl lg:text-4xl ${sansita.className}`}>
+          Upcoming Events Terdekat
         </h1>
       </div>
       <BasicCarousel />
