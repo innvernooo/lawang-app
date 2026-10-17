@@ -1,8 +1,8 @@
-import HeroBanner from '@/components/home/heroBanner';
+import HeroBanner from '@/features/home/components/heroBanner';
 import { Libre_Baskerville, Sansita } from 'next/font/google';
 import { HiSpeakerphone } from 'react-icons/hi';
-import ScrollTextBanner from '@/components/home/scrollTextBanner';
-import BasicCarousel from '@/components/home/upcomingEvents';
+import ScrollTextBanner from '@/features/home/components/scrollTextBanner';
+import BasicCarousel from '@/features/home/components/upcomingEvents';
 
 const libre = Libre_Baskerville({
   weight: '700',
