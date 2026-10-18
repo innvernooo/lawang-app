@@ -49,6 +49,7 @@ export const registerSchema = z
       z
         .string()
         .trim()
+        .toUpperCase()
         .length(12, 'Referral code must be 12 characters')
         .optional(),
     ),

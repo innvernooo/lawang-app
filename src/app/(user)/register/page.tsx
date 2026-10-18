@@ -11,10 +11,9 @@ import {
   RegisterInput,
   RegisterRequest,
   registerSchema,
-} from '@/features/register/validation/registerSchema';
+} from '@/features/register/validation/customerSchema';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import PopoverFailed from '@/features/register/components/popoverFailed';
-import { isAxiosError } from 'axios';
 import PopoverSuccess from '@/features/register/components/popoverSuccess';
 
 // Class TailwindCSS
@@ -65,27 +64,17 @@ export default function RegisterPage() {
     onError: () => failedRef.current?.showModal(),
   });
 
-  const successMessage = {
-    title: 'Akun Berhasil Terdaftar',
-    message: 'Klik tombol berikut untuk lanjut ke halaman login',
-  };
-
-  const errorMessage = {
-    title: 'Akun Gagal Terdaftar',
-    message: 'Email atau username sudah terdafdar',
-  };
-  console.log(handleRegisterUser);
   return (
     <>
       <PopoverFailed
         ref={failedRef}
-        title={errorMessage?.title}
-        message={errorMessage?.message}
+        title="Akun Gagal Terdaftar"
+        message="Email atau username sudah terdaftar"
       />
       <PopoverSuccess
         ref={successRef}
-        title={successMessage?.title}
-        message={successMessage?.message}
+        title="Akun Berhasil Terdaftar"
+        message="Klik tombol berikut untuk lanjut ke halaman login"
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">
         <div className="w-full max-w-lg rounded-xl border border-gray-100 bg-white p-5 shadow-md sm:p-8 md:max-w-2xl">
