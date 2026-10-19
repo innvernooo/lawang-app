@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   const handleLoginUser = useMutation({
     mutationFn: async (data: LoginRequest) => {
-      const res = await axiosInstance.post('/users/login', data);
+      const res = await axiosInstance.post('/auth/login', data);
       console.log(res);
       return res?.data;
     },

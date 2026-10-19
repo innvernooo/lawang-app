@@ -5,9 +5,9 @@ const emptyToUndefined = (v: unknown) =>
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-export const registerSchema = z
+export const customerRegisterSchema = z
   .object({
-    profilePictureUrl: z
+    profilePicture: z
       .custom<FileList | undefined>()
       .refine(
         (files) => !files?.length || files[0].size <= MAX_FILE_SIZE,
@@ -31,6 +31,15 @@ export const registerSchema = z
       .email('Invalid email format')
       .trim()
       .max(255, 'Email input has maximum 255 characters'),
+
+    nik: z.preprocess(
+      emptyToUndefined,
+      z
+        .string()
+        .trim()
+        .regex(/^[0-9]{16}$/, 'NIK must be 16 digits')
+        .optional(),
+    ),
     password: z
       .string()
       .min(8, 'Password input is required, minimum 8 characters')
@@ -53,9 +62,6 @@ export const registerSchema = z
         .length(12, 'Referral code must be 12 characters')
         .optional(),
     ),
-    role: z
-      .enum(['CUSTOMER', 'ORGANIZER'], 'Role must be CUSTOMER or ORGANIZER')
-      .optional(),
     confirmPassword: z.string().min(1, 'Konfirmasi password wajib diisi'),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -63,5 +69,5 @@ export const registerSchema = z
     message: 'Konfirmasi password tidak sama',
   });
 
-export type RegisterInput = z.input<typeof registerSchema>;
-export type RegisterRequest = z.output<typeof registerSchema>;
+export type CustomerRegisterInput = z.input<typeof customerRegisterSchema>;
+export type CustomerRegisterOutput = z.output<typeof customerRegisterSchema>;
