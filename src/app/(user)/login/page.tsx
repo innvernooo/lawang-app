@@ -15,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { useRouter } from 'next/navigation';
 import PopoverFailed from '@/features/register/components/popoverFailed';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 // Class TailwindCSS
 const inputClass =
@@ -25,6 +26,8 @@ export default function LoginPage() {
   const failedRef = useRef<HTMLDialogElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { setAuth } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -40,11 +43,14 @@ export default function LoginPage() {
       return res?.data;
     },
     onSuccess: (res) => {
+      const email = res?.data?.email;
       const role = res?.data?.role;
+      const username = res?.data?.username;
+      setAuth(email, username, role);
+      console.log(setAuth);
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },
-    onError: () => failedRef?.current?.showModal()
-    ,
+    onError: () => failedRef?.current?.showModal(),
   });
 
   return (
