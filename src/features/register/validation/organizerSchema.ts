@@ -1,7 +1,7 @@
 import * as z from 'zod';
-import { cities } from '@/components/cities';
-import { provinces } from '@/components/provinces';
-import { banks } from '@/components/banks';
+import { cities } from '@/utils/cities';
+import { provinces } from '@/utils/provinces';
+import { banks } from '@/utils/banks';
 
 const emptyToUndefined = (v: unknown) =>
   typeof v === 'string' && v.trim() === '' ? undefined : v;

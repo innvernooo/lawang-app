@@ -1,7 +1,11 @@
+'use client';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export default function Navbar() {
+  const { id } = useAuthStore();
+
   return (
     <>
       <div className="navbar flex justify-between bg-white shadow-sm top-0 sticky z-50">
@@ -9,9 +13,9 @@ export default function Navbar() {
           <Image
             src={'/lawang.svg'}
             alt="Lawang logo"
-            width={120}
+            width={100}
             height={100}
-            className="md:w-33 lg:w-40"
+            className="md:w-33 lg:w-30"
           />
         </a>
         <div className="flex gap-2">
@@ -35,12 +39,11 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <a href={`/profile/customer/${id}`} className="justify-between">
                   Profile
-                  <span className="badge">New</span>
                 </a>
               </li>
               <li>
