@@ -43,7 +43,7 @@ export default function CreateEventPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-brand-100">
+      <div className="flex justify-center items-center bg-brand-100">
         <div className="bg-white h-fit w-88 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
           <div className="flex justify-center">
             <Image

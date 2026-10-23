@@ -3,58 +3,15 @@ import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { useQuery } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
 import { rupiah } from '@/components/idr';
 
-const events = [
-  {
-    lokasi: 'Tangerang Selatan',
-    waktu: '11 Agustus 2026',
-    nama: 'YOUTH WEEK',
-    organisasi: 'RSC',
-    harga: 'IDR 500.000',
-  },
-  {
-    lokasi: 'Jakarta Selatan',
-    waktu: '20 Agustus 2026',
-    nama: 'TECH INNOVATION SUMMIT',
-    organisasi: 'TechConnect',
-    harga: 'IDR 350.000',
-  },
-  {
-    lokasi: 'Bandung',
-    waktu: '5 September 2026',
-    nama: 'CREATIVE FESTIVAL',
-    organisasi: 'CreativeHub',
-    harga: 'IDR 250.000',
-  },
-  {
-    lokasi: 'Yogyakarta',
-    waktu: '12 September 2026',
-    nama: 'NATIONAL STUDENT EXPO',
-    organisasi: 'EduNation',
-    harga: 'IDR 150.000',
-  },
-  {
-    lokasi: 'Surabaya',
-    waktu: '19 September 2026',
-    nama: 'STARTUP FOUNDERS DAY',
-    organisasi: 'StartupCircle',
-    harga: 'IDR 400.000',
-  },
-  {
-    lokasi: 'Bekasi',
-    waktu: '3 Oktober 2026',
-    nama: 'MUSIC & ART FEST',
-    organisasi: 'UrbanVibes',
-    harga: 'IDR 200.000',
-  },
-];
-
 export default function BasicCarousel() {
+  const router = useRouter();
   const {
     data: event = [],
     isLoading,
@@ -91,9 +48,9 @@ export default function BasicCarousel() {
               role="button"
               tabIndex={0}
               onClick={() => {
-                // TODO: arahkan ke halaman detail event, mis. router.push(`/events/${slug}`)
+                router.push(`/event-detail/${item.id}`);
               }}
-              className="group h-fit p-3 bg-white rounded-2xl text-black cursor-pointer transition duration-300 ease-out hover:-translate-y-2 hover:shadow-xl focus-visible:-translate-y-2 focus-visible:shadow-xl focus-visible:outline-2 focus-visible:outline-blue-500"
+              className="group h-fit p-3 rounded-2xl text-black cursor-pointer transition duration-300 ease-out hover:-translate-y-2 hover:shadow-xl focus-visible:-translate-y-2 focus-visible:shadow-xl focus-visible:outline-2 focus-visible:outline-blue-500"
             >
               <Image
                 src={item.imageUrl ?? '/download.jpg'}
@@ -102,6 +59,12 @@ export default function BasicCarousel() {
                 height={368}
                 className="h-45 rounded-lg"
               />
+              <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-brand-300 group-focus-visible:text-brand-300">
+                {item?.name}
+              </h1>
+              <p className="text-lg md:text-sm lg:text-lg">
+                Held by {item?.organizer?.organizerName}
+              </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
                 <FaLocationDot />
                 <span>{item?.city}</span>
@@ -109,12 +72,6 @@ export default function BasicCarousel() {
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mb-4">
                 <IoIosTime />
                 <span>{format(new Date(item?.startDate), 'dd MMMM yyyy')}</span>
-              </p>
-              <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-brand-300 group-focus-visible:text-brand-300">
-                {item?.name}
-              </h1>
-              <p className="text-lg md:text-sm lg:text-lg">
-                Held by {item?.organizer?.organizerName}
               </p>
               <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                 <IoMdPricetags />

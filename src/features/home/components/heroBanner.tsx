@@ -26,27 +26,27 @@ const sections: Section[] = [
   },
   {
     number: '03',
+    title: 'ARTS',
+    subtitle: 'Where creativity comes alive',
+    image: '/Sec5.svg',
+  },
+  {
+    number: '04',
     title: 'SPORTS',
     subtitle: 'Feel the thrill of every game',
     image: '/Sec1.svg',
   },
   {
-    number: '04',
+    number: '05',
     title: 'WORKSHOP',
     subtitle: 'Learn new skills, hands on',
     image: '/Sec3.svg',
   },
   {
-    number: '05',
+    number: '06',
     title: 'GAMES',
     subtitle: 'Play, compete, and win together',
     image: '/Sec6.svg',
-  },
-  {
-    number: '06',
-    title: 'ARTS',
-    subtitle: 'Where creativity comes alive',
-    image: '/Sec5.svg',
   },
 ];
 
@@ -54,6 +54,7 @@ export default function HeroBanner() {
   const [emblaRef] = useEmblaCarousel({
     align: 'start',
     slidesToScroll: 1,
+    loop: true,
   });
 
   return (
