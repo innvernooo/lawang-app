@@ -1,4 +1,6 @@
 import { rupiah } from '@/utils/idr';
+import { tanggal } from '@/utils/localDate';
+import { jam } from '@/utils/localTime';
 import { LuTicket } from 'react-icons/lu';
 
 export default async function TicketBox({ eventId }: { eventId: string }) {
@@ -22,7 +24,7 @@ export default async function TicketBox({ eventId }: { eventId: string }) {
           </h3>
         </div>
         <div className="collapse-content text-sm">
-          <p>
+          <p className='line-clamp-1'>
             _________________________________________________________________________________________________________________________________
           </p>
           {ticket.map((item: any, index: any) => (
@@ -35,6 +37,10 @@ export default async function TicketBox({ eventId }: { eventId: string }) {
               </div>
               <div>
                 <h2 className="text-xl font-medium">{item?.name}</h2>
+                <label className="label">
+                  {item?.endSale &&
+                    `Penjualan berakhir pada ${tanggal.format(new Date(item.endSale))} | Jam ${jam.format(new Date(item.endSale))} WIB`}
+                </label>
               </div>
               <p
                 className={`px-3 py-0.5 rounded-full glass text-white ${

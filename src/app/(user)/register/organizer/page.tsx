@@ -199,35 +199,7 @@ export default function OrganizerRegister() {
           >
             {/* ───── Langkah 1: Akun ───── */}
             <div className={stepClass(0)}>
-              <div>
-                <span className={labelClass}>Logo Organizer (opsional)</span>
-                <div className="flex items-center gap-4">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-2xl font-bold text-gray-500 sm:h-20 sm:w-20">
-                    {previewPicture ? (
-                      <img
-                        src={previewPicture}
-                        alt="Foto profil"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      '?'
-                    )}
-                  </div>
-                  <label className="cursor-pointer rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-purple-400">
-                    Pilih logo
-                    <input
-                      type="file"
-                      accept=".jpg,.jpeg,.png,.webp"
-                      className="sr-only"
-                      {...register('profilePicture')}
-                    />
-                  </label>
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  Maksimal 5 MB (JPG/PNG/WEBP).
-                </p>
-                <p className={errorClass}>{errors?.profilePicture?.message}</p>
-              </div>
+              
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
@@ -332,6 +304,35 @@ export default function OrganizerRegister() {
             {/* ───── Langkah 2: Organisasi & Legalitas ───── */}
             <div className={stepClass(1)}>
               <h2 className={sectionTitleClass}>Identitas Organizer</h2>
+              <div>
+                <span className={labelClass}>Logo Organizer (opsional)</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-2xl font-bold text-gray-500 sm:h-20 sm:w-20">
+                    {previewPicture ? (
+                      <img
+                        src={previewPicture}
+                        alt="Foto profil"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      '?'
+                    )}
+                  </div>
+                  <label className="cursor-pointer rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-purple-400">
+                    Pilih logo
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.webp"
+                      className="sr-only"
+                      {...register('profilePicture')}
+                    />
+                  </label>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  Maksimal 5 MB (JPG/PNG/WEBP).
+                </p>
+                <p className={errorClass}>{errors?.profilePicture?.message}</p>
+              </div>
 
               <div>
                 <label htmlFor="organizerName" className={labelClass}>

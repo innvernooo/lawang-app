@@ -43,10 +43,11 @@ export default function LoginPage() {
       return res?.data;
     },
     onSuccess: (res) => {
+      const id = res?.data?.id;
       const email = res?.data?.email;
       const role = res?.data?.role;
       const username = res?.data?.username;
-      setAuth(email, username, role);
+      setAuth(id, email, username, role);
       console.log(setAuth);
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },

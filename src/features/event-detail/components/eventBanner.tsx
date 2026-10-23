@@ -1,8 +1,10 @@
+import { tanggal } from '@/utils/localDate';
+import { jam } from '@/utils/localTime';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosTime } from 'react-icons/io';
-import { MdDateRange } from 'react-icons/md';
+import { MdDateRange, MdOutlineCategory } from 'react-icons/md';
 
 export default async function EventBanner({ eventId }: { eventId: string }) {
   const res = await fetch(
@@ -31,14 +33,18 @@ export default async function EventBanner({ eventId }: { eventId: string }) {
       <div className="mt-2 flex text-lg gap-2 items-center">
         <MdDateRange />
         <h2 className="font-medium">
-          {format(new Date(event?.startDate), 'dd MMMM yyyy')}
+          {tanggal.format(new Date(event?.startDate))}
         </h2>
       </div>
       <div className="mt-2 flex text-lg gap-2 items-center">
         <IoIosTime />
         <h2 className="font-medium">
-          {format(new Date(event?.startDate), 'HH:mm')} WIB
+          {jam.format(new Date(event?.startDate))} WIB
         </h2>
+      </div>
+      <div className="mt-2 flex text-lg gap-2 items-center">
+        <MdOutlineCategory />
+        <h2 className="font-medium">{event?.category}</h2>
       </div>
       <div className="mt-8 text-lg">{event.description}</div>
     </>
