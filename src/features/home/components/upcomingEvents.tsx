@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
-import { rupiah } from '@/components/idr';
+import { rupiah } from '@/utils/idr';
 
 export default function BasicCarousel() {
   const router = useRouter();
@@ -36,7 +36,6 @@ export default function BasicCarousel() {
   });
 
   return (
-    // pt/pb: ruang agar kartu yang naik & bayangannya tidak terpotong overflow-hidden
     <div className="overflow-hidden pt-2 pb-4" ref={emblaRef}>
       <div className="flex -ml-4">
         {event.map((item: any, index: any) => (

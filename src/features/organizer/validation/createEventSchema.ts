@@ -1,9 +1,11 @@
 import * as z from 'zod';
 import { categories } from '../components/categories';
-import { cities } from '@/components/cities';
+import { cities } from '@/utils/cities';
 
 const emptyToUndefined = (v: unknown) =>
   typeof v === 'string' && v.trim() === '' ? undefined : v;
+const MAX_FILE_SIZE = 1024 * 1024 * 5;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const dateTime = (label: string) =>
   z.iso
@@ -15,6 +17,17 @@ const dateTime = (label: string) =>
 
 export const createEventSchema = z
   .object({
+    profilePicture: z
+      .custom<FileList | undefined>()
+      .refine(
+        (file) => !file?.length || file[0].size > MAX_FILE_SIZE,
+        'Ukuran foto maksimal 5 MB',
+      )
+      .refine(
+        (file) => !file?.length || ALLOWED_TYPES.includes(file[0].type),
+        'Foto harus berformat JPG, PNG, atau WEBP',
+      ),
+
     name: z
       .string()
       .trim()

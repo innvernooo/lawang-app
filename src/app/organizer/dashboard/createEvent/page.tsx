@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Sansita } from 'next/font/google';
 import { categories } from '@/features/organizer/components/categories';
-import { sortedCities } from '@/components/cities';
+import { sortedCities } from '@/utils/cities';
 import { useMutation } from '@tanstack/react-query';
 import {
   CreateEventInput,
@@ -12,7 +12,8 @@ import {
 } from '@/features/organizer/validation/createEventSchema';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
 
 const sansita = Sansita({
   weight: '700',
@@ -24,9 +25,23 @@ export default function CreateEventPage() {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<CreateEventInput, unknown, CreateEventOutput>({
     resolver: zodResolver(createEventSchema),
+  });
+
+  const profilePicture = useWatch({ control, name: 'profilePicture' });
+  const previewPicture = useMemo(
+    () =>
+      profilePicture?.length ? URL.createObjectURL(profilePicture[0]) : null,
+    [profilePicture],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (previewPicture) URL.revokeObjectURL(previewPicture);
+    };
   });
 
   const handleCreateEvent = useMutation({
@@ -67,6 +82,31 @@ export default function CreateEventPage() {
           >
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-black text-sm md:text-base">
+                Event Image
+              </legend>
+              <div className="flex w-full h-60 shrink overflow-hidden text-2xl font-bold bg-gray-300 rounded-lg justify-center items-center">
+                {previewPicture ? (
+                  <img
+                    src={previewPicture}
+                    alt="Foto Profil"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  '?'
+                )}
+              </div>
+              <label className="cursor-pointer w-30 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-blue-400">
+                Pilih foto Event
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp"
+                  className="sr-only"
+                  {...register('profilePicture')}
+                />
+              </label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-black text-sm md:text-base">
                 Event Name
               </legend>
               <input
@@ -86,7 +126,9 @@ export default function CreateEventPage() {
                 placeholder="Type here"
                 {...register('description')}
               ></textarea>
-              <p className="label text-red-600">{errors?.description?.message}</p>
+              <p className="label text-red-600">
+                {errors?.description?.message}
+              </p>
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-sm md:text-base text-black">

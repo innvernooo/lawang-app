@@ -1,5 +1,5 @@
-import Footer from '@/components/footer';
-import Navbar from '@/components/navbar';
+import Footer from '@/features/home/components/footer';
+import Navbar from '@/features/home/components/navbar';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 const geistSans = Geist({

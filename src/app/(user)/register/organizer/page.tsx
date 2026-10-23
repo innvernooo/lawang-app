@@ -15,9 +15,9 @@ import {
   OrganizerRegisterOutput,
   organizerRegisterSchema,
 } from '@/features/register/validation/organizerSchema';
-import { sortedCities } from '@/components/cities';
-import { sortedProvinces } from '@/components/provinces';
-import { sortedBanks } from '@/components/banks';
+import { sortedCities } from '@/utils/cities';
+import { sortedProvinces } from '@/utils/provinces';
+import { sortedBanks } from '@/utils/banks';
 import { stepFields } from '@/features/register/organizerRegister/validationStep';
 import { RegisterOrganizer } from '@/features/register/organizerRegister/organizerFormData';
 
