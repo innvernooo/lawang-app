@@ -39,7 +39,7 @@ export default async function TicketBox({ eventId }: { eventId: string }) {
                 <h2 className="text-xl font-medium">{item?.name}</h2>
                 <label className="label">
                   {item?.endSale &&
-                    `Penjualan berakhir pada ${tanggal.format(new Date(item.endSale))} | Jam ${jam.format(new Date(item.endSale))} WIB`}
+                    `Penjualan berakhir pada ${tanggal.format(new Date(item.endSale))} • Jam ${jam.format(new Date(item.endSale))} WIB`}
                 </label>
               </div>
               <p

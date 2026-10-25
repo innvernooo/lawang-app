@@ -1,12 +1,12 @@
-import CheckoutBox from '@/features/event-detail/components/checkoutBox';
-import EventBanner from '@/features/event-detail/components/eventBanner';
-import TermsAndConditions from '@/features/event-detail/components/termsAndConditions';
-import TicketBox from '@/features/event-detail/components/ticketBox';
+import CheckoutBox from '@/features/event/components/checkoutBox';
+import EventBanner from '@/features/event/components/eventBanner';
+import TermsAndConditions from '@/features/event/components/termsAndConditions';
+import TicketBox from '@/features/event/components/ticketBox';
 import { Suspense } from 'react';
 
 export default function DetailEventPage({
   params,
-}: PageProps<'/event-detail/[eventId]'>) {
+}: PageProps<'/event/[eventId]'>) {
   return (
     <>
       <div className="grid grid-cols-[70%_30%]">

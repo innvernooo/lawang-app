@@ -47,7 +47,7 @@ export default function BasicCarousel() {
               role="button"
               tabIndex={0}
               onClick={() => {
-                router.push(`/event-detail/${item.id}`);
+                router.push(`/event/${item.id}`);
               }}
               className="group h-fit p-3 rounded-2xl text-black cursor-pointer transition duration-300 ease-out hover:-translate-y-2 hover:shadow-xl focus-visible:-translate-y-2 focus-visible:shadow-xl focus-visible:outline-2 focus-visible:outline-blue-500"
             >
