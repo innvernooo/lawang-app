@@ -1,6 +1,7 @@
 import { rupiah } from '@/utils/idr';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
+import Link from 'next/link';
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosTime } from 'react-icons/io';
 import { MdDateRange } from 'react-icons/md';
@@ -27,9 +28,12 @@ export default async function CheckoutBox({ eventId }: { eventId: string }) {
               {rupiah.format(ticket[0].price)}
             </h3>
           </div>
-          <button className="btn bg-blue-700 w-30 h-12 text-lg">
+          <Link
+            href={`/event/${eventId}/order`}
+            className="btn bg-blue-700 w-30 h-12 text-lg"
+          >
             Beli Tiket
-          </button>
+          </Link>
         </div>
         <h1 className="mt-15 text-[25px] font-bold text-brand-200">
           {event?.name}
