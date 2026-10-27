@@ -20,12 +20,14 @@ export default async function CheckoutBox({ eventId }: { eventId: string }) {
   const ticket = (await res2.json()).data;
   return (
     <>
-      <div className="w-full h-fit p-4.5 sticky top-20 bg-white shadow-lg rounded-3xl">
+      <div className="w-full h-fit p-4.5 sticky top-20 bg-brand-100 shadow-lg rounded-3xl">
         <div className="flex justify-between items-center">
           <div>
             <p className="text-gray-500">Harga mulai dari</p>
             <h3 className="text-[21px] font-bold">
-              {rupiah.format(ticket[0].price)}
+              {event.pricingType === 'PAID'
+                ? rupiah.format(ticket[0].price)
+                : 0}
             </h3>
           </div>
           <Link

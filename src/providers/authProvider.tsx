@@ -27,6 +27,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         user.email,
         user.username ?? user.organizerName,
         user.role,
+        user.profilePictureUrl,
       );
   }, [user, setAuth]);
   return <>{children}</>;

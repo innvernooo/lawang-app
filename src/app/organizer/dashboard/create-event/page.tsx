@@ -58,8 +58,8 @@ export default function CreateEventPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center bg-brand-100">
-        <div className="bg-white h-fit w-88 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
+      <div className="flex justify-center items-center">
+        <div className="bg-brand-100 h-fit w-88 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
           <div className="flex justify-center">
             <Image
               src={'/lawang.svg'}
@@ -69,11 +69,11 @@ export default function CreateEventPage() {
             />
           </div>
           <h1
-            className={`flex mt-5 justify-center text-2xl font-semibold ${sansita.className}`}
+            className={`flex mt-5 justify-center text-2xl text-black font-semibold ${sansita.className}`}
           >
             PROMOTE YOUR EVENT ON LAWANG
           </h1>
-          <p className="flex mt-1 justify-center italic text-lg">
+          <p className="flex mt-1 justify-center text-black italic text-lg">
             Fill the form below to start promoting
           </p>
           <form
@@ -111,7 +111,7 @@ export default function CreateEventPage() {
               </legend>
               <input
                 type="text"
-                className="input w-full bg-brand-100 input-neutral"
+                className="input w-full bg-white input-neutral"
                 placeholder="Type here"
                 {...register('name')}
               />
@@ -122,7 +122,7 @@ export default function CreateEventPage() {
                 Event Description
               </legend>
               <textarea
-                className="textarea h-24 w-full bg-brand-100 textarea-neutral"
+                className="textarea h-24 w-full bg-white textarea-neutral"
                 placeholder="Type here"
                 {...register('description')}
               ></textarea>
@@ -136,7 +136,7 @@ export default function CreateEventPage() {
               </legend>
               <select
                 defaultValue="Pick one category"
-                className="select w-full bg-brand-100 select-neutral"
+                className="select w-full bg-white select-neutral"
                 {...register('category')}
               >
                 <option disabled={true}>Pick one category</option>
@@ -154,7 +154,7 @@ export default function CreateEventPage() {
               </legend>
               <select
                 defaultValue="Pick one city"
-                className="select w-full bg-brand-100 select-neutral"
+                className="select w-full bg-white select-neutral"
                 {...register('city')}
               >
                 <option disabled={true}>Pick one city</option>
@@ -171,7 +171,7 @@ export default function CreateEventPage() {
                 Event Venue
               </legend>
               <textarea
-                className="textarea h-24 w-full bg-brand-100 textarea-neutral"
+                className="textarea h-24 w-full bg-white textarea-neutral"
                 placeholder="Type here"
                 {...register('venue')}
               ></textarea>
@@ -179,15 +179,26 @@ export default function CreateEventPage() {
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-black text-sm md:text-base">
-                Price
+                Pricing Type
               </legend>
-              <input
-                type="number"
-                className="input w-full bg-brand-100 input-neutral"
-                placeholder="Type here"
-                {...register('price')}
-              />
-              <p className="label text-red-600">{errors?.price?.message}</p>
+              <select
+                defaultValue="Pick one type"
+                className="select w-full bg-white select-neutral"
+                {...register('pricingType')}
+              >
+                <option disabled={true}>Pick one type</option>
+                {['PAID', 'FREE'].map((p, index) => (
+                  <option key={index} value={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+              <p className="label">
+                Free event will generate a "Free Ticket" automatically
+              </p>
+              <p className="label text-red-600">
+                {errors?.pricingType?.message}
+              </p>
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-black text-sm md:text-base">
@@ -195,7 +206,7 @@ export default function CreateEventPage() {
               </legend>
               <input
                 type="datetime-local"
-                className="input w-full bg-brand-100 input-neutral"
+                className="input w-full bg-white input-neutral"
                 placeholder="Type here"
                 {...register('startDate')}
               />
@@ -207,7 +218,7 @@ export default function CreateEventPage() {
               </legend>
               <input
                 type="datetime-local"
-                className="input w-full bg-brand-100 input-neutral"
+                className="input w-full bg-white input-neutral"
                 placeholder="Type here"
                 {...register('endDate')}
               />
@@ -219,18 +230,20 @@ export default function CreateEventPage() {
               </legend>
               <input
                 type="number"
-                className="input w-full bg-brand-100 input-neutral"
+                className="input w-full bg-white input-neutral"
                 placeholder="Type here"
                 {...register('totalSeats')}
               />
               <p className="label text-red-600">
                 {errors?.totalSeats?.message}
               </p>
-              <p className="label text-red-600">
+              <p className="label">
                 Available seats will follow the total seats input
               </p>
             </fieldset>
-            <button className="mt-8 w-full btn btn-success">Submit</button>
+            <button className="mt-8 w-full btn btn-success">
+              Create Event
+            </button>
           </form>
         </div>
       </div>
