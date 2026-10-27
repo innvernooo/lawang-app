@@ -853,9 +853,7 @@ export default function CustomerProfilePage() {
           {/* ── Tab Poin & Kupon ── */}
           {tab === "rewards" && (
             <div className="space-y-8 p-5 sm:p-6 lg:p-8">
-              <p className="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">
-                Data contoh. Saldo poin dan kupon sebenarnya diambil dari backend.
-              </p>
+             
 
               {/* Saldo poin aktif */}
               <div className="rounded-xl bg-indigo-600 p-5 text-white">

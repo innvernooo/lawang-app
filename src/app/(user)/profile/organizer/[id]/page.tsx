@@ -714,10 +714,6 @@ export default function OrganizerProfilePage() {
             </div>
           </div>
 
-          <p className="mt-4 border-t border-indigo-100 pt-4 text-xs text-gray-500">
-            Nama organizer, bio, dan tautan tampil di halaman publik organizer,
-            bersama rating dan ulasan dari peserta.
-          </p>
         </section>
 
         {/* Panel kanan: tab */}
