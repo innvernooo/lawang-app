@@ -659,8 +659,8 @@ export default function OrganizerProfilePage() {
           </div>
           <p className="mt-1 text-sm text-gray-500">
             {editing
-              ? "Ubah data yang diperlukan, lalu klik Update Profile di bagian bawah."
-              : "Data profil bersifat tetap. Klik Update Profile untuk mengubahnya."}
+              ? "Ubah data yang diperlukan, lalu klik Update Profile."
+              : "Data profil bersifat tetap."}
           </p>
         </div>
         {tab === "info" && !editing && (
@@ -714,10 +714,6 @@ export default function OrganizerProfilePage() {
             </div>
           </div>
 
-          <p className="mt-4 border-t border-indigo-100 pt-4 text-xs text-gray-500">
-            Nama organizer, bio, dan tautan tampil di halaman publik organizer,
-            bersama rating dan ulasan dari peserta.
-          </p>
         </section>
 
         {/* Panel kanan: tab */}
