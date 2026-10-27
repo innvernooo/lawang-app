@@ -659,8 +659,8 @@ export default function OrganizerProfilePage() {
           </div>
           <p className="mt-1 text-sm text-gray-500">
             {editing
-              ? "Ubah data yang diperlukan, lalu klik Update Profile di bagian bawah."
-              : "Data profil bersifat tetap. Klik Update Profile untuk mengubahnya."}
+              ? "Ubah data yang diperlukan, lalu klik Update Profile."
+              : "Data profil bersifat tetap."}
           </p>
         </div>
         {tab === "info" && !editing && (
