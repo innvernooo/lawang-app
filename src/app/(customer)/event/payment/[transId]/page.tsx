@@ -13,6 +13,7 @@ import {
   PaymentOutput,
   paymentSchema,
 } from '@/features/payment/validation/paymentSchema';
+import IsLoading from '@/features/general/components/isLoadingImage';
 
 const sansita = Sansita({
   weight: '700',
@@ -69,7 +70,7 @@ export default function PaymentPage() {
       },
     });
 
-    if (isLoading) return <p>Memuat data...</p>;
+    if (isLoading) return <IsLoading />;
 
     console.log(transaction);
     return (
@@ -153,7 +154,7 @@ export default function PaymentPage() {
                 onChange={(e) => setMethod(e.target.value)}
                 className="select select-neutral w-full bg-white"
               >
-                <option value='' disabled className="text-black">
+                <option value="" disabled className="text-black">
                   Pick a payment method
                 </option>
                 {paymentMethods.map((m, index) => (

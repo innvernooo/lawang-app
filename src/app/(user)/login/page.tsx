@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { useRouter } from 'next/navigation';
-import PopoverFailed from '@/features/register/components/popoverFailed';
+import PopoverFailed from '@/features/general/components/popoverFailed';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 // Class TailwindCSS
@@ -47,7 +47,8 @@ export default function LoginPage() {
       const email = res?.data?.email;
       const role = res?.data?.role;
       const username = res?.data?.username;
-      setAuth(id, email, username, role);
+      const imageUrl = res?.data?.profilePictureUrl;
+      setAuth(id, email, username, role, imageUrl);
       console.log(setAuth);
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },

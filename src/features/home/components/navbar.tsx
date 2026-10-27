@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
 
 export default function Navbar() {
-  const { id } = useAuthStore();
+  const { id, username, imageUrl, clearAuth } = useAuthStore();
 
   return (
     <>
@@ -31,10 +31,9 @@ export default function Navbar() {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 font-semibold text-gray-600">
+                  {username ? username[0].toUpperCase() : '?'}
+                </div>
               </div>
             </div>
             <ul
@@ -42,15 +41,23 @@ export default function Navbar() {
               className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a href={`/profile/customer/${id}`} className="justify-between">
-                  Profile
+                {id ? (
+                  <a
+                    href={`/profile/customer/${id}`}
+                    className="justify-between"
+                  >
+                    Profile
+                  </a>
+                ) : (
+                  <a href={`/login`} className="justify-between">
+                    Login
+                  </a>
+                )}
+              </li>
+              <li>
+                <a onClick={clearAuth} href="/">
+                  Logout
                 </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
               </li>
             </ul>
           </div>

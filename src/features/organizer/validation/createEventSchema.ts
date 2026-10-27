@@ -45,14 +45,7 @@ export const createEventSchema = z
       .min(1, 'Event venue is required')
       .max(200, 'Maximum input is 200 characters'),
 
-    price: z.preprocess(
-      emptyToUndefined,
-      z.coerce
-        .number('Price must be a number')
-        .int('Price must be a whole number')
-        .min(1, 'Event price is required')
-        .max(2000000000, 'Price is too large'),
-    ),
+    pricingType: z.enum(['PAID', 'FREE'], 'Event can only be PAID or FREE'),
 
     startDate: dateTime('Start date').refine(
       (d) => d.getTime() > Date.now(),

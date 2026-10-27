@@ -8,8 +8,8 @@ import { useMutation } from '@tanstack/react-query';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Link from 'next/link';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
-import PopoverFailed from '@/features/register/components/popoverFailed';
-import PopoverSuccess from '@/features/register/components/popoverSuccess';
+import PopoverFailed from '@/features/general/components/popoverFailed';
+import PopoverSuccess from '@/features/general/components/popoverSuccess';
 import {
   OrganizerRegisterInput,
   OrganizerRegisterOutput,
@@ -199,8 +199,6 @@ export default function OrganizerRegister() {
           >
             {/* ───── Langkah 1: Akun ───── */}
             <div className={stepClass(0)}>
-              
-
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                   <label htmlFor="email" className={labelClass}>

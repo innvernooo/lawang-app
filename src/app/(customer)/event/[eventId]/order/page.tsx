@@ -4,9 +4,10 @@ import { rupiah } from '@/utils/idr';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
 import Image from 'next/image';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { BsClockHistory } from 'react-icons/bs';
 import { PiNotePencil } from 'react-icons/pi';
+import { CiBellOn } from 'react-icons/ci';
 import { GiTicket } from 'react-icons/gi';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
@@ -21,6 +22,7 @@ import {
   createOrderSchema,
 } from '@/features/order/validation/createOrderSchema';
 import { isAxiosError } from 'axios';
+import IsLoading from '@/features/general/components/isLoadingImage';
 
 export default function OrderPage() {
   return (
@@ -80,7 +82,7 @@ export default function OrderPage() {
     });
 
     const { data: ticket = [] } = useQuery({
-      queryKey: ['order'],
+      queryKey: ['tickets', eventId],
       queryFn: async () => {
         const res = await axiosInstance.get(`/tickets/${eventId}`);
 
@@ -89,7 +91,7 @@ export default function OrderPage() {
     });
 
     const { data: event, isLoading } = useQuery({
-      queryKey: ['event-order'],
+      queryKey: ['event', eventId],
       queryFn: async () => {
         const res = await axiosInstance.get(`/events/eventDetail/${eventId}`);
 
@@ -97,7 +99,7 @@ export default function OrderPage() {
       },
     });
 
-    if (isLoading) return <p>Memuat data ...</p>;
+    if (isLoading) return <IsLoading />;
 
     return (
       <>
@@ -136,6 +138,10 @@ export default function OrderPage() {
                       : `Penjualan berakhir pada ${tanggal.format(new Date(t.endSale))} • Jam ${jam.format(new Date(t.endSale))} WIB`}
                   </p>
                 </div>
+                <div className="flex mt-2 text-xl gap-2 text-red-500 items-center">
+                  <CiBellOn />
+                  <p>{`Tiket tersisa ${t.available}`}</p>
+                </div>
                 <p className="mt-4 line-clamp-1">
                   _____________________________________________________________________________________________________________________________________________________
                 </p>
@@ -148,7 +154,7 @@ export default function OrderPage() {
           <div className="p-7">
             <form
               onSubmit={handleSubmit((data) => handleCreateOrder.mutate(data))}
-              className="w-full h-fit p-5 sticky top-20 bg-white rounded-xl shadow-xl"
+              className="w-full h-fit p-5 sticky top-20 bg-brand-100 rounded-xl shadow-xl"
             >
               <div className="flex gap-2 text-3xl font-semibold items-center">
                 <GiTicket className="text-5xl  text-brand-200" />
@@ -205,6 +211,7 @@ export default function OrderPage() {
                 </legend>
                 <input
                   type="text"
+                  disabled={event.pricingType === 'FREE'}
                   className="input input-primary w-full bg-white "
                   placeholder="Type here"
                   {...register('couponCode')}
@@ -220,6 +227,7 @@ export default function OrderPage() {
                 </legend>
                 <input
                   type="text"
+                  disabled={event.pricingType === 'FREE'}
                   className="input input-primary w-full bg-white "
                   placeholder="Type here"
                   {...register('voucherCode')}
@@ -235,6 +243,7 @@ export default function OrderPage() {
                 </legend>
                 <select
                   defaultValue={0}
+                  disabled={event.pricingType === 'FREE'}
                   className="select select-primary bg-white w-full"
                   {...register('pointsUsed')}
                 >

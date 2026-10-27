@@ -74,12 +74,7 @@ export default function BasicCarousel() {
               </p>
               <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                 <IoMdPricetags />
-                <p>
-                  Cost{' '}
-                  <span className="font-semibold">
-                    {item?.price ? rupiah.format(item?.price) : 'Free'}
-                  </span>
-                </p>
+                <p className='font-semibold'>{item?.pricingType}</p>
               </div>
             </div>
           </div>

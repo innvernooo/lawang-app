@@ -13,8 +13,8 @@ import {
   CustomerRegisterOutput,
 } from '@/features/register/validation/customerSchema';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
-import PopoverFailed from '@/features/register/components/popoverFailed';
-import PopoverSuccess from '@/features/register/components/popoverSuccess';
+import PopoverFailed from '@/features/general/components/popoverFailed';
+import PopoverSuccess from '@/features/general/components/popoverSuccess';
 
 // Class TailwindCSS
 const inputClass =
