@@ -32,7 +32,7 @@ export default function OrderPage() {
   );
 
   function OrderPageContent() {
-    const { eventId } = useParams<{ eventId: string }>();
+    const { slug } = useParams<{ slug: string }>();
     const {
       register,
       handleSubmit,
@@ -46,6 +46,17 @@ export default function OrderPage() {
 
     const ticketTypeId = watch('ticketTypeId');
     const router = useRouter();
+
+    const { data: event, isLoading } = useQuery({
+      queryKey: ['event', slug],
+      queryFn: async () => {
+        const res = await axiosInstance.get(`/events/eventDetail/${slug}`);
+
+        return res?.data?.data;
+      },
+    });
+
+    const eventId: string | undefined = event?.id;
 
     const handleCreateOrder = useMutation({
       mutationFn: async (data: CreateOrderOutput) => {
@@ -88,15 +99,7 @@ export default function OrderPage() {
 
         return res?.data?.data;
       },
-    });
-
-    const { data: event, isLoading } = useQuery({
-      queryKey: ['event', eventId],
-      queryFn: async () => {
-        const res = await axiosInstance.get(`/events/eventDetail/${eventId}`);
-
-        return res?.data?.data;
-      },
+      enabled: !!eventId,
     });
 
     if (isLoading) return <IsLoading />;

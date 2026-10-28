@@ -1,14 +1,15 @@
+import { getEventBySlug } from '@/api/event/getEventBySlug';
+import { GetTicketByFetch } from '@/api/ticket/getTicketByFetch';
 import { rupiah } from '@/utils/idr';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
 import { LuTicket } from 'react-icons/lu';
 
-export default async function TicketBox({ eventId }: { eventId: string }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${eventId}`,
-  );
+export default async function TicketBox({ slug }: { slug: string }) {
+  const event = await getEventBySlug(slug);
 
-  const ticket = (await res.json()).data;
+  const ticket = await GetTicketByFetch(event.id);
+  
   return (
     <>
       <div className="mt-10 flex gap-2 items-center text-2xl font-bold">
@@ -24,7 +25,7 @@ export default async function TicketBox({ eventId }: { eventId: string }) {
           </h3>
         </div>
         <div className="collapse-content text-sm">
-          <p className='line-clamp-1'>
+          <p className="line-clamp-1">
             _________________________________________________________________________________________________________________________________
           </p>
           {ticket.map((item: any, index: any) => (

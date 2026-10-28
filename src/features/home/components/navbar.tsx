@@ -2,9 +2,13 @@
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
+import { categories } from '@/features/organizer/components/categories';
+import { useRouter } from 'next/navigation';
+import { capitalize } from '@/utils/capitalize';
 
 export default function Navbar() {
   const { id, username, imageUrl, clearAuth } = useAuthStore();
+  const router = useRouter();
 
   return (
     <>
@@ -19,11 +23,32 @@ export default function Navbar() {
           />
         </a>
         <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input w-24 md:w-auto bg-white border-black text-black"
-          />
+          <ul className="menu menu-horizontal bg-white rounded-box">
+            <li>
+              <details>
+                <summary>Categories</summary>
+                <ul className="p-2 bg-brand-100 w-40 z-1">
+                  {categories.map((c, i) => (
+                    <li key={i}>
+                      <button
+                        onClick={() => {
+                          router.push(`/event?category=${c}&page=1`);
+                        }}
+                      >
+                        {capitalize(c)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </li>
+            <li>
+              <a href="/event">Search</a>
+            </li>
+            <li>
+              <a>ID</a>
+            </li>
+          </ul>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -38,7 +63,7 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-brand-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
                 {id ? (
@@ -53,6 +78,11 @@ export default function Navbar() {
                     Login
                   </a>
                 )}
+              </li>
+              <li>
+                <a onClick={clearAuth} href="/">
+                  My Transaction
+                </a>
               </li>
               <li>
                 <a onClick={clearAuth} href="/">

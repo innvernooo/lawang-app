@@ -27,6 +27,14 @@ export default function homePage() {
         </h1>
       </div>
       <BasicCarousel />
+      <div className="mt-20 mb-5 flex gap-2 items-center">
+        <HiSpeakerphone className="text-black text-2xl lg:text-3xl animate-bounce" />
+        <h1
+          className={`text-brand-200 text-2xl md:text-xl lg:text-4xl ${sansita.className}`}
+        >
+          Lagi Hype K-Pop
+        </h1>
+      </div>
     </>
   );
 }

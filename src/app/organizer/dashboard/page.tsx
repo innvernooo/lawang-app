@@ -7,6 +7,8 @@ type Row = { label: string; full: string; revenue: number };
 type Period = "day" | "month" | "year";
 
 import Link from "next/link";
+import ConfirmationPage from "@/features/organizer/components/confirmation";
+import ViewTransactionsPage from "@/features/organizer/components/confirmation";
 // Alamat halaman Buat Event milik rekanmu. Samakan dengan nama foldernya.
 const CREATE_EVENT_URL = "/organizer/dashboard/createEvent";
 
@@ -558,16 +560,7 @@ function Statistik() {
 // ===== 6. Tab TRANSAKSI (dikerjakan di akhir bersama rekan) =====
 function Transaksi() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900 lg:text-3xl">Transaksi</h1>
-      <section className="rounded-xl bg-white p-8 text-center shadow-sm">
-        <p className="font-semibold text-gray-900">{PENDING} transaksi menunggu konfirmasi</p>
-        <p className="mt-2 text-sm text-gray-500">
-          Bagian ini (terima atau tolak pembayaran, lihat bukti bayar, email notifikasi, dan
-          pengembalian poin, voucher, serta kursi) dikerjakan di tahap akhir bersama rekan.
-        </p>
-      </section>
-    </div>
+    <ViewTransactionsPage />
   );
 }
 

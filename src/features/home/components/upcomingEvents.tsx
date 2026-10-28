@@ -1,6 +1,5 @@
 'use client';
-import { axiosInstance } from '@/lib/axiosInstance.lib';
-import { useQuery } from '@tanstack/react-query';
+
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,24 +7,12 @@ import { format } from 'date-fns';
 
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
-import { rupiah } from '@/utils/idr';
+import { useUpcomingEvent } from '@/hook/event/useGetUpcomingEvent';
 
 export default function BasicCarousel() {
   const router = useRouter();
-  const {
-    data: event = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['event'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/events/upcomingEvents');
-      console.log(res);
+  const { data: event = [] } = useUpcomingEvent();
 
-      return res?.data?.data ?? [];
-    },
-  });
-  console.log(event);
   const [emblaRef] = useEmblaCarousel({
     align: 'start',
     slidesToScroll: 1,
@@ -47,17 +34,18 @@ export default function BasicCarousel() {
               role="button"
               tabIndex={0}
               onClick={() => {
-                router.push(`/event/${item.id}`);
+                router.push(`/event/${item.slug}`);
               }}
-              className="group h-fit p-3 rounded-2xl text-black cursor-pointer transition duration-300 ease-out hover:-translate-y-2 hover:shadow-xl focus-visible:-translate-y-2 focus-visible:shadow-xl focus-visible:outline-2 focus-visible:outline-blue-500"
+              className="group h-fit p-3 text-black cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-500"
             >
               <Image
                 src={item.imageUrl ?? '/download.jpg'}
                 alt="Event"
                 width={736}
                 height={368}
-                className="h-45 rounded-lg"
+                className="h-45 rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2"
               />
+
               <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-brand-300 group-focus-visible:text-brand-300">
                 {item?.name}
               </h1>
@@ -74,7 +62,7 @@ export default function BasicCarousel() {
               </p>
               <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                 <IoMdPricetags />
-                <p className='font-semibold'>{item?.pricingType}</p>
+                <p className="font-semibold">{item?.pricingType}</p>
               </div>
             </div>
           </div>

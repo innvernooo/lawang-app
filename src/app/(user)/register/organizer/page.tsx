@@ -7,9 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Link from 'next/link';
-import { axiosInstance } from '@/lib/axiosInstance.lib';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import PopoverSuccess from '@/features/general/components/popoverSuccess';
+import PopoverRegisterSuccess from '@/features/general/components/popoverRegisterSuccess';
 import {
   OrganizerRegisterInput,
   OrganizerRegisterOutput,
@@ -129,7 +128,7 @@ export default function OrganizerRegister() {
         title="Akun Gagal Terdaftar"
         message={failedMessage}
       />
-      <PopoverSuccess
+      <PopoverRegisterSuccess
         ref={successRef}
         title="Akun Berhasil Terdaftar"
         message="Klik tombol berikut untuk lanjut ke halaman login"
