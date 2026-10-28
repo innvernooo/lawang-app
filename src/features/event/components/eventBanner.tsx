@@ -1,3 +1,4 @@
+import { getEventBySlug } from '@/api/event/getEventBySlug';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
 import Image from 'next/image';
@@ -5,12 +6,10 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosTime } from 'react-icons/io';
 import { MdDateRange, MdOutlineCategory } from 'react-icons/md';
 
-export default async function EventBanner({ eventId }: { eventId: string }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/eventDetail/${eventId}`,
-  );
+export default async function EventBanner({ slug }: { slug: string }) {
 
-  const event = (await res.json()).data;
+  const event = await getEventBySlug(slug);
+  
   return (
     <>
       <Image

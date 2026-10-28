@@ -25,13 +25,6 @@ export default function PopoverSuccess({
         </div>
         <h3 className="flex justify-center text-lg md:text-2xl font-bold text-green-600">{title}</h3>
         <p className="flex justify-center py-2 md:text-xl text-black">{message}</p>
-        <div className="modal-action">
-          <form method="dialog">
-            <Link href="/login" className="btn btn-success">
-              Login
-            </Link>
-          </form>
-        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

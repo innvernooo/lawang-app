@@ -2,10 +2,8 @@
 import Image from 'next/image';
 import { Sansita } from 'next/font/google';
 import { paymentMethods } from '@/utils/paymentMethod';
-import { Suspense, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '@/lib/axiosInstance.lib';
+import { Suspense, useRef, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { rupiah } from '@/utils/idr';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,6 +12,9 @@ import {
   paymentSchema,
 } from '@/features/payment/validation/paymentSchema';
 import IsLoading from '@/features/general/components/isLoadingImage';
+import PopoverSuccess from '@/features/general/components/popoverSuccess';
+import { useTransDetail } from '@/hook/transaction/useGetTransDetail';
+import { usePostPaymentProof } from '@/hook/transaction/usePostPaymentProof';
 
 const sansita = Sansita({
   weight: '700',
@@ -30,6 +31,8 @@ export default function PaymentPage() {
   function PaymentPageContent() {
     const { transId } = useParams<{ transId: string }>();
     const [method, setMethod] = useState('');
+    const router = useRouter();
+    const successRef = useRef<HTMLDialogElement>(null);
     const {
       register,
       handleSubmit,
@@ -40,44 +43,35 @@ export default function PaymentPage() {
       resolver: zodResolver(paymentSchema),
     });
 
-    const handlePayment = useMutation({
-      mutationFn: async (data: PaymentOutput) => {
-        const file = data.paymentProof?.[0];
-
-        const formData = new FormData();
-        formData.append('paymentProof', file);
-
-        const res = await axiosInstance.patch(
-          `/transactions/payment/${transId}`,
-          formData,
-        );
-
-        return res?.data?.data;
-      },
-      onSuccess: () => {
-        reset();
-      },
-    });
+    const handlePayment = usePostPaymentProof();
 
     const proof = watch('paymentProof');
 
-    const { data: transaction, isLoading } = useQuery({
-      queryKey: [`transaction/${transId}`],
-      queryFn: async () => {
-        const res = await axiosInstance.get(`/transactions/${transId}`);
-
-        return res?.data?.data;
-      },
-    });
+    const { data: transaction, isLoading, isError } = useTransDetail(transId);
 
     if (isLoading) return <IsLoading />;
-
+    if (isError || !transaction) return <p>Transaksi tidak ditemnukan...</p>;
     console.log(transaction);
     return (
       <>
+        <PopoverSuccess
+          ref={successRef}
+          title="Your payment proof uploded successfully"
+          message="Harap menunggu konfirmasi dari admin Event, terima kasih"
+        />
         <div className="flex items-center justify-center w-full min-h-screen">
           <form
-            onSubmit={handleSubmit((data) => handlePayment.mutate(data))}
+            onSubmit={handleSubmit((data) =>
+              handlePayment.mutate(
+                { transId, file: data.paymentProof[0] },
+                {
+                  onSuccess: () => {
+                    reset();
+                    router.push('/');
+                  },
+                },
+              ),
+            )}
             className="p-4 w-150 h-fit bg-brand-100 glass shadow-xl rounded-xl"
           >
             <div className="flex justify-center">
@@ -179,7 +173,10 @@ export default function PaymentPage() {
             </fieldset>
             <button
               type="submit"
-              disabled={!method || !proof?.length || handlePayment.isPending}
+              disabled={
+                transaction.event.pricingType === 'PAID' &&
+                (!method || !proof?.length || handlePayment.isPending)
+              }
               className="btn btn-success mt-10 w-full h-12 text-lg"
             >
               Selesai

@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 
 export default function DetailEventPage({
   params,
-}: PageProps<'/event/[eventId]'>) {
+}: PageProps<'/event/[slug]'>) {
   return (
     <>
       <div className="grid grid-cols-[70%_30%]">
@@ -29,27 +29,27 @@ export default function DetailEventPage({
   async function EventDetailContent({
     params,
   }: {
-    params: Promise<{ eventId: string }>;
+    params: Promise<{ slug: string }>;
   }) {
-    const { eventId } = await params;
-    return <EventBanner eventId={eventId} />;
+    const { slug } = await params;
+    return <EventBanner slug={slug} />;
   }
 
   async function TicketTypeContent({
     params,
   }: {
-    params: Promise<{ eventId: string }>;
+    params: Promise<{ slug: string }>;
   }) {
-    const { eventId } = await params;
-    return <TicketBox eventId={eventId} />;
+    const { slug } = await params;
+    return <TicketBox slug={slug} />;
   }
 
   async function CheckoutBoxContent({
     params,
   }: {
-    params: Promise<{ eventId: string }>;
+    params: Promise<{ slug: string }>;
   }) {
-    const { eventId } = await params;
-    return <CheckoutBox eventId={eventId} />;
+    const { slug } = await params;
+    return <CheckoutBox slug={slug} />;
   }
 }
