@@ -1,4 +1,4 @@
-export async function GetTicketByFetch(eventId: string) {
+export async function GetTicketByEventId(eventId: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${eventId}`,
   );

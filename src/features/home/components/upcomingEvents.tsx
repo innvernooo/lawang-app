@@ -7,9 +7,11 @@ import { format } from 'date-fns';
 
 import { FaLocationDot } from 'react-icons/fa6';
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
+import { MdOutlineCategory } from 'react-icons/md';
 import { useUpcomingEvent } from '@/hook/event/useGetUpcomingEvent';
+import { capitalize } from '@/utils/capitalize';
 
-export default function BasicCarousel() {
+export default function UpcomingEvents() {
   const router = useRouter();
   const { data: event = [] } = useUpcomingEvent();
 
@@ -18,7 +20,7 @@ export default function BasicCarousel() {
     slidesToScroll: 1,
     breakpoints: {
       '(min-width: 768px)': { slidesToScroll: 3 },
-      '(min-width: 1024px)': { slidesToScroll: 4 },
+      '(min-width: 1024px)': { slidesToScroll: 2 },
     },
   });
 
@@ -43,18 +45,22 @@ export default function BasicCarousel() {
                 alt="Event"
                 width={736}
                 height={368}
-                className="h-45 rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2"
+                className="aspect-2/1 h-auto w-full object-cover rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/30 group-focus-visible:-translate-y-2"
               />
 
-              <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-brand-300 group-focus-visible:text-brand-300">
+              <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-blue-700 group-focus-visible:text-blue-700">
                 {item?.name}
               </h1>
               <p className="text-lg md:text-sm lg:text-lg">
                 Held by {item?.organizer?.organizerName}
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
+                <MdOutlineCategory />
+                <span>{capitalize(item?.category).replace('_', ' ')}</span>
+              </p>
+              <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
                 <FaLocationDot />
-                <span>{item?.city}</span>
+                <span className='line-clamp-1'>{item?.city} | {item.venue}</span>
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mb-4">
                 <IoIosTime />

@@ -60,7 +60,7 @@ export default function HeroBanner() {
   return (
     <>
       <div
-        className="-mx-3 -mt-3 overflow-hidden pb-4 md:-mx-5 md:-mt-5"
+        className="-mx-3 -mt-3 overflow-hidden pb-4 md:-mx-15 md:-mt-15"
         ref={emblaRef}
       >
         <div className="flex">

@@ -1,10 +1,19 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { categories } from '@/features/organizer/components/categories';
+import Image from 'next/image';
+import { categories } from '@/utils/categories';
 import { capitalize } from '@/utils/capitalize';
+import useEmblaCarousel from 'embla-carousel-react';
+
+const items = [{ number: 0, cat: null as string | null }, ...categories];
 
 export default function CategoryButton() {
+  const [emblaRef] = useEmblaCarousel({
+    align: 'start',
+    dragFree: true,
+  });
+
   const router = useRouter();
   const query = useSearchParams();
 
@@ -18,32 +27,50 @@ export default function CategoryButton() {
     router.push(`/event?${params.toString()}`);
   };
 
-  const base =
-    'px-5 py-2 text-white glass rounded-full cursor-pointer transition-transform duration-200 ease-out hover:scale-110';
-
   return (
-    <>
-      <div className="my-8 w-full flex justify-center">
-        <div className="w-250 flex justify-around">
-          <button
-            onClick={() => goToCategory(null)}
-            aria-pressed={!active}
-            className={`${base} ${!active ? 'bg-brand-300' : 'bg-brand-200'}`}
-          >
-            Semua
-          </button>
-          {categories.map((c) => (
-            <button
-              key={c}
-              onClick={() => goToCategory(c)}
-              aria-pressed={c === active}
-              className={`${base} ${c === active ? 'bg-brand-300' : 'bg-brand-200'}`}
+    <div ref={emblaRef} className="my-8 w-full overflow-hidden px-4 py-3">
+      <div className="flex gap-6">
+        {items.map(({ number, cat }) => {
+          const selected = cat === null ? !active : cat === active;
+          const label = cat === null ? 'Semua' : capitalize(cat).replace('_', ' ');
+
+          return (
+            <div
+              key={number}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selected}
+              onClick={() => goToCategory(cat)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') goToCategory(cat);
+              }}
+              className="group flex w-24 shrink-0 cursor-pointer select-none flex-col items-center focus-visible:outline-2 focus-visible:outline-blue-500"
             >
-              {capitalize(c)}
-            </button>
-          ))}
-        </div>
+              <div
+                className={`relative h-16 w-16 overflow-hidden rounded-xl transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2 ${
+                  selected ? 'ring-4 ring-brand-100' : ''
+                }`}
+              >
+                <Image
+                  src={`/category/${number}.svg`}
+                  alt={label}
+                  fill
+                  sizes="64px"
+                  draggable={false}
+                  className="object-cover"
+                />
+              </div>
+              <p
+                className={`mt-3 text-center text-sm font-semibold leading-tight transition-colors duration-300 group-hover:text-blue-700 group-focus-visible:text-blue-700 ${
+                  selected ? 'text-blue-700' : 'text-black'
+                }`}
+              >
+                {label}
+              </p>
+            </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import { getEventBySlug } from '@/api/event/getEventBySlug';
-import { GetTicketByFetch } from '@/api/ticket/getTicketByFetch';
+import { GetTicketByEventId } from '@/api/ticket/getTicketByEventId';
 import { rupiah } from '@/utils/idr';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
@@ -11,8 +11,8 @@ import { MdDateRange } from 'react-icons/md';
 export default async function CheckoutBox({ slug }: { slug: string }) {
   const event = await getEventBySlug(slug);
 
-  const ticket = await GetTicketByFetch(event.id);
-  
+  const ticket = await GetTicketByEventId(event.id);
+
   const lowestPrice = ticket?.length
     ? Math.min(...ticket.map((t: any) => t.price))
     : 0;
@@ -33,7 +33,7 @@ export default async function CheckoutBox({ slug }: { slug: string }) {
             Beli Tiket
           </Link>
         </div>
-        <h1 className="mt-15 text-[25px] font-bold text-brand-200">
+        <h1 className="mt-15 text-[25px] font-bold text-blue-700">
           {event?.name}
         </h1>
         <div className="mt-2 flex text-lg gap-2 items-center">

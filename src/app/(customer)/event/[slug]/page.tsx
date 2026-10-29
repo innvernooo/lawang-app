@@ -2,6 +2,7 @@ import CheckoutBox from '@/features/event/components/checkoutBox';
 import EventBanner from '@/features/event/components/eventBanner';
 import TermsAndConditions from '@/features/event/components/termsAndConditions';
 import TicketBox from '@/features/event/components/ticketBox';
+import IsLoading from '@/features/general/components/isLoadingImage';
 import { Suspense } from 'react';
 
 export default function DetailEventPage({
@@ -9,20 +10,19 @@ export default function DetailEventPage({
 }: PageProps<'/event/[slug]'>) {
   return (
     <>
-      <div className="grid grid-cols-[70%_30%]">
-        <div className="h-fit">
-          <Suspense fallback={<p>Memuat data</p>}>
+      <Suspense fallback={<IsLoading />}>
+        <div>
+          <div className="h-fit">
             <EventDetailContent params={params} />
             <TicketTypeContent params={params} />
-          </Suspense>
-          <TermsAndConditions />
+            <TermsAndConditions />
+            <div className="h-20 lg:hidden" />
+          </div>
+          <div className="px-3">
+            {/* <CheckoutBoxContent params={params} /> */}
+          </div>
         </div>
-        <div className="px-3">
-          <Suspense fallback={<p>Memuat data</p>}>
-            <CheckoutBoxContent params={params} />
-          </Suspense>
-        </div>
-      </div>
+      </Suspense>
     </>
   );
 
