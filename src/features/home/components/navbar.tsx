@@ -2,7 +2,8 @@
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
-import { categories } from '@/features/organizer/components/categories';
+import { FaSearch } from 'react-icons/fa';
+import { categories } from '@/utils/categories';
 import { useRouter } from 'next/navigation';
 import { capitalize } from '@/utils/capitalize';
 
@@ -24,7 +25,7 @@ export default function Navbar() {
         </a>
         <div className="flex gap-2">
           <ul className="menu menu-horizontal bg-white rounded-box">
-            <li>
+            {/* <li>
               <details>
                 <summary>Categories</summary>
                 <ul className="p-2 bg-brand-100 w-40 z-1">
@@ -32,21 +33,18 @@ export default function Navbar() {
                     <li key={i}>
                       <button
                         onClick={() => {
-                          router.push(`/event?category=${c}&page=1`);
+                          router.push(`/event?category=${c.cat}&page=1`);
                         }}
                       >
-                        {capitalize(c)}
+                        {capitalize(c.cat)}
                       </button>
                     </li>
                   ))}
                 </ul>
               </details>
-            </li>
+            </li> */}
             <li>
-              <a href="/event">Search</a>
-            </li>
-            <li>
-              <a>ID</a>
+              <a href="/event">Cari Event</a>
             </li>
           </ul>
           <div className="dropdown dropdown-end">

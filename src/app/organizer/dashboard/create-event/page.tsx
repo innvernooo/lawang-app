@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Sansita } from 'next/font/google';
-import { categories } from '@/features/organizer/components/categories';
+import { categories } from '@/utils/categories';
 import { sortedCities } from '@/utils/cities';
 import { useMutation } from '@tanstack/react-query';
 import {

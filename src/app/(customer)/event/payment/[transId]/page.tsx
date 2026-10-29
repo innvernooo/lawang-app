@@ -56,14 +56,14 @@ export default function PaymentPage() {
       <>
         <PopoverSuccess
           ref={successRef}
-          title="Your payment proof uploded successfully"
+          title="Your Payment is Sent Successfully"
           message="Harap menunggu konfirmasi dari admin Event, terima kasih"
         />
         <div className="flex items-center justify-center w-full min-h-screen">
           <form
             onSubmit={handleSubmit((data) =>
               handlePayment.mutate(
-                { transId, file: data.paymentProof[0] },
+                { transId, file: data.paymentProof?.[0] },
                 {
                   onSuccess: () => {
                     reset();
@@ -72,61 +72,62 @@ export default function PaymentPage() {
                 },
               ),
             )}
-            className="p-4 w-150 h-fit bg-brand-100 glass shadow-xl rounded-xl"
+            className="p-4 w-full lg:w-150 md:-mt-50 lg:mt-0 h-fit bg-brand-100 glass shadow-xl rounded-xl"
           >
             <div className="flex justify-center">
               <Image
                 src={'/lawang.svg'}
                 alt={'Lawang logo'}
-                width={200}
+                width={130}
                 height={100}
+                className='lg:w-40'
               />
             </div>
             <h1
-              className={`flex mt-5 justify-center text-4xl font-semibold ${sansita.className}`}
+              className={`flex mt-5 justify-center text-2xl lg:text-3xl font-semibold ${sansita.className}`}
             >
               PAYMENT GATEAWAY
             </h1>
-            <p className="flex mt-1 justify-center italic text-lg">
+            <p className="flex mt-1 justify-center italic text-xs lg:text-base">
               Segera lakukan pembayaran untuk tiket yang anda pesan
             </p>
             <div className="mt-7">
-              <h1 className="text-xl">Total harga tiket</h1>
-              <h2 className="mt-1 text-3xl font-medium">
+              <h1 className="text-base">Total harga tiket</h1>
+              <h2 className="mt-1 text-lg lg:text-xl font-medium">
                 {rupiah.format(transaction.subtotal)}
               </h2>
             </div>
             <div className="mt-5  flex justify-between">
               <div>
-                <h1 className="text-xl">Kode kupon</h1>
-                <h2 className="mt-1 text-3xl font-medium">
+                <h1 className="text-base">Kode kupon</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
                   {transaction.coupon?.code ?? 'Tidak ada'}
                 </h2>
               </div>
               <div>
-                <h1 className="text-xl">Nominal kupon</h1>
-                <h2 className="mt-1 text-3xl font-medium">
+                <h1 className="text-base">Nominal kupon</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
                   {transaction.couponDiscount ?? 0}
                 </h2>
               </div>
             </div>
             <div className="mt-5  flex justify-between">
               <div>
-                <h1 className="text-xl">Kode voucher</h1>
-                <h2 className="mt-1 text-3xl font-medium">
+                <h1 className="text-base">Kode voucher</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
                   {transaction.voucher?.code ?? 'Tidak ada'}
                 </h2>
               </div>
               <div>
-                <h1 className="text-xl">Nominal voucher</h1>
-                <h2 className="mt-1 text-3xl font-medium">
+                <h1 className="text-base">Nominal voucher</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
                   {transaction.voucherDiscount ?? 0}
                 </h2>
               </div>
             </div>
             <div className="mt-5">
-              <h1 className="text-xl">Poin digunakan</h1>
-              <h2 className="mt-1 text-3xl font-medium">
+              <h1 className="text-base">Poin digunakan</h1>
+              <h2 className="mt-1 text-lg lg:text-xl font-medium">
                 {transaction.pointsUsed ?? 0}
               </h2>
             </div>
@@ -134,17 +135,18 @@ export default function PaymentPage() {
               _____________________________________________________________________________________________________________________________________________________
             </p>
             <div className="mt-4 ">
-              <h1 className="text-xl">Nominal yang harus dibayar</h1>
-              <h2 className="mt-1 text-3xl text-brand-200 font-semibold">
+              <h1 className="text-base">Nominal yang harus dibayar</h1>
+              <h2 className="mt-1 text-xl lg:text-2xl text-blue-700 font-semibold">
                 {rupiah.format(transaction.totalPrice)}
               </h2>
             </div>
             <fieldset className="fieldset  mt-5">
-              <legend className="fieldset-legend text-black text-xl">
+              <legend className="fieldset-legend text-black text-base">
                 Metode Pembayaran
               </legend>
               <select
                 value={method}
+                disabled={transaction.event.pricingType === 'FREE'}
                 onChange={(e) => setMethod(e.target.value)}
                 className="select select-neutral w-full bg-white"
               >
@@ -159,11 +161,12 @@ export default function PaymentPage() {
               </select>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-xl">
+              <legend className="fieldset-legend text-black text-base">
                 Upload bukti pembayaran
               </legend>
               <input
                 type="file"
+                disabled={transaction.event.pricingType === 'FREE'}
                 className="file-input w-full input-neutral bg-white"
                 {...register('paymentProof')}
               />

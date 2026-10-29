@@ -11,7 +11,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <>
       <Navbar />
-      <div className={`min-h-screen p-3 md:p-5 bg-white ${geistSans.className}`}>{children}</div>
+      <div className={`min-h-screen p-3 md:p-15 bg-white ${geistSans.className}`}>{children}</div>
       <Footer />
     </>
   );

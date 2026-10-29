@@ -5,10 +5,10 @@ export async function PostPaymentProof({
   file,
 }: {
   transId: string;
-  file: File;
+  file?: File;
 }) {
   const formData = new FormData();
-  formData.append('paymentProof', file);
+  if (file) formData.append('paymentProof', file);
 
   const res = await axiosInstance.patch(
     `/transactions/payment/${transId}`,
