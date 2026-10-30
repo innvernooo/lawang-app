@@ -6,7 +6,8 @@ import {
 } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "@/lib/axiosInstance.lib";
 /* ═══════════ BAGIAN 2: TIPE DATA (cermin tabel Organizer di Prisma) ═══════════ */
 type OrganizerType = "INDIVIDUAL" | "COMPANY";
 
@@ -508,19 +509,24 @@ export default function OrganizerProfilePage() {
   const [message, setMessage] = useState<Message>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+   // Ambil data profil dari backend (cookie token terkirim otomatis)
+const { data: me, isError } = useQuery({
+  queryKey: ["me"],
+  queryFn: async () => (await axiosInstance.get("/auth/me")).data.data,
+  retry: false, // kalau gagal, langsung tampilkan pesan, jangan mengulang berkali-kali
+});
 
-  /* ═══════════ BAGIAN 6: useEffect (ambil data saat halaman dibuka) ═══════════ */
-  useEffect(() => {
-    const raw = readCurrentUser();
-    if (raw && raw.role === "CUSTOMER") {
-      setWrongRole(true); // halaman ini khusus organizer
-      return;
-    }
-    const data = raw ? normalize(raw) : DEMO_ORGANIZER;
-    setIsDemo(!raw);
-    setUser(data);
-    setF(data);
-  }, []);
+useEffect(() => {
+  if (!me) return;
+  if (me.role === "CUSTOMER") {
+    setWrongRole(true); // halaman ini khusus organizer
+    return;
+  }
+  const data = normalize(me);
+  setIsDemo(false);
+  setUser(data);
+  setF(data);
+}, [me]);
 
   /* ═══════════ BAGIAN 7: HANDLER (aksi saat tombol ditekan) ═══════════ */
 
@@ -625,7 +631,16 @@ export default function OrganizerProfilePage() {
       </div>
     );
   }
-
+if (isError) {
+  return (
+    <div className="mx-auto max-w-lg p-8 text-center">
+      <p className="text-gray-700">Gagal memuat profil. Pastikan kamu sudah login.</p>
+      <Link href="/login" className="mt-3 inline-block text-indigo-600 hover:underline">
+        Ke halaman login
+      </Link>
+    </div>
+  );
+}
   // Skeleton loading
   if (!user) {
     return (
@@ -660,7 +675,7 @@ export default function OrganizerProfilePage() {
           <p className="mt-1 text-sm text-gray-500">
             {editing
               ? "Ubah data yang diperlukan, lalu klik Update Profile."
-              : "Data profil bersifat tetap."}
+              : ""}
           </p>
         </div>
         {tab === "info" && !editing && (

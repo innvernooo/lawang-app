@@ -8,7 +8,7 @@ type Period = "day" | "month" | "year";
 
 import Link from "next/link";
 // Alamat halaman Buat Event milik rekanmu. Samakan dengan nama foldernya.
-const CREATE_EVENT_URL = "/organizer/dashboard/createEvent";
+const CREATE_EVENT_URL = "/organizer/dashboard/create-event";
 
 const events = [
   { id: "evt-001", name: "Jakarta Music Fest 2026", location: "Jakarta", date: "25 Okt 2026", price: 350000, seats: 500, sold: 420, buyers: 10 },
@@ -101,7 +101,7 @@ function BarChart({ rows, wide }: { rows: Row[]; wide?: boolean }) {
   const max = Math.max(...rows.map((r) => r.revenue));
   return (
     <div className="overflow-x-auto pb-2">
-      <div className={wide ? "min-w-[640px]" : "min-w-[300px]"}>
+      <div className={wide ? "min-w-160" : "min-w-75"}>
         <div className="flex h-56 items-end gap-1 border-b border-gray-200 sm:gap-2">
           {rows.map((r) => (
             <div key={r.full} className="flex h-full flex-1 flex-col justify-end">
@@ -555,7 +555,7 @@ function Statistik() {
   );
 }
 
-// ===== 6. Tab TRANSAKSI (dikerjakan di akhir bersama rekan) =====
+// ===== 6. Tab TRANSAKSI  =====
 function Transaksi() {
   return (
     <div className="space-y-6">

@@ -616,8 +616,8 @@ export default function CustomerProfilePage() {
           </div>
           <p className="mt-1 text-sm text-gray-500">
             {editing
-              ? "Ubah data yang diperlukan, lalu klik Update Profile di bagian bawah."
-              : "Data profil bersifat tetap. Klik Update Profile untuk mengubahnya."}
+              ? ""
+              : "Klik Update Profile untuk mengubahnya."}
           </p>
         </div>
         {tab === "info" && !editing && (
