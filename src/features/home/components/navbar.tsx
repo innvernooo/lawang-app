@@ -2,14 +2,14 @@
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
+import { CgProfile } from 'react-icons/cg';
+import { LuMessageCircleQuestion } from 'react-icons/lu';
 import { FaSearch } from 'react-icons/fa';
 import { categories } from '@/utils/categories';
-import { useRouter } from 'next/navigation';
 import { capitalize } from '@/utils/capitalize';
 
 export default function Navbar() {
-  const { id, username, imageUrl, clearAuth } = useAuthStore();
-  const router = useRouter();
+  const { id, name, role, imageUrl, clearAuth } = useAuthStore();
 
   return (
     <>
@@ -23,73 +23,117 @@ export default function Navbar() {
             className="md:w-33 lg:w-30"
           />
         </a>
-        <div className="flex gap-2">
-          <ul className="menu menu-horizontal bg-white rounded-box">
-            {/* <li>
-              <details>
-                <summary>Categories</summary>
-                <ul className="p-2 bg-brand-100 w-40 z-1">
-                  {categories.map((c, i) => (
-                    <li key={i}>
-                      <button
-                        onClick={() => {
-                          router.push(`/event?category=${c.cat}&page=1`);
-                        }}
-                      >
-                        {capitalize(c.cat)}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </li> */}
-            <li>
-              <a href="/event">Cari Event</a>
-            </li>
-          </ul>
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-10 rounded-full">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 font-semibold text-gray-600">
-                  {username ? username[0].toUpperCase() : '?'}
-                </div>
-              </div>
-            </div>
-            <ul
-              tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-brand-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
+        {id ? (
+          <div className={role === 'CUSTOMER' ? 'flex' : 'hidden'}>
+            <ul className="menu menu-horizontal bg-white rounded-box">
               <li>
-                {id ? (
-                  <a
-                    href={`/profile/customer/${id}`}
-                    className="justify-between"
-                  >
-                    Profile
-                  </a>
-                ) : (
-                  <a href={`/login`} className="justify-between">
-                    Login
-                  </a>
-                )}
-              </li>
-              <li>
-                <a onClick={clearAuth} href="/">
-                  My Transaction
-                </a>
-              </li>
-              <li>
-                <a onClick={clearAuth} href="/">
-                  Logout
+                <a href="/event" className="flex items-center text-blue-950 font-semibold hover:text-yellow-500">
+                  <FaSearch />
+                  <p>Cari Event</p>
                 </a>
               </li>
             </ul>
+            <div className="dropdown dropdown-end lg:mr-5">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn m-1 rounded-full text-white hover:text-yellow-500 bg-blue-950"
+              >
+                <CgProfile />
+                <h1>Akun</h1>
+              </div>
+              <ul
+                tabIndex={-1}
+                className="dropdown-content menu bg-white rounded-box w-50 p-2"
+              >
+                <li>
+                  <a
+                    href={`/profile/customer/${id}`}
+                    className="flex items-center"
+                  >
+                    <div className="avatar">
+                      <div className="w-10 rounded-full">
+                        <img alt={name} src="/pp.jpg" />
+                      </div>
+                    </div>
+                    <div>
+                      <h2 className="line-clamp-1">{name}</h2>
+                      <label className="label text-xs">Lihat profil</label>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/transaction/me"
+                    className="mt-2 btn w-full bg-blue-200 text-blue-700"
+                  >
+                    Transaksi Saya
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/review"
+                    className="my-2 btn w-full bg-blue-200 text-blue-700"
+                  >
+                    Review Event
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/transaction/me"
+                    className="btn btn-error w-full text-white"
+                  >
+                    Keluar
+                  </a>
+                </li>
+                <li>
+                  <div className="mt-2 flex gap-2 items-center text-base">
+                    <LuMessageCircleQuestion />
+                    <h2>Pusat Bantuan</h2>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="dropdown dropdown-end lg:mr-5">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn m-1 rounded-full text-white bg-blue-950"
+            >
+              <CgProfile />
+              <h1>Akun</h1>
+            </div>
+            <ul
+              tabIndex={-1}
+              className="dropdown-content menu bg-white rounded-box w-40 md:w-50 p-2"
+            >
+              <li>
+                <a
+                  href="/register"
+                  className="mt-3 btn w-full bg-blue-200 text-black"
+                >
+                  Daftar
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/login"
+                  className="my-3 btn w-full bg-blue-700 text-white"
+                >
+                  Masuk
+                </a>
+              </li>
+              <li>
+                <div className="flex gap-2 items-center text-base">
+                  <LuMessageCircleQuestion />
+                  <h2>Pusat Bantuan</h2>
+                </div>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </>
   );

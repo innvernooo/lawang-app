@@ -16,6 +16,7 @@ import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { useRouter } from 'next/navigation';
 import PopoverFailed from '@/features/general/components/popoverFailed';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { isAxiosError } from 'axios';
 
 // Class TailwindCSS
 const inputClass =
@@ -25,6 +26,7 @@ const labelClass = 'mb-1 block text-sm font-medium text-gray-700';
 export default function LoginPage() {
   const failedRef = useRef<HTMLDialogElement>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
@@ -46,13 +48,19 @@ export default function LoginPage() {
       const id = res?.data?.id;
       const email = res?.data?.email;
       const role = res?.data?.role;
-      const username = res?.data?.username;
+      const name = res?.data?.name;
       const imageUrl = res?.data?.profilePictureUrl;
-      setAuth(id, email, username, role, imageUrl);
+      setAuth(id, email, name, role, imageUrl);
       console.log(setAuth);
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },
-    onError: () => failedRef?.current?.showModal(),
+    onError: (err) => {
+      setErrorMessage(
+        (isAxiosError(err) && err.response?.data?.message) ||
+          'Terjadi Kesalahan, silahkan coba lagi',
+      );
+      failedRef?.current?.showModal();
+    },
   });
 
   return (
@@ -60,7 +68,7 @@ export default function LoginPage() {
       <PopoverFailed
         ref={failedRef}
         title="Login Gagal"
-        message="Invalid email/username or password"
+        message={errorMessage}
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">
         <div className="w-full max-w-md rounded-xl border border-gray-100 bg-white p-5 shadow-md sm:p-8 md:max-w-lg">

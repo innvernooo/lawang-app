@@ -14,6 +14,8 @@ import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { CreateEventFormData } from '@/features/organizer/createEvent/createEventFormData';
 
 const sansita = Sansita({
   weight: '700',
@@ -31,11 +33,11 @@ export default function CreateEventPage() {
     resolver: zodResolver(createEventSchema),
   });
 
-  const profilePicture = useWatch({ control, name: 'profilePicture' });
+  const router = useRouter();
+  const coverPicture = useWatch({ control, name: 'imageUrl' });
   const previewPicture = useMemo(
-    () =>
-      profilePicture?.length ? URL.createObjectURL(profilePicture[0]) : null,
-    [profilePicture],
+    () => (coverPicture?.length ? URL.createObjectURL(coverPicture[0]) : null),
+    [coverPicture],
   );
 
   useEffect(() => {
@@ -45,13 +47,10 @@ export default function CreateEventPage() {
   });
 
   const handleCreateEvent = useMutation({
-    mutationFn: async (data: CreateEventOutput) => {
-      const res = await axiosInstance.post('/events/create/me', data);
-
-      return res?.data;
-    },
+    mutationFn: CreateEventFormData,
     onSuccess: () => {
       reset();
+      router.push('/organizer/dashboard');
     },
     onError: () => {},
   });
@@ -59,7 +58,7 @@ export default function CreateEventPage() {
   return (
     <>
       <div className="flex justify-center items-center">
-        <div className="bg-brand-100 h-fit w-88 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
+        <div className="bg-brand-100 h-fit w-88 my-5 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
           <div className="flex justify-center">
             <Image
               src={'/lawang.svg'}
@@ -69,11 +68,11 @@ export default function CreateEventPage() {
             />
           </div>
           <h1
-            className={`flex mt-5 justify-center text-2xl text-black font-semibold ${sansita.className}`}
+            className={`flex mt-5 justify-center text-lg md:text-2xl text-black font-semibold ${sansita.className}`}
           >
             PROMOTE YOUR EVENT ON LAWANG
           </h1>
-          <p className="flex mt-1 justify-center text-black italic text-lg">
+          <p className="flex mt-1 justify-center text-black italic text-sm md:text-lg">
             Fill the form below to start promoting
           </p>
           <form
@@ -89,19 +88,22 @@ export default function CreateEventPage() {
                   <img
                     src={previewPicture}
                     alt="Foto Profil"
-                    className="h-full w-full object-cover"
+                    className="aspect-2/1 h-auto w-full object-cover"
                   />
                 ) : (
                   '?'
                 )}
               </div>
+              <label className="lebel">
+                Disarankan berukuran 1200 x 600 pixel
+              </label>
               <label className="cursor-pointer w-30 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-blue-400">
                 Pilih foto Event
                 <input
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp"
                   className="sr-only"
-                  {...register('profilePicture')}
+                  {...register('imageUrl')}
                 />
               </label>
             </fieldset>
@@ -140,9 +142,9 @@ export default function CreateEventPage() {
                 {...register('category')}
               >
                 <option disabled={true}>Pick one category</option>
-                {categories.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
+                {categories.map(({ cat }) => (
+                  <option key={cat} value={cat}>
+                    {cat.replace('_', ' ')}
                   </option>
                 ))}
               </select>
@@ -241,7 +243,11 @@ export default function CreateEventPage() {
                 Available seats will follow the total seats input
               </p>
             </fieldset>
-            <button className="mt-8 w-full btn btn-success">
+            <button
+              type="submit"
+              disabled={handleCreateEvent.isPending}
+              className="mt-8 w-full btn btn-success"
+            >
               Create Event
             </button>
           </form>

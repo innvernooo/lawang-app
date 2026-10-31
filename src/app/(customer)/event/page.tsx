@@ -56,25 +56,60 @@ function CategoryPageContent() {
   return (
     <>
       <div>
+        <h1 className="flex justify-center text-xl font-semibold">
+          Pilih kategori yang kamu banget
+        </h1>
         <CategoryButton />
-        <div className="mb-2 flex gap-2 items-center">
-          <FaSearch />
-          <h1 className='font-semibold'>Cari event seru favoritmu</h1>
+        <div className="md:flex justify-between mr-5">
+          <label>
+            <div className="mb-2 flex gap-2 items-center">
+              <FaSearch />
+              <h1 className="font-semibold">Cari event seru favoritmu</h1>
+            </div>
+            <input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Cari event, kota, atau venue"
+              className="input md:w-100 max-w-md bg-white border-black text-black"
+            />
+          </label>
+          <div className="mt-3 md:mt-0 join flex items-end">
+            <button
+              onClick={() => goToPage(page - 1)}
+              disabled={page <= 1}
+              className="bg-blue-200 text-blue-950 join-item btn"
+            >
+              «
+            </button>
+            <button className="bg-blue-200 text-blue-950 join-item btn">
+              {page >= totalPage ? 'Maximum' : `Page ${page}`}
+            </button>
+            <button
+              onClick={() => goToPage(page + 1)}
+              disabled={page >= totalPage}
+              className="bg-blue-200 text-blue-950 join-item btn"
+            >
+              »
+            </button>
+          </div>
         </div>
-        <label>
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Cari event, kota, atau venue"
-            className="input w-full max-w-md bg-white border-black text-black"
-          />
-        </label>
         {isLoading ? (
           <IsLoading />
         ) : event.length === 0 ? (
-          <p className="mt-10 text-center text-xl text-gray-500">
-            Tidak ada event ditemukan
-          </p>
+          <div>
+            <div className="flex justify-center">
+              <Image
+                src={'/lost.svg'}
+                alt={'Lawang logo'}
+                width={200}
+                height={100}
+              />
+            </div>
+            <h1 className="flex justify-center font-semibold text-xl">
+             Yah, tidak ketemu nih
+            </h1>
+            <p className='flex justify-center text-gray-500'>Coba kata kunci lain atau pilih kategori yang tersedia</p>
+          </div>
         ) : (
           <>
             <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -101,7 +136,9 @@ function CategoryPageContent() {
                   </p>
                   <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
                     <MdOutlineCategory />
-                    <span className="line-clamp-1">{e.category}</span>
+                    <span className="line-clamp-1">
+                      {e.category.replace('_', ' ')}
+                    </span>
                   </p>
                   <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
                     <FaLocationDot />
@@ -109,9 +146,12 @@ function CategoryPageContent() {
                       {e.city} | {e.venue}
                     </span>
                   </p>
-                  <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mb-4">
+                  <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
                     <IoIosTime />
                     <span>{tanggal.format(new Date(e.startDate))}</span>
+                  </p>
+                  <p className="line-clamp-1">
+                    _________________________________________________________________________________________________________________________________
                   </p>
                   <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                     <IoMdPricetags />
@@ -119,25 +159,6 @@ function CategoryPageContent() {
                   </div>
                 </div>
               ))}
-            </div>
-            <div className="mt-7 mr-5 join flex justify-end">
-              <button
-                onClick={() => goToPage(page - 1)}
-                disabled={page <= 1}
-                className="bg-brand-100 text-black join-item btn"
-              >
-                «
-              </button>
-              <button className="bg-brand-100 text-black join-item btn">
-                {page >= totalPage ? 'Maximum' : `Page ${page}`}
-              </button>
-              <button
-                onClick={() => goToPage(page + 1)}
-                disabled={page >= totalPage}
-                className="bg-brand-100 text-black join-item btn"
-              >
-                »
-              </button>
             </div>
           </>
         )}

@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { OrganizerRegisterOutput } from '../validation/organizerSchema';
 
-export async function RegisterOrganizer(data: OrganizerRegisterOutput) {
+export async function OrganizerFormData(data: OrganizerRegisterOutput) {
   const formData = new FormData();
   formData.append('email', data.email);
   formData.append('username', data.username);

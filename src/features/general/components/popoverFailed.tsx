@@ -15,11 +15,11 @@ export default function PopoverFailed({
       <div className="modal-box bg-white">
         <div className='flex justify-center'>
           <Image
-            src={'/robot-error.svg'}
+            src={'/lost.svg'}
             alt="robot-error"
             width={100}
             height={100}
-            className="w-70 md:w-90"
+            className="w-70"
           />
         </div>
         <h3 className="flex justify-center text-lg md:text-2xl font-bold text-red-600">
