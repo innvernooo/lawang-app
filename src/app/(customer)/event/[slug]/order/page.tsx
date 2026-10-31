@@ -22,6 +22,9 @@ import { usePostCreateOrder } from '@/hook/transaction/usePostCreateOrder';
 import TicketOption from '@/features/order/components/ticketOption';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
+import { IoLocationOutline } from 'react-icons/io5';
+import { TbClockHour3 } from 'react-icons/tb';
+import { MdDateRange } from 'react-icons/md';
 
 export default function OrderPage() {
   return (
@@ -92,13 +95,22 @@ export default function OrderPage() {
               <h1 className="text-xl mb-2 font-semibold md:text-2xl">
                 {event.name}
               </h1>
-              <h1>
-                {event.city} | {event.venue}
-              </h1>
-              <h1 className="my-1">
-                {tanggal.format(new Date(event.startDate))}
-              </h1>
-              <h1>{jam.format(new Date(event.startDate))} WIB</h1>
+              <div className="flex gap-2 items-center">
+                <IoLocationOutline />
+                <h1>
+                  {event.city} | {event.venue}
+                </h1>
+              </div>
+              <div className="flex gap-2 items-center">
+                <MdDateRange />
+                <h1 className="my-1">
+                  {tanggal.format(new Date(event.startDate))}
+                </h1>
+              </div>
+              <div className="flex gap-2 items-center">
+                <TbClockHour3 />
+                <h1>{jam.format(new Date(event.startDate))} WIB</h1>
+              </div>
             </div>
             <Image
               src={event.imageUrl}
@@ -166,7 +178,7 @@ export default function OrderPage() {
                     </span>
                   </fieldset>
                 </div>
-                <div className='grid grid-cols-2 gap-3'>
+                <div className="grid grid-cols-2 gap-3">
                   <fieldset className="fieldset">
                     <legend className="fieldset-legend text-black text-base">
                       Punya kupon diskon?

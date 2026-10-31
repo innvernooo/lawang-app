@@ -15,6 +15,7 @@ import IsLoading from '@/features/general/components/isLoadingImage';
 import PopoverSuccess from '@/features/general/components/popoverSuccess';
 import { useTransDetail } from '@/hook/transaction/useGetTransDetail';
 import { usePostPaymentProof } from '@/hook/transaction/usePostPaymentProof';
+import ErrorImage from '@/features/general/components/errorImage';
 
 const sansita = Sansita({
   weight: '700',
@@ -50,7 +51,7 @@ export default function PaymentPage() {
     const { data: transaction, isLoading, isError } = useTransDetail(transId);
 
     if (isLoading) return <IsLoading />;
-    if (isError || !transaction) return <p>Transaksi tidak ditemnukan...</p>;
+    if (isError || !transaction) return <p>Transaksi tidak ditemukan...</p>;
     console.log(transaction);
     return (
       <>
@@ -60,131 +61,141 @@ export default function PaymentPage() {
           message="Harap menunggu konfirmasi dari admin Event, terima kasih"
         />
         <div className="flex items-center justify-center w-full min-h-screen">
-          <form
-            onSubmit={handleSubmit((data) =>
-              handlePayment.mutate(
-                { transId, file: data.paymentProof?.[0] },
-                {
-                  onSuccess: () => {
-                    reset();
-                    router.push('/');
+          {transaction.status !== 'WAITING_PAYMENT' ? (
+            <>
+              <ErrorImage
+                message="Transaksi telah EXPIRED atau di-CANCEL"
+                next="/"
+                hook="Kembali ke halaman utama"
+              />
+            </>
+          ) : (
+            <form
+              onSubmit={handleSubmit((data) =>
+                handlePayment.mutate(
+                  { transId, file: data.paymentProof?.[0] },
+                  {
+                    onSuccess: () => {
+                      reset();
+                      router.push('/');
+                    },
                   },
-                },
-              ),
-            )}
-            className="p-4 w-full lg:w-150 md:-mt-50 lg:mt-0 h-fit bg-brand-100 glass shadow-xl rounded-xl"
-          >
-            <div className="flex justify-center">
-              <Image
-                src={'/lawang.svg'}
-                alt={'Lawang logo'}
-                width={130}
-                height={100}
-                className='lg:w-40'
-              />
-            </div>
-            <h1
-              className={`flex mt-5 justify-center text-2xl lg:text-3xl font-semibold ${sansita.className}`}
+                ),
+              )}
+              className="p-4 w-full lg:w-150 md:-mt-50 lg:mt-0 h-fit bg-brand-100 glass shadow-xl rounded-xl"
             >
-              PAYMENT GATEAWAY
-            </h1>
-            <p className="flex mt-1 justify-center italic text-xs lg:text-base">
-              Segera lakukan pembayaran untuk tiket yang anda pesan
-            </p>
-            <div className="mt-7">
-              <h1 className="text-base">Total harga tiket</h1>
-              <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                {rupiah.format(transaction.subtotal)}
-              </h2>
-            </div>
-            <div className="mt-5  flex justify-between">
-              <div>
-                <h1 className="text-base">Kode kupon</h1>
-                <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                  {transaction.coupon?.code ?? 'Tidak ada'}
-                </h2>
+              <div className="flex justify-center">
+                <Image
+                  src={'/lawang.svg'}
+                  alt={'Lawang logo'}
+                  width={130}
+                  height={100}
+                  className="lg:w-40"
+                />
               </div>
-              <div>
-                <h1 className="text-base">Nominal kupon</h1>
-                <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                  {transaction.couponDiscount ?? 0}
-                </h2>
-              </div>
-            </div>
-            <div className="mt-5  flex justify-between">
-              <div>
-                <h1 className="text-base">Kode voucher</h1>
-                <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                  {transaction.voucher?.code ?? 'Tidak ada'}
-                </h2>
-              </div>
-              <div>
-                <h1 className="text-base">Nominal voucher</h1>
-                <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                  {transaction.voucherDiscount ?? 0}
-                </h2>
-              </div>
-            </div>
-            <div className="mt-5">
-              <h1 className="text-base">Poin digunakan</h1>
-              <h2 className="mt-1 text-lg lg:text-xl font-medium">
-                {transaction.pointsUsed ?? 0}
-              </h2>
-            </div>
-            <p className="line-clamp-1">
-              _____________________________________________________________________________________________________________________________________________________
-            </p>
-            <div className="mt-4 ">
-              <h1 className="text-base">Nominal yang harus dibayar</h1>
-              <h2 className="mt-1 text-xl lg:text-2xl text-blue-700 font-semibold">
-                {rupiah.format(transaction.totalPrice)}
-              </h2>
-            </div>
-            <fieldset className="fieldset  mt-5">
-              <legend className="fieldset-legend text-black text-base">
-                Metode Pembayaran
-              </legend>
-              <select
-                value={method}
-                disabled={transaction.event.pricingType === 'FREE'}
-                onChange={(e) => setMethod(e.target.value)}
-                className="select select-neutral w-full bg-white"
+              <h1
+                className={`flex mt-5 justify-center text-2xl lg:text-3xl font-semibold ${sansita.className}`}
               >
-                <option value="" disabled className="text-black">
-                  Pick a payment method
-                </option>
-                {paymentMethods.map((m, index) => (
-                  <option key={index} value={m} className="text-black">
-                    {m}
+                PAYMENT GATEAWAY
+              </h1>
+              <p className="flex mt-1 justify-center italic text-xs lg:text-base">
+                Segera lakukan pembayaran untuk tiket yang anda pesan
+              </p>
+              <div className="mt-7">
+                <h1 className="text-base">Total harga tiket</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                  {rupiah.format(transaction.subtotal)}
+                </h2>
+              </div>
+              <div className="mt-5  flex justify-between">
+                <div>
+                  <h1 className="text-base">Kode kupon</h1>
+                  <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                    {transaction.coupon?.code ?? 'Tidak ada'}
+                  </h2>
+                </div>
+                <div>
+                  <h1 className="text-base">Nominal kupon</h1>
+                  <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                    {transaction.couponDiscount ?? 0}
+                  </h2>
+                </div>
+              </div>
+              <div className="mt-5  flex justify-between">
+                <div>
+                  <h1 className="text-base">Kode voucher</h1>
+                  <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                    {transaction.voucher?.code ?? 'Tidak ada'}
+                  </h2>
+                </div>
+                <div>
+                  <h1 className="text-base">Nominal voucher</h1>
+                  <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                    {transaction.voucherDiscount ?? 0}
+                  </h2>
+                </div>
+              </div>
+              <div className="mt-5">
+                <h1 className="text-base">Poin digunakan</h1>
+                <h2 className="mt-1 text-lg lg:text-xl font-medium">
+                  {transaction.pointsUsed ?? 0}
+                </h2>
+              </div>
+              <p className="line-clamp-1">
+                _____________________________________________________________________________________________________________________________________________________
+              </p>
+              <div className="mt-4 ">
+                <h1 className="text-base">Nominal yang harus dibayar</h1>
+                <h2 className="mt-1 text-xl lg:text-2xl text-blue-700 font-semibold">
+                  {rupiah.format(transaction.totalPrice)}
+                </h2>
+              </div>
+              <fieldset className="fieldset  mt-5">
+                <legend className="fieldset-legend text-black text-base">
+                  Metode Pembayaran
+                </legend>
+                <select
+                  value={method}
+                  disabled={transaction.event.pricingType === 'FREE'}
+                  onChange={(e) => setMethod(e.target.value)}
+                  className="select select-neutral w-full bg-white"
+                >
+                  <option value="" disabled className="text-black">
+                    Pick a payment method
                   </option>
-                ))}
-              </select>
-            </fieldset>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-base">
-                Upload bukti pembayaran
-              </legend>
-              <input
-                type="file"
-                disabled={transaction.event.pricingType === 'FREE'}
-                className="file-input w-full input-neutral bg-white"
-                {...register('paymentProof')}
-              />
-              <label className="label text-red-500">
-                {errors?.paymentProof?.message}
-              </label>
-            </fieldset>
-            <button
-              type="submit"
-              disabled={
-                transaction.event.pricingType === 'PAID' &&
-                (!method || !proof?.length || handlePayment.isPending)
-              }
-              className="btn btn-success mt-10 w-full h-12 text-lg"
-            >
-              Selesai
-            </button>
-          </form>
+                  {paymentMethods.map((m, index) => (
+                    <option key={index} value={m} className="text-black">
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black text-base">
+                  Upload bukti pembayaran
+                </legend>
+                <input
+                  type="file"
+                  disabled={transaction.event.pricingType === 'FREE'}
+                  className="file-input w-full input-neutral bg-white"
+                  {...register('paymentProof')}
+                />
+                <label className="label text-red-500">
+                  {errors?.paymentProof?.message}
+                </label>
+              </fieldset>
+              <button
+                type="submit"
+                disabled={
+                  transaction.event.pricingType === 'PAID' &&
+                  (!method || !proof?.length || handlePayment.isPending)
+                }
+                className="btn btn-success mt-10 w-full h-12 text-lg"
+              >
+                Selesai
+              </button>
+            </form>
+          )}
         </div>
       </>
     );

@@ -41,10 +41,10 @@ export default async function TicketBox({ slug }: { slug: string }) {
               key={index}
               className="mt-5 grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 md:grid-cols-[1fr_1fr_auto] md:gap-4"
             >
-              <div className="order-3 text-lg font-semibold md:order-none md:text-xl md:font-normal">
+              <div className="order-3 text-lg font-semibold md:order-0 md:text-xl md:font-normal">
                 <h1>{rupiah.format(item?.price)}</h1>
               </div>
-              <div className="order-1 min-w-0 md:order-none lg:min-w-auto">
+              <div className="order-1 min-w-0 md:order-0 lg:min-w-auto">
                 <h2 className="text-lg font-medium md:text-xl">{item?.name}</h2>
                 <label className="label whitespace-normal lg:whitespace-nowrap">
                   {item?.endSale &&
@@ -52,7 +52,7 @@ export default async function TicketBox({ slug }: { slug: string }) {
                 </label>
               </div>
               <p
-                className={`order-2 self-start md:order-none md:self-auto px-3 py-0.5 rounded-full glass text-white ${
+                className={`order-2 self-start md:order-0 md:self-auto px-3 py-0.5 rounded-full glass text-white ${
                   item?.available <= 0 ? 'bg-red-500' : 'bg-green-500'
                 }`}
               >

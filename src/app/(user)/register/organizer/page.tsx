@@ -18,7 +18,7 @@ import { sortedCities } from '@/utils/cities';
 import { sortedProvinces } from '@/utils/provinces';
 import { sortedBanks } from '@/utils/banks';
 import { stepFields } from '@/features/register/organizerRegister/validationStep';
-import { RegisterOrganizer } from '@/features/register/organizerRegister/organizerFormData';
+import { OrganizerFormData } from '@/features/register/organizerRegister/organizerFormData';
 
 // Class TailwindCSS
 const inputClass =
@@ -105,7 +105,7 @@ export default function OrganizerRegister() {
   const stepClass = (n: number) => (step === n ? 'space-y-5' : 'hidden');
 
   const handleOrganizerRegister = useMutation({
-    mutationFn: RegisterOrganizer,
+    mutationFn: OrganizerFormData,
     onSuccess: () => {
       successRef?.current?.showModal();
       reset();

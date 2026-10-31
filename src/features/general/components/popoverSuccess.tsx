@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { Ref } from 'react';
 
 export default function PopoverSuccess({
@@ -16,11 +15,11 @@ export default function PopoverSuccess({
       <div className="modal-box bg-white">
         <div className="flex justify-center">
           <Image
-            src={'/robot-successful.svg'}
+            src={'/success.svg'}
             alt="robot-successful"
             width={100}
             height={100}
-            className="w-70 md:w-90"
+            className="w-70"
           />
         </div>
         <h3 className="flex justify-center text-lg md:text-2xl font-bold text-green-600">{title}</h3>

@@ -3,13 +3,13 @@ import { create } from 'zustand';
 interface UseAuthStore {
   id: string;
   email: string;
-  username: string;
+  name: string;
   role: string;
   imageUrl: string;
   setAuth: (
     id: string,
     email: string,
-    username: string,
+    name: string,
     role: string,
     imageUrl: string,
   ) => void;
@@ -19,14 +19,14 @@ interface UseAuthStore {
 const initialState = {
   id: '',
   email: '',
-  username: '',
+  name: '',
   role: '',
   imageUrl: '',
 };
 
 export const useAuthStore = create<UseAuthStore>((set) => ({
   ...initialState,
-  setAuth: (id, email, username, role, imageUrl) =>
-    set(() => ({ id, email, username, role, imageUrl })),
+  setAuth: (id, email, name, role, imageUrl) =>
+    set(() => ({ id, email, name, role, imageUrl })),
   clearAuth: () => set(initialState),
 }));

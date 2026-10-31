@@ -6,8 +6,8 @@ import { jam } from '@/utils/localTime';
 import Image from 'next/image';
 import Link from 'next/link';
 import RevealOnScroll from './revealOnScroll';
-import { FaLocationDot } from 'react-icons/fa6';
-import { IoIosTime } from 'react-icons/io';
+import { IoLocationOutline } from "react-icons/io5";
+import { TbClockHour3 } from "react-icons/tb";
 import { MdDateRange, MdOutlineCategory } from 'react-icons/md';
 
 export default async function EventBanner({ slug }: { slug: string }) {
@@ -26,7 +26,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
             {event?.name}
           </h1>
           <div className="mt-3 flex text-base gap-2 items-center md:text-xl">
-            <FaLocationDot className="shrink-0" />
+            <IoLocationOutline className="shrink-0" />
             <h2>
               {event?.city} | {event?.venue}
             </h2>
@@ -36,7 +36,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
             <h2>{tanggal.format(new Date(event?.startDate))}</h2>
           </div>
           <div className="flex text-base gap-2 items-center md:text-xl">
-            <IoIosTime className="shrink-0" />
+            <TbClockHour3 className="shrink-0" />
             <h2>{jam.format(new Date(event?.startDate))} WIB</h2>
           </div>
           <div className="my-3 flex text-base gap-2 items-center md:text-xl">
@@ -77,7 +77,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
         >
           <p>{event.name}</p>
           <div className="flex gap-1 items-center">
-            <FaLocationDot />
+            <IoLocationOutline />
             <p>
               {event.city} | {event.venue}
             </p>
