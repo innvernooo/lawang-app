@@ -13,8 +13,8 @@ import {
   CustomerRegisterOutput,
 } from '@/features/register/validation/customerSchema';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import PopoverRegisterSuccess from '@/features/general/components/popoverRegisterSuccess';
 import { CustomerFormData } from '@/features/register/customerRegister/customerFormData';
+import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
 
 // Class TailwindCSS
 const inputClass =
@@ -72,9 +72,11 @@ export default function CustomerRegister() {
         title="Akun Gagal Terdaftar"
         message={failedMessage}
       />
-      <PopoverRegisterSuccess
+      <PopoverSuccessLink
         ref={successRef}
         title="Akun Berhasil Terdaftar"
+        next="/login"
+        hook="Login"
         message="Klik tombol berikut untuk lanjut ke halaman login"
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">

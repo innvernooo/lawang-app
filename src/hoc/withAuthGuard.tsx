@@ -1,5 +1,6 @@
 'use client';
 
+import HocWarning from '@/features/general/components/hocWarning';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ComponentType } from 'react';
 
@@ -12,7 +13,7 @@ export default function WithAuthGuard<P extends object>(
     const isAuthorized = allowedRole.includes(role);
 
     if (!isAuthorized) {
-      return <h1>Access forbidden</h1>;
+      return <HocWarning />;
     }
 
     return <WrappedComponent {...props} />;

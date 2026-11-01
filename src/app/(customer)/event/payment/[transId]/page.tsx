@@ -12,10 +12,13 @@ import {
   paymentSchema,
 } from '@/features/payment/validation/paymentSchema';
 import IsLoading from '@/features/general/components/isLoadingImage';
-import PopoverSuccess from '@/features/general/components/popoverSuccess';
 import { useTransDetail } from '@/hook/transaction/useGetTransDetail';
-import { usePostPaymentProof } from '@/hook/transaction/usePostPaymentProof';
 import ErrorImage from '@/features/general/components/errorImage';
+import AuthGuard from '@/features/general/components/authGuard';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { PostCancelTrans } from '@/api/transaction/postCancelTrans';
+import { PostPaymentProof } from '@/api/transaction/postPaymentProof';
+import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
 
 const sansita = Sansita({
   weight: '700',
@@ -24,9 +27,11 @@ const sansita = Sansita({
 
 export default function PaymentPage() {
   return (
-    <Suspense fallback={''}>
-      <PaymentPageContent />
-    </Suspense>
+    <AuthGuard allowedRole={['CUSTOMER']}>
+      <Suspense fallback={''}>
+        <PaymentPageContent />
+      </Suspense>
+    </AuthGuard>
   );
 
   function PaymentPageContent() {
@@ -34,6 +39,8 @@ export default function PaymentPage() {
     const [method, setMethod] = useState('');
     const router = useRouter();
     const successRef = useRef<HTMLDialogElement>(null);
+    const queryClient = useQueryClient();
+
     const {
       register,
       handleSubmit,
@@ -44,45 +51,102 @@ export default function PaymentPage() {
       resolver: zodResolver(paymentSchema),
     });
 
-    const handlePayment = usePostPaymentProof();
+    const handlePayment = useMutation({
+      mutationFn: (data: PaymentOutput) =>
+        PostPaymentProof({ transId, file: data.paymentProof?.[0] }),
+      onSuccess: () => {
+        reset();
+        successRef?.current?.showModal();
+        queryClient.invalidateQueries({ queryKey: ['transaction', transId] });
+      },
+    });
+
+    const handleCancelPayment = useMutation({
+      mutationFn: () => PostCancelTrans({ transId }),
+      onSuccess: () => {
+        successRef?.current?.showModal();
+        queryClient.invalidateQueries({ queryKey: ['transaction', transId] });
+      },
+    });
 
     const proof = watch('paymentProof');
 
     const { data: transaction, isLoading, isError } = useTransDetail(transId);
 
     if (isLoading) return <IsLoading />;
-    if (isError || !transaction) return <p>Transaksi tidak ditemukan...</p>;
-    console.log(transaction);
+    if (isError || !transaction)
+      return (
+        <div className="w-full min-h-screen flex justify-center items-center">
+          <ErrorImage
+            message="Maaf, transaksi tidak ditemukan"
+            next="/"
+            hook="Kembali ke halaman utama"
+          />
+        </div>
+      );
     return (
       <>
-        <PopoverSuccess
+        <PopoverSuccessLink
           ref={successRef}
-          title="Your Payment is Sent Successfully"
-          message="Harap menunggu konfirmasi dari admin Event, terima kasih"
+          title={
+            handlePayment.isSuccess
+              ? 'Your Payment is Sent Successfully'
+              : 'Pembatalan Transaksi Berhasil'
+          }
+          next="/"
+          hook="Kembali halaman utama"
+          message={
+            handlePayment.isSuccess
+              ? 'Harap menunggu konfirmasi dari admin Event, terima kasih'
+              : 'Poin atau kupon telah dikembalikan ke akunmu'
+          }
         />
         <div className="flex items-center justify-center w-full min-h-screen">
-          {transaction.status !== 'WAITING_PAYMENT' ? (
+          {transaction.status === 'CANCELED' ? (
             <>
               <ErrorImage
-                message="Transaksi telah EXPIRED atau di-CANCEL"
+                message="Transaksi telah di-CANCEL"
+                next="/"
+                hook="Kembali ke halaman utama"
+              />
+            </>
+          ) : transaction.status === 'REJECTED' ? (
+            <>
+              <ErrorImage
+                message="Transaksi telah di-REJECT oleh Event Organizer"
+                next="/"
+                hook="Kembali ke halaman utama"
+              />
+            </>
+          ) : transaction.status === 'WAITING_CONFIRMATION' ? (
+            <>
+              <ErrorImage
+                message="Transaksi sedang menunggu konfirmasi"
+                next="/"
+                hook="Kembali ke halaman utama"
+              />
+            </>
+          ) : transaction.status === 'DONE' ? (
+            <>
+              <ErrorImage
+                message="Transaksi telah selesai dilakukan"
+                next="/"
+                hook="Kembali ke halaman utama"
+              />
+            </>
+          ) : new Date(transaction.paymentExpiresAt) <= new Date() ||
+            transaction.status === 'EXPIRED' ? (
+            <>
+              <ErrorImage
+                message="Transaksi telah EXPIRED"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
             </>
           ) : (
             <form
-              onSubmit={handleSubmit((data) =>
-                handlePayment.mutate(
-                  { transId, file: data.paymentProof?.[0] },
-                  {
-                    onSuccess: () => {
-                      reset();
-                      router.push('/');
-                    },
-                  },
-                ),
-              )}
-              className="p-4 w-full lg:w-150 md:-mt-50 lg:mt-0 h-fit bg-brand-100 glass shadow-xl rounded-xl"
+              onSubmit={handleSubmit((data) => handlePayment.mutate(data))}
+              className="p-4 w-full lg:w-150 md:-mt-50 lg:mt-0 h-fit bg-brand-400 glass shadow-xl rounded-xl"
             >
               <div className="flex justify-center">
                 <Image
@@ -184,16 +248,25 @@ export default function PaymentPage() {
                   {errors?.paymentProof?.message}
                 </label>
               </fieldset>
-              <button
-                type="submit"
-                disabled={
-                  transaction.event.pricingType === 'PAID' &&
-                  (!method || !proof?.length || handlePayment.isPending)
-                }
-                className="btn btn-success mt-10 w-full h-12 text-lg"
-              >
-                Selesai
-              </button>
+              <div className="flex justify-between mt-10">
+                <button
+                  type="button"
+                  onClick={() => handleCancelPayment.mutate()}
+                  className="btn btn-error lg:text-base"
+                >
+                  Batalkan
+                </button>
+                <button
+                  type="submit"
+                  disabled={
+                    transaction.event.pricingType === 'PAID' &&
+                    (!method || !proof?.length || handlePayment.isPending)
+                  }
+                  className="btn bg-brand-300 lg:text-base"
+                >
+                  Selesai
+                </button>
+              </div>
             </form>
           )}
         </div>

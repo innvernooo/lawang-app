@@ -5,6 +5,7 @@ export function useTransDetail(transId: string) {
   return useQuery({
     queryKey: ['transaction', transId],
     queryFn: () => GetTransDetail(transId),
+    retry: false,
     enabled: !!transId,
   });
 }

@@ -10,12 +10,13 @@ import {
   CreateEventOutput,
   createEventSchema,
 } from '@/features/organizer/validation/createEventSchema';
-import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
-import { useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { CreateEventFormData } from '@/features/organizer/createEvent/createEventFormData';
+import PopoverFailed from '@/features/general/components/popoverFailed';
+import { isAxiosError } from 'axios';
+import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
 
 const sansita = Sansita({
   weight: '700',
@@ -33,7 +34,9 @@ export default function CreateEventPage() {
     resolver: zodResolver(createEventSchema),
   });
 
-  const router = useRouter();
+  const successRef = useRef<HTMLDialogElement>(null);
+  const failedRef = useRef<HTMLDialogElement>(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const coverPicture = useWatch({ control, name: 'imageUrl' });
   const previewPicture = useMemo(
     () => (coverPicture?.length ? URL.createObjectURL(coverPicture[0]) : null),
@@ -50,15 +53,43 @@ export default function CreateEventPage() {
     mutationFn: CreateEventFormData,
     onSuccess: () => {
       reset();
-      router.push('/organizer/dashboard');
+      successRef?.current?.showModal();
     },
-    onError: () => {},
+    onError: (err) => {
+      setErrorMessage(
+        (isAxiosError(err) && err?.response?.data?.message) ||
+          'Terjadi kesalahan, silahkan coba lagi',
+      );
+      failedRef?.current?.showModal();
+    },
   });
 
+  const pricingType = handleCreateEvent.data?.pricingType;
+  const eventId = handleCreateEvent.data?.id;
   return (
     <>
+      <PopoverFailed
+        ref={failedRef}
+        title="Event Gagal Dibuat"
+        message={errorMessage}
+      />
+      <PopoverSuccessLink
+        ref={successRef}
+        title="Event Berhasil Terbuat"
+        next={
+          pricingType === 'PAID'
+            ? `/organizer/dashboard/create-ticket/${eventId}`
+            : '/organizer/dashboard'
+        }
+        message={
+          pricingType === 'PAID'
+            ? 'Silahkan buat tiket untuk eventmu'
+            : 'Event gratismu siap dipromosikan'
+        }
+        hook={pricingType === 'PAID' ? 'Buat tiket' : 'Kembali'}
+      />
       <div className="flex justify-center items-center">
-        <div className="bg-brand-100 h-fit w-88 my-5 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
+        <div className="bg-brand-400 h-fit w-88 my-5 md:w-155 lg:w-170 p-3 rounded-xl shadow-xl">
           <div className="flex justify-center">
             <Image
               src={'/lawang.svg'}
@@ -246,7 +277,7 @@ export default function CreateEventPage() {
             <button
               type="submit"
               disabled={handleCreateEvent.isPending}
-              className="mt-8 w-full btn btn-success"
+              className="mt-8 w-full btn bg-brand-300 text-white"
             >
               Create Event
             </button>

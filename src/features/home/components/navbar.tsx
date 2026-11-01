@@ -5,11 +5,20 @@ import Image from 'next/image';
 import { CgProfile } from 'react-icons/cg';
 import { LuMessageCircleQuestion } from 'react-icons/lu';
 import { FaSearch } from 'react-icons/fa';
-import { categories } from '@/utils/categories';
-import { capitalize } from '@/utils/capitalize';
+import { useMutation } from '@tanstack/react-query';
+import { axiosInstance } from '@/lib/axiosInstance.lib';
 
 export default function Navbar() {
-  const { id, name, role, imageUrl, clearAuth } = useAuthStore();
+  const { id, name, role, clearAuth } = useAuthStore();
+  const handleLogout = useMutation({
+    mutationFn: async () => {
+      const res = await axiosInstance.post('/auth/logout');
+
+      return res?.data;
+    }, onSuccess: () => {
+      clearAuth()
+    }
+  });
 
   return (
     <>
@@ -27,7 +36,10 @@ export default function Navbar() {
           <div className={role === 'CUSTOMER' ? 'flex' : 'hidden'}>
             <ul className="menu menu-horizontal bg-white rounded-box">
               <li>
-                <a href="/event" className="flex items-center text-blue-950 font-semibold hover:text-yellow-500">
+                <a
+                  href="/event"
+                  className="flex items-center text-brand-200 font-semibold hover:text-yellow-500"
+                >
                   <FaSearch />
                   <p>Cari Event</p>
                 </a>
@@ -37,7 +49,7 @@ export default function Navbar() {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn m-1 rounded-full text-white hover:text-yellow-500 bg-blue-950"
+                className="btn m-1 rounded-full text-white hover:text-yellow-500 bg-brand-200"
               >
                 <CgProfile />
                 <h1>Akun</h1>
@@ -53,7 +65,7 @@ export default function Navbar() {
                   >
                     <div className="avatar">
                       <div className="w-10 rounded-full">
-                        <img alt={name} src="/pp.jpg" />
+                        <img alt={name} src="/cus.svg" />
                       </div>
                     </div>
                     <div>
@@ -80,8 +92,8 @@ export default function Navbar() {
                 </li>
                 <li>
                   <a
-                    href="/transaction/me"
                     className="btn btn-error w-full text-white"
+                    onClick={() => handleLogout.mutate()}
                   >
                     Keluar
                   </a>
@@ -100,7 +112,7 @@ export default function Navbar() {
             <div
               tabIndex={0}
               role="button"
-              className="btn m-1 rounded-full text-white bg-blue-950"
+              className="btn m-1 rounded-full text-white bg-brand-200"
             >
               <CgProfile />
               <h1>Akun</h1>

@@ -16,5 +16,5 @@ export async function CreateEventFormData(data: CreateEventOutput) {
   if (data.imageUrl?.[0]) formData.append('profilePicture', data.imageUrl[0]);
   const res = await axiosInstance.post('/events/create/me', formData);
 
-  return res?.data;
+  return res?.data?.data;
 }
