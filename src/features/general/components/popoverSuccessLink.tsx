@@ -2,14 +2,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Ref } from 'react';
 
-export default function PopoverRegisterSuccess({
+export default function PopoverSuccessLink({
   ref,
   title,
+  next,
   message,
+  hook,
 }: {
   ref: Ref<HTMLDialogElement>;
   title: string;
+  next: string;
   message: string;
+  hook: string;
 }) {
   return (
     <dialog ref={ref} className="modal">
@@ -31,15 +35,12 @@ export default function PopoverRegisterSuccess({
         </p>
         <div className="modal-action">
           <form method="dialog">
-            <Link href="/login" className="btn btn-success">
-              Login
+            <Link href={next} className="btn btn-success">
+              {hook}
             </Link>
           </form>
         </div>
       </div>
-      <form method="dialog" className="modal-backdrop">
-        <button>close</button>
-      </form>
     </dialog>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import CategoryButton from '@/features/event/components/categoryButton';
+import AuthGuard from '@/features/general/components/authGuard';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { useGetEventByCategory } from '@/hook/event/useGetEventByCategory';
 import { tanggal } from '@/utils/localDate';
@@ -15,9 +16,11 @@ import { useDebounce } from 'use-debounce';
 
 export default function CategoryPage() {
   return (
-    <Suspense fallback={''}>
-      <CategoryPageContent />
-    </Suspense>
+    <AuthGuard allowedRole={['CUSTOMER']}>
+      <Suspense fallback={''}>
+        <CategoryPageContent />
+      </Suspense>
+    </AuthGuard>
   );
 }
 
@@ -106,9 +109,11 @@ function CategoryPageContent() {
               />
             </div>
             <h1 className="flex justify-center font-semibold text-xl">
-             Yah, tidak ketemu nih
+              Yah, tidak ketemu nih
             </h1>
-            <p className='flex justify-center text-gray-500'>Coba kata kunci lain atau pilih kategori yang tersedia</p>
+            <p className="flex justify-center text-gray-500">
+              Coba kata kunci lain atau pilih kategori yang tersedia
+            </p>
           </div>
         ) : (
           <>
@@ -122,7 +127,7 @@ function CategoryPageContent() {
                   className="group h-fit p-3 text-black cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-500"
                 >
                   <Image
-                    src={e.imageUrl ?? '/download.jpg'}
+                    src={e.imageUrl ?? '/alternative.png'}
                     alt="Event"
                     width={736}
                     height={368}

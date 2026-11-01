@@ -41,7 +41,7 @@ export default function KpopEvents() {
               className="group h-fit p-3 text-black cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-500"
             >
               <Image
-                src={item.imageUrl ?? '/download.jpg'}
+                src={item.imageUrl ?? '/alternative.png'}
                 alt="Event"
                 width={736}
                 height={368}

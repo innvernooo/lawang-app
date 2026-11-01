@@ -17,7 +17,7 @@ export default function TicketPage() {
   return (
     <>
       <div className="m-2 lg:mx-25 lg:my-10">
-        <div className="w-full h-fit p-4 bg-brand-100 shadow-lg rounded-t-xl">
+        <div className="w-full h-fit p-4 bg-linear-to-r from-brand-100 to-brand-300 glass text-white shadow-lg rounded-t-xl">
           <h1 className="font-bold text-xl md:text-2xl lg:text-3xl">
             Event Berbayar Saya
           </h1>
@@ -62,7 +62,7 @@ export default function TicketPage() {
                   <td>{e.ticketTypes.length}</td>
                   <td>
                     <a
-                      className="p-2 bg-green-400 glass text-xs font-medium rounded-full"
+                      className="px-2 py-1.5 bg-green-400 text-black glass text-xs font-medium rounded-full"
                       href={`/organizer/dashboard/create-ticket/${e.id}`}
                     >
                       Create

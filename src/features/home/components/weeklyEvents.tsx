@@ -109,7 +109,7 @@ export default function WeeklyEvents() {
                       </div>
                       <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2 sm:block md:h-28 md:w-44 lg:h-40 lg:w-64">
                         <Image
-                          src={e.imageUrl ?? '/download.jpg'}
+                          src={e.imageUrl ?? '/alternative.png'}
                           alt={e.name}
                           fill
                           sizes="256px"

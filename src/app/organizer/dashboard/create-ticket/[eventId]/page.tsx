@@ -89,7 +89,7 @@ export default function CreateTicketPage() {
         ) : (
           <>
             <div className="mx-2 md:mx-25 my-10">
-              <div className="flex flex-col-reverse items-start gap-4 px-5 py-6 md:flex-row md:items-center md:justify-between md:px-10 md:py-8 lg:gap-0 lg:px-17 w-full h-fit bg-linear-to-r from-brand-200 to-brand-300 glass rounded-t-2xl">
+              <div className="flex flex-col-reverse items-start gap-4 px-5 py-6 md:flex-row md:items-center md:justify-between md:px-10 md:py-8 lg:gap-0 lg:px-17 w-full h-fit bg-linear-to-r from-brand-100 to-brand-300 glass rounded-t-2xl">
                 <div className="text-base text-white md:text-xl">
                   <h1 className="text-xl mb-2 font-semibold md:text-2xl">
                     {event.name}
@@ -116,7 +116,7 @@ export default function CreateTicketPage() {
                   </div>
                 </div>
                 <Image
-                  src={event.imageUrl}
+                  src={event.imageUrl ?? '/alternative.png'}
                   alt=""
                   width={300}
                   height={100}
@@ -197,11 +197,11 @@ export default function CreateTicketPage() {
                   <div className="w-full flex justify-between">
                     <a
                       href="/organizer/dashboard/create-ticket"
-                      className="mt-5 btn btn-warning text-white"
+                      className="mt-5 btn btn-error text-white"
                     >
                       Kembali
                     </a>
-                    <button className="mt-5 btn bg-blue-700 hover:bg-blue-800 text-white">
+                    <button className="mt-5 btn bg-brand-400 hover:bg-blue-800 text-black">
                       Create Ticket
                     </button>
                   </div>

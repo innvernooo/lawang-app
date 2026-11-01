@@ -3,12 +3,15 @@ import Markdown from 'react-markdown';
 import { tanggal } from '@/utils/localDate';
 import Image from 'next/image';
 import { Suspense } from 'react';
+import AuthGuard from '@/features/general/components/authGuard';
 
 export default function BlogPage({ params }: PageProps<'/blog/[slug]'>) {
   return (
-    <Suspense fallback={<div className="min-h-screen"></div>}>
-      <BlogPageContent />
-    </Suspense>
+    <AuthGuard allowedRole={['CUSTOMER']}>
+      <Suspense fallback={<div className="min-h-screen"></div>}>
+        <BlogPageContent />
+      </Suspense>
+    </AuthGuard>
   );
 
   async function BlogPageContent() {

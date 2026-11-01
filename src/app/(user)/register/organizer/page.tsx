@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Link from 'next/link';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import PopoverRegisterSuccess from '@/features/general/components/popoverRegisterSuccess';
 import {
   OrganizerRegisterInput,
   OrganizerRegisterOutput,
@@ -19,6 +18,7 @@ import { sortedProvinces } from '@/utils/provinces';
 import { sortedBanks } from '@/utils/banks';
 import { stepFields } from '@/features/register/organizerRegister/validationStep';
 import { OrganizerFormData } from '@/features/register/organizerRegister/organizerFormData';
+import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
 
 // Class TailwindCSS
 const inputClass =
@@ -128,9 +128,11 @@ export default function OrganizerRegister() {
         title="Akun Gagal Terdaftar"
         message={failedMessage}
       />
-      <PopoverRegisterSuccess
+      <PopoverSuccessLink
         ref={successRef}
         title="Akun Berhasil Terdaftar"
+        next="/login"
+        hook="Login"
         message="Klik tombol berikut untuk lanjut ke halaman login"
       />
       <main className="min-h-screen bg-gray-50 px-4 py-8 sm:py-12">
