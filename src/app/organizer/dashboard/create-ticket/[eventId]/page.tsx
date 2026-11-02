@@ -14,10 +14,10 @@ import {
   addTicketTypeSchema,
   TicketTypeInput,
   TicketTypeOutput,
-} from '@/features/create-ticket/validation/createTicketSchema';
+} from '@/features/ticket/validation/createTicketSchema';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import ErrorImage from '@/features/general/components/errorImage';
 import PopoverSuccess from '@/features/general/components/popoverSuccess';
@@ -37,6 +37,7 @@ export default function CreateTicketPage() {
     const [errorMessage, setErrorMessage] = useState('');
     const successRef = useRef<HTMLDialogElement>(null);
     const failedRef = useRef<HTMLDialogElement>(null);
+    const queryClient = useQueryClient();
 
     const {
       register,
@@ -58,6 +59,9 @@ export default function CreateTicketPage() {
       },
       onSuccess: () => {
         successRef?.current?.showModal();
+        queryClient.invalidateQueries({
+          queryKey: ['event', 'ticket', 'voucher'],
+        });
         reset();
       },
       onError: (err) => {
@@ -201,7 +205,7 @@ export default function CreateTicketPage() {
                     >
                       Kembali
                     </a>
-                    <button className="mt-5 btn bg-brand-400 hover:bg-blue-800 text-black">
+                    <button className="mt-5 btn bg-brand-400 hover:bg-blue-800 text-black hover:text-white">
                       Create Ticket
                     </button>
                   </div>
