@@ -24,7 +24,7 @@ export default function ViewTransactionsPage() {
           <div className="overflow-x-auto rounded-xl">
             <table className="table">
               {/* head */}
-              <thead className="bg-brand-100 text-black">
+              <thead className="bg-brand-300 text-white">
                 <tr>
                   <th></th>
                   <th>Name</th>
@@ -42,7 +42,7 @@ export default function ViewTransactionsPage() {
                     <td>{e.city}</td>
                     <td>
                       <a
-                        className="p-2 bg-green-400 glass text-xs font-medium rounded-full"
+                        className="px-2 py-1.5 bg-green-400 glass text-xs font-medium rounded-full"
                         href={`/organizer/dashboard/confirmation/${e.id}`}
                       >
                         View Detail

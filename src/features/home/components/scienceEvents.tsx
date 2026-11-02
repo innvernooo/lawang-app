@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 
-import { FaLocationDot } from 'react-icons/fa6';
+import { IoLocationOutline } from "react-icons/io5";
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
+import { TbClockHour3 } from "react-icons/tb";
 import { MdOutlineCategory } from 'react-icons/md';
 import { capitalize } from '@/utils/capitalize';
 import { useGetScienceEvent } from '@/hook/event/useGetScienceEvent';
@@ -41,7 +42,7 @@ export default function ScienceEvents() {
               className="group h-fit p-3 text-black cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-500"
             >
               <Image
-                src={item.imageUrl ?? '/download.jpg'}
+                src={item.imageUrl ?? '/alternative.png'}
                 alt="Event"
                 width={736}
                 height={368}
@@ -56,15 +57,20 @@ export default function ScienceEvents() {
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
                 <MdOutlineCategory />
-                <span>{capitalize(item?.category).replace('_', ' ')}</span>
+                <span>{item?.category.replace('_', ' ')}</span>
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
-                <FaLocationDot />
-                <span className='line-clamp-1'>{item?.city} | {item.venue}</span>
+                <IoLocationOutline />
+                <span className="line-clamp-1">
+                  {item?.city} | {item.venue}
+                </span>
               </p>
-              <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mb-4">
-                <IoIosTime />
+              <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
+                <TbClockHour3 />
                 <span>{format(new Date(item?.startDate), 'dd MMMM yyyy')}</span>
+              </p>
+              <p className="line-clamp-1">
+                _________________________________________________________________________________________________________________________________
               </p>
               <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                 <IoMdPricetags />

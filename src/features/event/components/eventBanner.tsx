@@ -6,8 +6,8 @@ import { jam } from '@/utils/localTime';
 import Image from 'next/image';
 import Link from 'next/link';
 import RevealOnScroll from './revealOnScroll';
-import { FaLocationDot } from 'react-icons/fa6';
-import { IoIosTime } from 'react-icons/io';
+import { IoLocationOutline } from 'react-icons/io5';
+import { TbClockHour3 } from 'react-icons/tb';
 import { MdDateRange, MdOutlineCategory } from 'react-icons/md';
 
 export default async function EventBanner({ slug }: { slug: string }) {
@@ -19,14 +19,14 @@ export default async function EventBanner({ slug }: { slug: string }) {
     <>
       <div
         id="event-hero"
-        className={`lg:grid grid-cols-[60%_40%] text-white -mx-3 -mt-3 px-4 pt-1 pb-5 md:-mx-15 md:-mt-15 md:px-10 md:pt-5 lg:pb-0 bg-linear-to-r from-brand-200 to-brand-300 glass`}
+        className={`lg:grid grid-cols-[60%_40%] text-white -mx-3 -mt-3 px-4 pt-1 pb-5 md:-mx-15 md:-mt-15 md:px-10 md:pt-5 lg:pb-0 bg-linear-to-r from-brand-100 to-brand-300 glass`}
       >
         <div>
           <h1 className="mt-5 text-xl font-extrabold tracking-wide md:text-2xl">
             {event?.name}
           </h1>
           <div className="mt-3 flex text-base gap-2 items-center md:text-xl">
-            <FaLocationDot className="shrink-0" />
+            <IoLocationOutline className="shrink-0" />
             <h2>
               {event?.city} | {event?.venue}
             </h2>
@@ -36,7 +36,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
             <h2>{tanggal.format(new Date(event?.startDate))}</h2>
           </div>
           <div className="flex text-base gap-2 items-center md:text-xl">
-            <IoIosTime className="shrink-0" />
+            <TbClockHour3 className="shrink-0" />
             <h2>{jam.format(new Date(event?.startDate))} WIB</h2>
           </div>
           <div className="my-3 flex text-base gap-2 items-center md:text-xl">
@@ -48,7 +48,8 @@ export default async function EventBanner({ slug }: { slug: string }) {
               <div className="w-8 rounded-full">
                 <img
                   alt="Organizer logo"
-                  src={event?.organizer?.profilePictureUrl ?? '/download.jpg'}
+                  src={event?.organizer?.profilePictureUrl ?? '/eo.svg'}
+                  className="h-full w-full scale-125 object-center"
                 />
               </div>
             </div>
@@ -62,7 +63,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
         </div>
         <div>
           <Image
-            src={event?.imageUrl ?? '/download.jpg'}
+            src={event?.imageUrl ?? '/alternative.png'}
             alt="Event"
             width={500}
             height={368}
@@ -77,7 +78,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
         >
           <p>{event.name}</p>
           <div className="flex gap-1 items-center">
-            <FaLocationDot />
+            <IoLocationOutline />
             <p>
               {event.city} | {event.venue}
             </p>
@@ -87,37 +88,49 @@ export default async function EventBanner({ slug }: { slug: string }) {
             <p>{event.category.replace('_', ' ')}</p>
           </div>
         </RevealOnScroll>
-        <div className="bg-white w-full px-4 py-3 md:px-15 lg:px-2.5 lg:py-0 lg:w-125 lg:h-fit lg:rounded-b-xl lg:shadow-lg">
-          <div className="flex justify-between items-center lg:items-stretch lg:mt-2">
-            <div>
-              <p className="text-sm text-gray-500">Harga mulai dari</p>
-              <h2 className="text-xl font-bold">
-                {rupiah.format(ticket[0].price ?? 0)}
-              </h2>
-            </div>
-            <Link href={`/event/${slug}/order`} className="btn bg-blue-700">
-              Beli Tiket
-            </Link>
-          </div>
-          <div className="hidden lg:flex w-full h-25">
-            <div className="mt-7 flex justify-end-safe gap-2 items-center">
-              <div className="avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Organizer logo"
-                    src={event?.organizer?.profilePictureUrl ?? '/download.jpg'}
-                  />
-                </div>
-              </div>
+        {ticket.length > 0 ? (
+          <div className="bg-white w-full px-4 py-3 md:px-15 lg:px-2.5 lg:py-0 lg:w-125 lg:h-fit lg:rounded-b-xl lg:shadow-lg">
+            <div className="flex justify-between items-center lg:items-stretch lg:mt-2">
               <div>
-                <p className="text-sm">Diselenggarakan oleh</p>
-                <h2 className="text-base font-semibold">
-                  {event?.organizer?.organizerName}
+                <p className="text-sm text-gray-500">Harga mulai dari</p>
+                <h2 className="text-xl font-bold">
+                  {ticket.length > 0
+                    ? rupiah.format(ticket[0].price)
+                    : rupiah.format(0)}
                 </h2>
               </div>
+              <Link
+                href={`/event/${slug}/order`}
+                className="btn bg-brand-400 text-black"
+              >
+                Beli Tiket
+              </Link>
+            </div>
+            <div className="hidden lg:flex w-full h-25">
+              <div className="mt-7 flex justify-end-safe gap-2 items-center">
+                <div className="avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Organizer logo"
+                      src={event?.organizer?.profilePictureUrl ?? '/eo.svg'}
+                      className="h-full w-full scale-125 object-cover"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm">Diselenggarakan oleh</p>
+                  <h2 className="text-base font-semibold">
+                    {event?.organizer?.organizerName}
+                  </h2>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="bg-white w-full px-4 py-3 md:px-15 lg:px-2.5 lg:py-0 lg:w-125 lg:h-30 lg:rounded-b-xl lg:shadow-lg font-semibold text-sm md:text-base flex justify-center items-center">
+            <h1>Event Organizer belum membuat tiket untuk event ini</h1>
+          </div>
+        )}
       </div>
     </>
   );

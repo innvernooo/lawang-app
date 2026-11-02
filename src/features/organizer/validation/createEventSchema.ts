@@ -17,10 +17,10 @@ const dateTime = (label: string) =>
 
 export const createEventSchema = z
   .object({
-    profilePicture: z
+    imageUrl: z
       .custom<FileList | undefined>()
       .refine(
-        (file) => !file?.length || file[0].size > MAX_FILE_SIZE,
+        (file) => !file?.length || file[0].size <= MAX_FILE_SIZE,
         'Ukuran foto maksimal 5 MB',
       )
       .refine(
@@ -36,7 +36,10 @@ export const createEventSchema = z
 
     description: z.string().trim().min(1, 'Event description is required'),
 
-    category: z.enum(categories, 'Pick one of the categories'),
+    category: z.enum(
+      categories.map(({ cat }) => cat),
+      'Pick one of the categories',
+    ),
 
     city: z.enum(cities, 'Pick one of the cities'),
 

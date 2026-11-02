@@ -12,9 +12,9 @@ import {
   CustomerRegisterInput,
   CustomerRegisterOutput,
 } from '@/features/register/validation/customerSchema';
-import { axiosInstance } from '@/lib/axiosInstance.lib';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import PopoverRegisterSuccess from '@/features/general/components/popoverRegisterSuccess';
+import { CustomerFormData } from '@/features/register/customerRegister/customerFormData';
+import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
 
 // Class TailwindCSS
 const inputClass =
@@ -50,21 +50,7 @@ export default function CustomerRegister() {
   }, [previewPicture]);
 
   const handleCustomerRegister = useMutation({
-    mutationFn: async (data: CustomerRegisterOutput) => {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('username', data.username);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      if (data.nik) formData.append('nik', data.nik);
-      if (data.phoneNumber) formData.append('phoneNumber', data.phoneNumber);
-      if (data.referralCode) formData.append('referralCode', data.referralCode);
-      if (data.profilePicture?.length)
-        formData.append('profilePicture', data.profilePicture[0]);
-
-      const res = await axiosInstance.post('/customers/register', formData);
-      return res?.data;
-    },
+    mutationFn: CustomerFormData,
     onSuccess: () => {
       successRef?.current?.showModal();
       reset();
@@ -86,9 +72,11 @@ export default function CustomerRegister() {
         title="Akun Gagal Terdaftar"
         message={failedMessage}
       />
-      <PopoverRegisterSuccess
+      <PopoverSuccessLink
         ref={successRef}
         title="Akun Berhasil Terdaftar"
+        next="/login"
+        hook="Login"
         message="Klik tombol berikut untuk lanjut ke halaman login"
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">

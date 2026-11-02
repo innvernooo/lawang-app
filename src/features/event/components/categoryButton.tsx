@@ -47,8 +47,8 @@ export default function CategoryButton() {
               className="group flex w-24 shrink-0 cursor-pointer select-none flex-col items-center focus-visible:outline-2 focus-visible:outline-blue-500"
             >
               <div
-                className={`relative h-16 w-16 overflow-hidden rounded-xl transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2 ${
-                  selected ? 'ring-4 ring-brand-100' : ''
+                className={`relative h-16 w-16 overflow-hidden rounded-xl transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-300 group-focus-visible:-translate-y-2 ${
+                  selected ? 'ring-4 ring-brand-300' : ''
                 }`}
               >
                 <Image
