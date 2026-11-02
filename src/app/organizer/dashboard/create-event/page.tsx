@@ -179,7 +179,7 @@ export default function CreateEventPage() {
                   </option>
                 ))}
               </select>
-              <p className="label text-red-600">{errors?.category?.message}</p>
+              <p className="lebel text-red-600">{errors?.category?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-sm md:text-base text-black">
