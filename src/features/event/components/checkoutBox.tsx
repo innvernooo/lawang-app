@@ -1,3 +1,5 @@
+import { getEventBySlug } from '@/api/event/getEventBySlug';
+import { GetTicketByEventId } from '@/api/ticket/getTicketByEventId';
 import { rupiah } from '@/utils/idr';
 import { tanggal } from '@/utils/localDate';
 import { jam } from '@/utils/localTime';
@@ -6,18 +8,14 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { IoIosTime } from 'react-icons/io';
 import { MdDateRange } from 'react-icons/md';
 
-export default async function CheckoutBox({ eventId }: { eventId: string }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/eventDetail/${eventId}`,
-  );
+export default async function CheckoutBox({ slug }: { slug: string }) {
+  const event = await getEventBySlug(slug);
 
-  const event = (await res.json()).data;
+  const ticket = await GetTicketByEventId(event.id);
 
-  const res2 = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${eventId}`,
-  );
-
-  const ticket = (await res2.json()).data;
+  const lowestPrice = ticket?.length
+    ? Math.min(...ticket.map((t: any) => t.price))
+    : 0;
   return (
     <>
       <div className="w-full h-fit p-4.5 sticky top-20 bg-brand-100 shadow-lg rounded-3xl">
@@ -25,19 +23,17 @@ export default async function CheckoutBox({ eventId }: { eventId: string }) {
           <div>
             <p className="text-gray-500">Harga mulai dari</p>
             <h3 className="text-[21px] font-bold">
-              {event.pricingType === 'PAID'
-                ? rupiah.format(ticket[0].price)
-                : 0}
+              {event.pricingType === 'PAID' ? rupiah.format(lowestPrice) : 0}
             </h3>
           </div>
           <Link
-            href={`/event/${eventId}/order`}
+            href={`/event/${slug}/order`}
             className="btn bg-blue-700 w-30 h-12 text-lg"
           >
             Beli Tiket
           </Link>
         </div>
-        <h1 className="mt-15 text-[25px] font-bold text-brand-200">
+        <h1 className="mt-15 text-[25px] font-bold text-blue-700">
           {event?.name}
         </h1>
         <div className="mt-2 flex text-lg gap-2 items-center">

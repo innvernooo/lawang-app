@@ -14,7 +14,7 @@ import {
 } from '@/features/register/validation/customerSchema';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import PopoverSuccess from '@/features/general/components/popoverSuccess';
+import PopoverRegisterSuccess from '@/features/general/components/popoverRegisterSuccess';
 
 // Class TailwindCSS
 const inputClass =
@@ -86,7 +86,7 @@ export default function CustomerRegister() {
         title="Akun Gagal Terdaftar"
         message={failedMessage}
       />
-      <PopoverSuccess
+      <PopoverRegisterSuccess
         ref={successRef}
         title="Akun Berhasil Terdaftar"
         message="Klik tombol berikut untuk lanjut ke halaman login"

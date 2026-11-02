@@ -18,8 +18,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     retry: false,
     refetchOnWindowFocus: false,
   });
-
-  console.log(user);
+  
   useEffect(() => {
     if (user)
       setAuth(

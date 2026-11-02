@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { categories } from '../components/categories';
+import { categories } from '../../../utils/categories';
 import { cities } from '@/utils/cities';
 
 const emptyToUndefined = (v: unknown) =>

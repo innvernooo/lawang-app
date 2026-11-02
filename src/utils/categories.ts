@@ -1,0 +1,17 @@
+export const categories = [
+  {number: 1, cat: 'MUSIK'},
+  {number: 2, cat:'WORKSHOP'},
+  {number: 3, cat:'KOMEDI'},
+  {number: 4, cat:'OLAHRAGA'},
+  {number: 5, cat:'SENI'},
+  {number: 6, cat:'GAMES'},
+  {number: 7, cat:'SPIRITUALITAS'},
+  {number: 8, cat:'K_POP'},
+  {number: 9, cat:'KELUARGA'},
+  {number: 15, cat:'ALAM_TERBUKA'},
+  {number: 10, cat:'SAINS'},
+  {number: 11, cat:'PENDIDIKAN'},
+  {number: 13, cat:'BUDAYA'},
+  {number: 12, cat:'KESEHATAN'},
+  {number: 14, cat:'OTOMOTIF'},
+];
