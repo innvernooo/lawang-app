@@ -173,19 +173,13 @@ export default function CreateEventPage() {
                 {...register('category')}
               >
                 <option disabled={true}>Pick one category</option>
-<<<<<<< HEAD
-                {categories.map(({cat}) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-=======
                 {categories.map(({ cat }) => (
                   <option key={cat} value={cat}>
                     {cat.replace('_', ' ')}
->>>>>>> 39f42c4195d7e04d6b048a1724f52ab1c7d1500e
                   </option>
                 ))}
               </select>
-              <p className="label text-red-600">{errors?.category?.message}</p>
+              <p className="lebel text-red-600">{errors?.category?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-sm md:text-base text-black">

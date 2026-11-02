@@ -6,7 +6,8 @@ import {
 } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "@/lib/axiosInstance.lib";
 /* ═══════════ BAGIAN 2: TIPE DATA (cermin tabel Customer di Prisma) ═══════════ */
 type Gender = "MALE" | "FEMALE";
 
@@ -464,17 +465,24 @@ export default function CustomerProfilePage() {
   const [copied, setCopied] = useState(false);
 
   /* ═══════════ BAGIAN 6: useEffect (ambil data saat halaman dibuka) ═══════════ */
-  useEffect(() => {
-    const raw = readCurrentUser();
-    if (raw && raw.role === "ORGANIZER") {
-      setWrongRole(true); // halaman ini khusus customer
-      return;
-    }
-    const data = raw ? normalize(raw) : DEMO_CUSTOMER;
-    setIsDemo(!raw);
-    setUser(data);
-    setF(data);
-  }, []);
+ // Ambil data profil dari backend (cookie token terkirim otomatis)
+const { data: me, isError } = useQuery({
+  queryKey: ["me"],
+  queryFn: async () => (await axiosInstance.get("/auth/me")).data.data,
+  retry: false,
+});
+
+useEffect(() => {
+  if (!me) return;
+  if (me.role === "ORGANIZER") {
+    setWrongRole(true); // halaman ini khusus customer
+    return;
+  }
+  const data = normalize(me); // kolom "name" dari database otomatis jadi fullName
+  setIsDemo(false);
+  setUser(data);
+  setF(data);
+}, [me]);
 
   /* ═══════════ BAGIAN 7: HANDLER (aksi saat tombol ditekan) ═══════════ */
 
@@ -584,6 +592,16 @@ export default function CustomerProfilePage() {
     );
   }
 
+      if (isError) {
+  return (
+    <div className="mx-auto max-w-lg p-8 text-center">
+      <p className="text-gray-700">Gagal memuat profil. Pastikan kamu sudah login.</p>
+      <Link href="/login" className="mt-3 inline-block text-indigo-600 hover:underline">
+        Ke halaman login
+      </Link>
+    </div>
+  );
+}
   // Skeleton loading
   if (!user) {
     return (
