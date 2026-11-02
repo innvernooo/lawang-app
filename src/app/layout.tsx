@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className={`min-h-full flex flex-col ${geistSans.variable}`}>
+      <body className={`min-h-full flex flex-col ${geistSans.className}`}>
         <QueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryProvider>

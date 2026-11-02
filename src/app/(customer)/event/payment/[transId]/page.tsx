@@ -37,7 +37,6 @@ export default function PaymentPage() {
   function PaymentPageContent() {
     const { transId } = useParams<{ transId: string }>();
     const [method, setMethod] = useState('');
-    const router = useRouter();
     const successRef = useRef<HTMLDialogElement>(null);
     const queryClient = useQueryClient();
 
@@ -57,7 +56,9 @@ export default function PaymentPage() {
       onSuccess: () => {
         reset();
         successRef?.current?.showModal();
-        queryClient.invalidateQueries({ queryKey: ['transaction', transId] });
+        queryClient.invalidateQueries({
+          queryKey: ['transaction', transId],
+        });
       },
     });
 
@@ -65,7 +66,9 @@ export default function PaymentPage() {
       mutationFn: () => PostCancelTrans({ transId }),
       onSuccess: () => {
         successRef?.current?.showModal();
-        queryClient.invalidateQueries({ queryKey: ['transaction', transId] });
+        queryClient.invalidateQueries({
+          queryKey: ['transaction', transId],
+        });
       },
     });
 
@@ -251,6 +254,7 @@ export default function PaymentPage() {
               <div className="flex justify-between mt-10">
                 <button
                   type="button"
+                  disabled={handlePayment.isPending}
                   onClick={() => handleCancelPayment.mutate()}
                   className="btn btn-error lg:text-base"
                 >
@@ -262,9 +266,9 @@ export default function PaymentPage() {
                     transaction.event.pricingType === 'PAID' &&
                     (!method || !proof?.length || handlePayment.isPending)
                   }
-                  className="btn bg-brand-300 lg:text-base"
+                  className="btn bg-brand-300 lg:text-base text-white"
                 >
-                  Selesai
+                  {handlePayment.isPending ? 'Mengirim' : 'Selesai'}
                 </button>
               </div>
             </form>

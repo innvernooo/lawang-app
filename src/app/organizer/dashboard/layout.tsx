@@ -3,7 +3,7 @@
 import { useEffect, useState, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
+import Image from 'next/image';
 // true = hanya organizer yang sudah login yang bisa membuka dashboard
 const PROTECT_ROUTE = false;
 
@@ -53,7 +53,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         {/* Navbar */}
         <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <span className="text-lg font-bold text-indigo-600">Lawang.id</span>
+              <Image 
+              src="/lawang.svg" 
+              alt="Lawang Logo" 
+              width={120} 
+               height={35} 
+               className="h-8 w-auto object-contain"
+                priority
+              />
             <div className="relative">
               <button
                 type="button"
@@ -72,7 +79,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     user.name.charAt(0).toUpperCase()
                   )}
                 </span>
-                <span className="hidden max-w-[160px] truncate text-sm font-medium md:block">
+                <span className="hidden max-w-40 truncate text-sm font-medium md:block">
                   {user.name}
                 </span>
               </button>

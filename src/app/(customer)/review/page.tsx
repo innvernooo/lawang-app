@@ -5,17 +5,27 @@ import { tanggal } from '@/utils/localDate';
 import { useGetEventByCustomer } from '@/hook/event/useGetEventByCustomer';
 import ReviewHeader from '@/features/review/components/reviewHeader';
 import WithAuthGuard from '@/hoc/withAuthGuard';
+import ErrorImage from '@/features/general/components/errorImage';
 
 function ReviewPage() {
-  const { data, isLoading } = useGetEventByCustomer();
+  const { data, isLoading, isError } = useGetEventByCustomer();
   const event = data?.data;
 
   if (isLoading) return <IsLoading />;
-
+  if (isError)
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <ErrorImage
+          message="Maaf, event tidak ditemukan"
+          next="/"
+          hook="Kembali ke halaman utama"
+        />
+      </div>
+    );
   return (
     <>
       <div className="lg:px-20">
-        <ReviewHeader />
+        <ReviewHeader customer={data?.customer} />
         <div className="overflow-x-auto rounded-b-xl border border-gray-400 bg-white shadow-lg">
           <table className="table table-xs md:table-sm lg:table-md table-pin-rows">
             <thead className="text-black border-b border-gray-500 text-xs">
@@ -31,7 +41,7 @@ function ReviewPage() {
               </tr>
             </thead>
             <tbody>
-              {event.map((e: any, i: number) => (
+              {event?.map((e: any, i: number) => (
                 <tr key={i}>
                   <th className="bg-white">{i + 1}</th>
                   <td className="line-clamp-2 md:line-clamp-none">
