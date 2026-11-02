@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useGetEventForTicket() {
   return useQuery({
-    queryKey: ['event', 'ticket'],
+    queryKey: ['event', 'ticket', 'voucher'],
     queryFn: GetEventForTicket,
   });
 }

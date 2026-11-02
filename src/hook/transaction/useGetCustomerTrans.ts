@@ -1,9 +1,10 @@
 import { GetCustomerTrans } from '@/api/transaction/getCustomerTrans';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-export function useGetCustomerTrans() {
+export function useGetCustomerTrans({ page }: { page: number }) {
   return useQuery({
-    queryKey: ['transcation', 'customer'],
-    queryFn: GetCustomerTrans,
+    queryKey: ['transcation', 'customer', page],
+    queryFn: () => GetCustomerTrans({ page }),
+    placeholderData: keepPreviousData,
   });
 }

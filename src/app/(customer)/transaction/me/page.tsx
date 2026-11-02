@@ -7,17 +7,29 @@ import { capitalize } from '@/utils/capitalize';
 import { tanggal } from '@/utils/localDate';
 import TransactionHeader from '@/features/customer/components/transactionHeader';
 import WithAuthGuard from '@/hoc/withAuthGuard';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 function TransactionListPage() {
-  const { data, isLoading } = useGetCustomerTrans();
+  const router = useRouter();
+  const query = useSearchParams();
+  const page = Number(query.get('page')) || 1;
+  const { data, isLoading } = useGetCustomerTrans({ page });
   const transaction = data?.transaction;
+  const totalPage = data?.meta ?? 1;
+
+  const goToPage = (p: number) => {
+    const params = new URLSearchParams(query.toString());
+    params.set('page', String(p));
+    router.push(`/transaction/me?${params.toString()}`);
+  };
 
   if (isLoading) return <IsLoading />;
+  console.log(totalPage)
 
   return (
     <>
       <div className="lg:px-20">
-        <TransactionHeader />
+        <TransactionHeader customer={data?.customer} />
         <div className="overflow-x-auto rounded-b-xl border border-gray-400 bg-white shadow-lg">
           <table className="table table-xs md:table-sm lg:table-md table-pin-rows">
             <thead className="text-black border-b border-gray-500 text-xs">
@@ -39,7 +51,7 @@ function TransactionListPage() {
               </tr>
             </thead>
             <tbody>
-              {transaction.map((t: any, i: number) => (
+              {transaction?.map((t: any, i: number) => (
                 <tr key={i}>
                   <th className="bg-white">{i + 1}</th>
                   <td className="line-clamp-2 md:line-clamp-none">
@@ -70,6 +82,25 @@ function TransactionListPage() {
               ))}
             </tbody>
           </table>
+          <div className="w-full p-3 join flex justify-end">
+            <button
+              onClick={() => goToPage(page - 1)}
+              disabled={page <= 1}
+              className="bg-blue-200 text-blue-950 join-item btn btn-sm"
+            >
+              «
+            </button>
+            <button className="bg-blue-200 text-blue-950 join-item btn btn-sm">
+              {`Page ${page}`}
+            </button>
+            <button
+              onClick={() => goToPage(page + 1)}
+              disabled={page >= totalPage}
+              className="bg-blue-200 text-blue-950 join-item btn btn-sm"
+            >
+              »
+            </button>
+          </div>
         </div>
       </div>
     </>
