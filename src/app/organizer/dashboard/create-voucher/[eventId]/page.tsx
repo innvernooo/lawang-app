@@ -1,14 +1,8 @@
 'use client';
 
-import { IoLocationOutline } from 'react-icons/io5';
-import { TbClockHour3 } from 'react-icons/tb';
-import { MdOutlineCategory, MdDateRange } from 'react-icons/md';
 import { LuTicketPercent } from 'react-icons/lu';
-import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { Suspense, useRef, useState } from 'react';
-import { tanggal } from '@/utils/localDate';
-import { jam } from '@/utils/localTime';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,15 +18,19 @@ import {
   CreateVoucherOutput,
   createVoucherSchema,
 } from '@/features/voucher/validation/createVoucherSchema';
+import CreateTicketAndVoucherHeader from '@/features/organizer/components/ticketAndVoucher/createTicketAndVoucherHeader';
+import AuthGuard from '@/hoc/authGuard';
 
-export default function CreateTicketPage() {
+export default function CreateVoucherPage() {
   return (
-    <Suspense fallback={''}>
-      <CreateTicketContent />
-    </Suspense>
+    <AuthGuard allowedRole={['ORGANIZER']}>
+      <Suspense fallback={<IsLoading />}>
+        <CreateVoucherContent />
+      </Suspense>
+    </AuthGuard>
   );
 
-  function CreateTicketContent() {
+  function CreateVoucherContent() {
     const { eventId } = useParams<{ eventId: string }>();
     const [errorMessage, setErrorMessage] = useState('');
     const successRef = useRef<HTMLDialogElement>(null);
@@ -68,7 +66,7 @@ export default function CreateTicketPage() {
       onError: (err) => {
         setErrorMessage(
           (isAxiosError(err) && err?.response?.data?.message) ||
-            'Terjadi kesalahan, silahkan coba lagi',
+            'Terjadi kesalahan, silakan coba lagi',
         );
         failedRef?.current?.showModal();
       },
@@ -97,44 +95,11 @@ export default function CreateTicketPage() {
         ) : (
           <>
             <div className="mx-2 md:mx-25 my-10">
-              <div className="flex flex-col-reverse items-start gap-4 px-5 py-6 md:flex-row md:items-center md:justify-between md:px-10 md:py-8 lg:gap-0 lg:px-17 w-full h-fit bg-linear-to-r from-brand-100 to-brand-300 glass rounded-t-2xl">
-                <div className="text-base text-white md:text-xl">
-                  <h1 className="text-xl mb-2 font-semibold md:text-2xl">
-                    {event.name}
-                  </h1>
-                  <div className="flex gap-2 items-center">
-                    <MdOutlineCategory />
-                    <h1>{event.category.replace('_', ' ')}</h1>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <IoLocationOutline />
-                    <h1 className="line-clamp-1">
-                      {event.city} | {event.venue}
-                    </h1>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <MdDateRange />
-                    <h1 className="my-1">
-                      {tanggal.format(new Date(event.startDate))}
-                    </h1>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <TbClockHour3 />
-                    <h1>{jam.format(new Date(event.startDate))} WIB</h1>
-                  </div>
-                </div>
-                <Image
-                  src={event.imageUrl ?? '/alternative.png'}
-                  alt=""
-                  width={300}
-                  height={100}
-                  className="w-full h-auto rounded-lg ring-2 ring-white md:w-60 lg:w-75"
-                />
-              </div>
+              <CreateTicketAndVoucherHeader event={event} />
               <div className="w-full h-fit bg-white p-5 rounded-b-2xl shadow-lg">
                 <div className="flex gap-1 items-center justify-center text-xl font-semibold">
                   <LuTicketPercent />
-                  <h1>Create a Voucher for Your Event</h1>
+                  <h1>Buat Voucher untuk Eventmu</h1>
                 </div>
                 <form
                   onSubmit={handleSubmit((data) =>
@@ -144,12 +109,12 @@ export default function CreateTicketPage() {
                   <div className="mt-7 lg:flex justify-around">
                     <fieldset className="fieldset">
                       <legend className="fieldset-legend text-base text-black">
-                        Voucher Code
+                        Kode Voucher
                       </legend>
                       <input
                         type="text"
                         className="input input-neutral w-full lg:w-60 bg-white"
-                        placeholder="Type here"
+                        placeholder="Ketik di sini"
                         {...register('code')}
                       />
                       <p className="label">Buatlah kode voucher yang unik</p>
@@ -159,12 +124,12 @@ export default function CreateTicketPage() {
                     </fieldset>
                     <fieldset className="fieldset">
                       <legend className="fieldset-legend text-base text-black">
-                        Discount Amount
+                        Nominal Diskon
                       </legend>
                       <input
                         type="text"
                         className="input input-neutral w-full lg:w-60 bg-white"
-                        placeholder="Type here"
+                        placeholder="Ketik di sini"
                         {...register('discountAmount')}
                       />
                       <p className="label text-red-600">
@@ -173,13 +138,13 @@ export default function CreateTicketPage() {
                     </fieldset>
                     <fieldset className="fieldset">
                       <legend className="fieldset-legend text-base text-black">
-                        Quota
+                        Kuota
                       </legend>
                       <input
                         type="text"
                         inputMode="numeric"
                         className="input input-neutral w-full lg:w-60 bg-white"
-                        placeholder="Type here"
+                        placeholder="Ketik di sini"
                         {...register('quota')}
                       />
                       <p className="label text-red-600">
@@ -188,12 +153,12 @@ export default function CreateTicketPage() {
                     </fieldset>
                     <fieldset className="fieldset">
                       <legend className="fieldset-legend text-black text-sm md:text-base">
-                        Start Date
+                        Tanggal Mulai
                       </legend>
                       <input
                         type="datetime-local"
                         className="input w-full lg:w-60 bg-white input-neutral"
-                        placeholder="Type here"
+                        placeholder="Ketik di sini"
                         {...register('startDate')}
                       />
                       <p className="label text-red-600">
@@ -202,12 +167,12 @@ export default function CreateTicketPage() {
                     </fieldset>
                     <fieldset className="fieldset">
                       <legend className="fieldset-legend text-black text-sm md:text-base">
-                        End Date
+                        Tanggal Selesai
                       </legend>
                       <input
                         type="datetime-local"
                         className="input w-full lg:w-60 bg-white input-neutral"
-                        placeholder="Type here"
+                        placeholder="Ketik di sini"
                         {...register('endDate')}
                       />
                       <p className="label text-red-600">
@@ -230,7 +195,7 @@ export default function CreateTicketPage() {
                       disabled={handleCreateVoucher.isPending}
                       className="mt-5 btn bg-brand-400 hover:bg-blue-800 text-black hover:text-white"
                     >
-                      Create Voucher
+                      Buat Voucher
                     </button>
                   </div>
                 </form>

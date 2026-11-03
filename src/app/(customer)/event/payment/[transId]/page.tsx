@@ -14,7 +14,7 @@ import {
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { useTransDetail } from '@/hook/transaction/useGetTransDetail';
 import ErrorImage from '@/features/general/components/errorImage';
-import AuthGuard from '@/features/general/components/authGuard';
+import AuthGuard from '@/hoc/authGuard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PostCancelTrans } from '@/api/transaction/postCancelTrans';
 import { PostPaymentProof } from '@/api/transaction/postPaymentProof';
@@ -93,22 +93,22 @@ export default function PaymentPage() {
           ref={successRef}
           title={
             handlePayment.isSuccess
-              ? 'Your Payment is Sent Successfully'
+              ? 'Bukti Pembayaran Berhasil Dikirim'
               : 'Pembatalan Transaksi Berhasil'
           }
           next="/"
-          hook="Kembali halaman utama"
+          hook="Kembali ke halaman utama"
           message={
             handlePayment.isSuccess
-              ? 'Harap menunggu konfirmasi dari admin Event, terima kasih'
-              : 'Poin atau kupon telah dikembalikan ke akunmu'
+              ? 'Tunggu konfirmasi dari Event Organizer ya, terima kasih!'
+              : 'Poin atau kupon yang kamu pakai sudah dikembalikan ke akunmu'
           }
         />
         <div className="flex items-center justify-center w-full min-h-screen">
           {transaction.status === 'CANCELED' ? (
             <>
               <ErrorImage
-                message="Transaksi telah di-CANCEL"
+                message="Transaksi ini sudah dibatalkan"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
@@ -116,7 +116,7 @@ export default function PaymentPage() {
           ) : transaction.status === 'REJECTED' ? (
             <>
               <ErrorImage
-                message="Transaksi telah di-REJECT oleh Event Organizer"
+                message="Transaksi ini ditolak oleh Event Organizer"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
@@ -124,7 +124,7 @@ export default function PaymentPage() {
           ) : transaction.status === 'WAITING_CONFIRMATION' ? (
             <>
               <ErrorImage
-                message="Transaksi sedang menunggu konfirmasi"
+                message="Transaksi ini sedang menunggu konfirmasi Event Organizer"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
@@ -132,7 +132,7 @@ export default function PaymentPage() {
           ) : transaction.status === 'DONE' ? (
             <>
               <ErrorImage
-                message="Transaksi telah selesai dilakukan"
+                message="Transaksi ini sudah selesai"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
@@ -141,7 +141,7 @@ export default function PaymentPage() {
             transaction.status === 'EXPIRED' ? (
             <>
               <ErrorImage
-                message="Transaksi telah EXPIRED"
+                message="Transaksi ini sudah kedaluwarsa"
                 next="/"
                 hook="Kembali ke halaman utama"
               />
@@ -154,7 +154,7 @@ export default function PaymentPage() {
               <div className="flex justify-center">
                 <Image
                   src={'/lawang.svg'}
-                  alt={'Lawang logo'}
+                  alt={'Logo Lawang'}
                   width={130}
                   height={100}
                   className="lg:w-40"
@@ -163,10 +163,10 @@ export default function PaymentPage() {
               <h1
                 className={`flex mt-5 justify-center text-2xl lg:text-3xl font-semibold ${sansita.className}`}
               >
-                PAYMENT GATEAWAY
+                PEMBAYARAN
               </h1>
               <p className="flex mt-1 justify-center italic text-xs lg:text-base">
-                Segera lakukan pembayaran untuk tiket yang anda pesan
+                Yuk, segera selesaikan pembayaran untuk tiket yang kamu pesan
               </p>
               <div className="mt-7">
                 <h1 className="text-base">Total harga tiket</h1>
@@ -228,7 +228,7 @@ export default function PaymentPage() {
                   className="select select-neutral w-full bg-white"
                 >
                   <option value="" disabled className="text-black">
-                    Pick a payment method
+                    Pilih metode pembayaran
                   </option>
                   {paymentMethods.map((m, index) => (
                     <option key={index} value={m} className="text-black">
@@ -239,7 +239,7 @@ export default function PaymentPage() {
               </fieldset>
               <fieldset className="fieldset">
                 <legend className="fieldset-legend text-black text-base">
-                  Upload bukti pembayaran
+                  Unggah bukti pembayaran
                 </legend>
                 <input
                   type="file"
@@ -268,7 +268,7 @@ export default function PaymentPage() {
                   }
                   className="btn bg-brand-300 lg:text-base text-white"
                 >
-                  {handlePayment.isPending ? 'Mengirim' : 'Selesai'}
+                  {handlePayment.isPending ? 'Mengirim...' : 'Kirim Pembayaran'}
                 </button>
               </div>
             </form>

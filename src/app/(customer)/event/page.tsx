@@ -1,7 +1,7 @@
 'use client';
 
 import CategoryButton from '@/features/event/components/categoryButton';
-import AuthGuard from '@/features/general/components/authGuard';
+import AuthGuard from '@/hoc/authGuard';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { useGetEventByCategory } from '@/hook/event/useGetEventByCategory';
 import { tanggal } from '@/utils/localDate';
@@ -16,11 +16,9 @@ import { useDebounce } from 'use-debounce';
 
 export default function CategoryPage() {
   return (
-    <AuthGuard allowedRole={['CUSTOMER']}>
-      <Suspense fallback={''}>
-        <CategoryPageContent />
-      </Suspense>
-    </AuthGuard>
+    <Suspense fallback={''}>
+      <CategoryPageContent />
+    </Suspense>
   );
 }
 
@@ -60,7 +58,7 @@ function CategoryPageContent() {
     <>
       <div>
         <h1 className="flex justify-center text-xl font-semibold">
-          Pilih kategori yang kamu banget
+          Pilih kategori favoritmu
         </h1>
         <CategoryButton />
         <div className="md:flex justify-between mr-5">
@@ -85,7 +83,7 @@ function CategoryPageContent() {
               «
             </button>
             <button className="bg-blue-200 text-blue-950 join-item btn">
-              {page >= totalPage ? 'Maximum' : `Page ${page}`}
+              {page >= totalPage ? 'Halaman terakhir' : `Halaman ${page}`}
             </button>
             <button
               onClick={() => goToPage(page + 1)}
@@ -103,13 +101,13 @@ function CategoryPageContent() {
             <div className="flex justify-center">
               <Image
                 src={'/lost.svg'}
-                alt={'Lawang logo'}
+                alt={'Logo Lawang'}
                 width={200}
                 height={100}
               />
             </div>
             <h1 className="flex justify-center font-semibold text-xl">
-              Yah, tidak ketemu nih
+              Yah, event yang kamu cari tidak ditemukan
             </h1>
             <p className="flex justify-center text-gray-500">
               Coba kata kunci lain atau pilih kategori yang tersedia
@@ -128,16 +126,16 @@ function CategoryPageContent() {
                 >
                   <Image
                     src={e.imageUrl ?? '/alternative.png'}
-                    alt="Event"
+                    alt="Gambar event"
                     width={736}
                     height={368}
-                    className="aspect-2/1 h-auto w-full object-cover rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/30 group-focus-visible:-translate-y-2"
+                    className="aspect-2/1 h-auto w-full object-cover rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/50 group-focus-visible:-translate-y-2"
                   />
                   <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-blue-700 group-focus-visible:text-blue-700">
                     {e.name}
                   </h1>
                   <p className="text-lg md:text-sm lg:text-lg">
-                    Held by {e.organizer.organizerName}
+                    Diselenggarakan oleh {e.organizer.organizerName}
                   </p>
                   <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
                     <MdOutlineCategory />
@@ -160,7 +158,9 @@ function CategoryPageContent() {
                   </p>
                   <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                     <IoMdPricetags />
-                    <p className="font-semibold">{e.pricingType}</p>
+                    <p className="font-semibold">
+                      {e.pricingType === 'FREE' ? 'Gratis' : 'Berbayar'}
+                    </p>
                   </div>
                 </div>
               ))}

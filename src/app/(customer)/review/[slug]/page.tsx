@@ -18,12 +18,12 @@ import {
   CreateReviewOutput,
   createReviewSchema,
 } from '@/features/review/validation/createReviewSchema';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { isAxiosError } from 'axios';
 import PopoverSuccess from '@/features/general/components/popoverSuccess';
 import PopoverFailed from '@/features/general/components/popoverFailed';
-import AuthGuard from '@/features/general/components/authGuard';
+import AuthGuard from '@/hoc/authGuard';
 
 export default function PostReviewPage() {
   return (
@@ -41,6 +41,7 @@ function PostReviewContent() {
   const [errorMessage, setErrorMessage] = useState('');
   const successRef = useRef<HTMLDialogElement>(null);
   const failedRef = useRef<HTMLDialogElement>(null);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -59,6 +60,7 @@ function PostReviewContent() {
     },
     onSuccess: () => {
       (reset(), successRef?.current?.showModal());
+      queryClient.invalidateQueries({ queryKey: ['review', event.id] });
     },
     onError: (err) => {
       setErrorMessage(isAxiosError(err) && err?.response?.data?.message);
@@ -72,18 +74,18 @@ function PostReviewContent() {
     <>
       <PopoverSuccess
         ref={successRef}
-        title="Review Berhasil Terbuat"
-        message="Terima kasih sudah memberikan penilaianmu"
+        title="Ulasan Berhasil Dikirim"
+        message="Terima kasih sudah berbagi pengalamanmu!"
       />
       <PopoverFailed
         ref={failedRef}
-        title="Review Gagal"
+        title="Ulasan Gagal Dikirim"
         message={errorMessage}
       />
       {new Date(event.endDate) > new Date() ? (
         <div className="w-full min-h-screen flex justify-center items-center">
           <ErrorImage
-            message="Maaf, event yang belum selesai tidak boleh dinilai"
+            message="Maaf, event yang belum selesai belum bisa diulas"
             next="/review"
             hook="Kembali ke halaman sebelumnya"
           />
@@ -126,7 +128,7 @@ function PostReviewContent() {
           >
             <div className="flex gap-2 justify-center items-center md:text-xl lg:text-[27px] font-semibold">
               <PiMaskHappy />
-              <h1>Kasih penilaianmu buat event ini</h1>
+              <h1>Bagikan pengalamanmu di event ini</h1>
             </div>
             <div className="mt-7 mx-3 lg:mx-0 grid md:grid-cols-2">
               <div>
@@ -157,7 +159,7 @@ function PostReviewContent() {
                 </legend>
                 <textarea
                   className="textarea textarea-neutral h-30 w-full bg-white"
-                  placeholder="Type here..."
+                  placeholder="Ceritakan pengalamanmu di event ini..."
                   {...register('comment')}
                 ></textarea>
                 <label className="label text-red-500">
@@ -176,7 +178,7 @@ function PostReviewContent() {
                 type="submit"
                 className="btn bg-brand-400 text-black w-20 md:w-25 md:text-base"
               >
-                Nilai
+                Kirim
               </button>
             </div>
           </form>

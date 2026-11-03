@@ -11,10 +11,10 @@ const roles = [
     badge: "bg-green-100 text-green-700",
   },
   {
-    title: "Organizer",
+    title: "Event Organizer",
     desc: "Buat dan promosikan event, kelola transaksi, dan pantau statistik.",
     href: "/register/organizer", // alamat halaman register organizer
-    button: "Daftar sebagai Organizer",
+    button: "Daftar sebagai Event Organizer",
     color: "bg-purple-600 hover:bg-purple-700",
     badge: "bg-purple-100 text-purple-700",
   },

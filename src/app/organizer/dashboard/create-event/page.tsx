@@ -13,17 +13,18 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CreateEventFormData } from '@/features/organizer/createEvent/createEventFormData';
+import { CreateEventFormData } from '@/features/organizer/create-event/createEventFormData';
 import PopoverFailed from '@/features/general/components/popoverFailed';
 import { isAxiosError } from 'axios';
 import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
+import WithAuthGuard from '@/hoc/withAuthGuard';
 
 const sansita = Sansita({
   weight: '700',
   subsets: ['latin'],
 });
 
-export default function CreateEventPage() {
+function CreateEventPage() {
   const {
     register,
     handleSubmit,
@@ -58,7 +59,7 @@ export default function CreateEventPage() {
     onError: (err) => {
       setErrorMessage(
         (isAxiosError(err) && err?.response?.data?.message) ||
-          'Terjadi kesalahan, silahkan coba lagi',
+          'Terjadi kesalahan, silakan coba lagi',
       );
       failedRef?.current?.showModal();
     },
@@ -75,7 +76,7 @@ export default function CreateEventPage() {
       />
       <PopoverSuccessLink
         ref={successRef}
-        title="Event Berhasil Terbuat"
+        title="Event Berhasil Dibuat"
         next={
           pricingType === 'PAID'
             ? `/organizer/dashboard/create-ticket/${eventId}`
@@ -83,7 +84,7 @@ export default function CreateEventPage() {
         }
         message={
           pricingType === 'PAID'
-            ? 'Silahkan buat tiket untuk eventmu'
+            ? 'Silakan buat tiket untuk eventmu'
             : 'Event gratismu siap dipromosikan'
         }
         hook={pricingType === 'PAID' ? 'Buat tiket' : 'Kembali'}
@@ -93,32 +94,32 @@ export default function CreateEventPage() {
           <div className="flex justify-center">
             <Image
               src={'/lawang.svg'}
-              alt={'Lawang logo'}
+              alt={'Logo Lawang'}
               width={200}
               height={100}
             />
           </div>
           <h1
-            className={`flex mt-5 justify-center text-lg md:text-2xl text-black font-semibold ${sansita.className}`}
+            className={`flex mt-5 justify-center text-lg md:text-2xl text-brand-200 font-semibold ${sansita.className}`}
           >
-            PROMOTE YOUR EVENT ON LAWANG
+            PROMOSIKAN EVENTMU DI LAWANG
           </h1>
-          <p className="flex mt-1 justify-center text-black italic text-sm md:text-lg">
-            Fill the form below to start promoting
+          <p className="flex mt-1 justify-center text-brand-200 italic text-sm md:text-lg">
+            Isi formulir di bawah ini untuk mulai promosi
           </p>
           <form
             onSubmit={handleSubmit((data) => handleCreateEvent.mutate(data))}
             className="mt-5"
           >
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                Event Image
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Foto Event
               </legend>
               <div className="flex w-full h-60 shrink overflow-hidden text-2xl font-bold bg-gray-300 rounded-lg justify-center items-center">
                 {previewPicture ? (
                   <img
                     src={previewPicture}
-                    alt="Foto Profil"
+                    alt="Pratinjau foto event"
                     className="aspect-2/1 h-auto w-full object-cover"
                   />
                 ) : (
@@ -128,8 +129,8 @@ export default function CreateEventPage() {
               <label className="lebel">
                 Disarankan berukuran 1200 x 600 pixel
               </label>
-              <label className="cursor-pointer w-30 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-blue-400">
-                Pilih foto Event
+              <label className="cursor-pointer w-fit rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 has-focus-visible:ring-2 has-focus-visible:ring-blue-400">
+                Pilih foto
                 <input
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp"
@@ -139,24 +140,24 @@ export default function CreateEventPage() {
               </label>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                Event Name
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Nama Event
               </legend>
               <input
                 type="text"
                 className="input w-full bg-white input-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('name')}
               />
               <p className="label text-red-600">{errors?.name?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-sm md:text-base text-black">
-                Event Description
+              <legend className="fieldset-legend text-sm md:text-base text-brand-200">
+                Deskripsi Event
               </legend>
               <textarea
                 className="textarea h-24 w-full bg-white textarea-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('description')}
               ></textarea>
               <p className="label text-red-600">
@@ -164,15 +165,15 @@ export default function CreateEventPage() {
               </p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-sm md:text-base text-black">
-                Category
+              <legend className="fieldset-legend text-sm md:text-base text-brand-200">
+                Kategori
               </legend>
               <select
-                defaultValue="Pick one category"
+                defaultValue="Pilih kategori"
                 className="select w-full bg-white select-neutral"
                 {...register('category')}
               >
-                <option disabled={true}>Pick one category</option>
+                <option disabled={true}>Pilih kategori</option>
                 {categories.map(({ cat }) => (
                   <option key={cat} value={cat}>
                     {cat.replace('_', ' ')}
@@ -182,15 +183,15 @@ export default function CreateEventPage() {
               <p className="lebel text-red-600">{errors?.category?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-sm md:text-base text-black">
-                City
+              <legend className="fieldset-legend text-sm md:text-base text-brand-200">
+                Kota
               </legend>
               <select
-                defaultValue="Pick one city"
+                defaultValue="Pilih kota"
                 className="select w-full bg-white select-neutral"
                 {...register('city')}
               >
-                <option disabled={true}>Pick one city</option>
+                <option disabled={true}>Pilih kota</option>
                 {sortedCities.map((city, index) => (
                   <option key={index} value={city}>
                     {city}
@@ -200,86 +201,86 @@ export default function CreateEventPage() {
               <p className="label text-red-600">{errors?.city?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-sm md:text-base text-black">
-                Event Venue
+              <legend className="fieldset-legend text-sm md:text-base text-brand-200">
+                Lokasi Event
               </legend>
               <textarea
                 className="textarea h-24 w-full bg-white textarea-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('venue')}
               ></textarea>
               <p className="label text-red-600">{errors?.venue?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                Pricing Type
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Jenis Harga
               </legend>
               <select
-                defaultValue="Pick one type"
+                defaultValue="Pilih jenis harga"
                 className="select w-full bg-white select-neutral"
                 {...register('pricingType')}
               >
-                <option disabled={true}>Pick one type</option>
+                <option disabled={true}>Pilih jenis harga</option>
                 {['PAID', 'FREE'].map((p, index) => (
                   <option key={index} value={p}>
-                    {p}
+                    {p === 'PAID' ? 'Berbayar' : 'Gratis'}
                   </option>
                 ))}
               </select>
               <p className="label">
-                Free event will generate a "Free Ticket" automatically
+                Event gratis otomatis mendapat tiket bernama "Free Ticket"
               </p>
               <p className="label text-red-600">
                 {errors?.pricingType?.message}
               </p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                Start Date
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Tanggal Mulai
               </legend>
               <input
                 type="datetime-local"
                 className="input w-full bg-white input-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('startDate')}
               />
               <p className="label text-red-600">{errors?.startDate?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                End Date
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Tanggal Selesai
               </legend>
               <input
                 type="datetime-local"
                 className="input w-full bg-white input-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('endDate')}
               />
               <p className="label text-red-600">{errors?.endDate?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
-              <legend className="fieldset-legend text-black text-sm md:text-base">
-                Total Seats
+              <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
+                Jumlah Kursi
               </legend>
               <input
                 type="number"
                 className="input w-full bg-white input-neutral"
-                placeholder="Type here"
+                placeholder="Ketik di sini"
                 {...register('totalSeats')}
               />
               <p className="label text-red-600">
                 {errors?.totalSeats?.message}
               </p>
               <p className="label">
-                Available seats will follow the total seats input
+                Kursi tersedia akan mengikuti jumlah kursi yang kamu isi
               </p>
             </fieldset>
             <button
               type="submit"
               disabled={handleCreateEvent.isPending}
-              className="mt-8 w-full btn bg-brand-300 text-white"
+              className="mt-8 w-full btn bg-brand-300 hover:bg-yellow-500 text-white hover:text-brand-200"
             >
-              Create Event
+              Buat Event
             </button>
           </form>
         </div>
@@ -287,3 +288,5 @@ export default function CreateEventPage() {
     </>
   );
 }
+
+export default WithAuthGuard(CreateEventPage, ['ORGANIZER']);

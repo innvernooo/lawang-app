@@ -76,8 +76,8 @@ export default function CustomerRegister() {
         ref={successRef}
         title="Akun Berhasil Terdaftar"
         next="/login"
-        hook="Login"
-        message="Klik tombol berikut untuk lanjut ke halaman login"
+        hook="Masuk"
+        message="Klik tombol berikut untuk lanjut ke halaman masuk"
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">
         <div className="w-full max-w-lg rounded-xl border border-gray-100 bg-white p-5 shadow-md sm:p-8 md:max-w-2xl">
@@ -135,7 +135,7 @@ export default function CustomerRegister() {
             </div>
             <div className="mt-4">
               <label htmlFor="username" className={labelClass}>
-                Username
+                Nama Pengguna
               </label>
               <input
                 id="username"
@@ -201,7 +201,7 @@ export default function CustomerRegister() {
             </div>
             <div className="mt-4">
               <label htmlFor="password" className={labelClass}>
-                Password
+                Kata Sandi
               </label>
               <div className="relative">
                 <input
@@ -215,7 +215,7 @@ export default function CustomerRegister() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={
-                    showPassword ? 'Sembunyikan password' : 'Tampilkan password'
+                    showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'
                   }
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-blue-600 focus-visible:outline-none"
@@ -229,7 +229,7 @@ export default function CustomerRegister() {
             </div>
             <div>
               <label htmlFor="confirmPassword" className={labelClass}>
-                Konfirmasi Password
+                Konfirmasi Kata Sandi
               </label>
               <div className="relative">
                 <input
@@ -243,7 +243,7 @@ export default function CustomerRegister() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={
-                    showPassword ? 'Sembunyikan password' : 'Tampilkan password'
+                    showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'
                   }
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-blue-600 focus-visible:outline-none"

@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 import { AiFillTikTok } from 'react-icons/ai';
 import { FaSquareXTwitter } from 'react-icons/fa6';
+import Link from 'next/link';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,19 +36,21 @@ const payment = [
 export default function Footer() {
   return (
     <>
-      <footer className={`footer sm:footer-horizontal bg-neutral-50 text-black-content p-10 ${geistSans.className}`}>
+      <footer
+        className={`footer sm:footer-horizontal bg-neutral-50 text-black-content p-10 ${geistSans.className}`}
+      >
         <aside>
           <Image
             src={'/lawang.svg'}
-            alt="Lawang logo"
+            alt="Logo Lawang"
             width={100}
             height={100}
             className="md:w-33 lg:w-30"
           />
           <p className="font-semibold">
-            Lawang | Event Ticketing Platform
+            Lawang | Platform Tiket Event
             <br />
-            Since 2026
+            Sejak 2026
           </p>
           <p>
             Dari konser sampai festival dan pertandingan olahraga,
@@ -57,16 +60,33 @@ export default function Footer() {
           </p>
         </aside>
         <nav>
-          <p className="font-semibold">
+          <p className="font-semibold">Tentang Lawang</p>
+          <a href="/about-us" className="hover:underline">
+            Tentang kami
+          </a>
+          <a href="/blog" className="hover:underline">
+            Blog
+          </a>
+          <p className="mt-4 font-semibold">
             Yuk, Ikuti Kami untuk Info Seru Lainnya
           </p>
           <div className="text-black grid grid-flow-col gap-4 text-lg lg:text-2xl">
-            <a>
+            <Link
+              href={
+                'https://www.instagram.com/lawang.web?exln=c3AxdnB0M21zN2xr'
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaInstagram />
-            </a>
-            <a>
+            </Link>
+            <Link
+              href={'https://www.tiktok.com/@lawang7331?_r=1&_t=ZS-9B43cmYVhYa'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <AiFillTikTok />
-            </a>
+            </Link>
             <a>
               <FaSquareXTwitter />
             </a>

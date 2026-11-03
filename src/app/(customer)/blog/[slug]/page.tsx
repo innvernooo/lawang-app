@@ -3,15 +3,26 @@ import Markdown from 'react-markdown';
 import { tanggal } from '@/utils/localDate';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import AuthGuard from '@/features/general/components/authGuard';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: PageProps<'/blog/[slug]'>): Promise<Metadata> {
+  const { slug } = await params;
+
+  const blog = await GetReadingBySlug(slug);
+
+  return {
+    title: { absolute: `Lawang Blog | ${blog.title}` },
+    description: blog.exceprt,
+  };
+}
 
 export default function BlogPage({ params }: PageProps<'/blog/[slug]'>) {
   return (
-    <AuthGuard allowedRole={['CUSTOMER']}>
-      <Suspense fallback={<div className="min-h-screen"></div>}>
-        <BlogPageContent />
-      </Suspense>
-    </AuthGuard>
+    <Suspense fallback={<div className="min-h-screen"></div>}>
+      <BlogPageContent />
+    </Suspense>
   );
 
   async function BlogPageContent() {
@@ -20,7 +31,7 @@ export default function BlogPage({ params }: PageProps<'/blog/[slug]'>) {
     const blog = await GetReadingBySlug(slug);
 
     return (
-      <div className="w-full min-h-screen flex justify-center items-start">
+      <div className="w-full min-h-screen flex justify-center items-start py-5 md:py-0">
         <article className="w-full max-w-4xl">
           <div className="relative aspect-2/1 w-full overflow-hidden rounded-lg">
             <Image
@@ -32,7 +43,7 @@ export default function BlogPage({ params }: PageProps<'/blog/[slug]'>) {
               className="object-cover"
             />
           </div>
-          <h1 className="mt-5 text-3xl font-bold leading-tight">
+          <h1 className="mt-5 text-xl md:text-3xl font-bold leading-tight">
             {blog.title}
           </h1>
           <p className="mt-3 font-medium text-gray-500">

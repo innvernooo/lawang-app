@@ -8,7 +8,7 @@ const dateTime = (label: string) =>
     .datetime({
       local: true,
       offset: true,
-      message: `${label} must be a valid date-time`,
+      message: `${label} harus berupa tanggal dan waktu yang valid`,
     })
     .pipe(z.coerce.date());
 
@@ -19,26 +19,26 @@ export const createVoucherSchema = z.object({
     .toUpperCase()
     .regex(
       /^(?=.*[A-Z])(?=.*[0-9])(?=.*-)[A-Z0-9-]+$/,
-      'Use a mix of letters, numbers, and "-"',
+      'Gunakan kombinasi huruf, angka, dan tanda "-"',
     ),
 
   discountAmount: z.coerce
-    .number('Input must be a number')
-    .int('Input must be a whole number')
-    .min(1000, 'Minimum amount is 1.000')
-    .max(2000000000, 'Discount amount is too large'),
+    .number('Nominal diskon harus berupa angka')
+    .int('Nominal diskon harus bilangan bulat')
+    .min(1000, 'Nominal diskon minimal Rp1.000')
+    .max(2000000000, 'Nominal diskon terlalu besar'),
 
   quota: z.preprocess(
     emptyToUndefined,
     z.coerce
-      .number('Quota must be a number')
-      .int('Quota must be a whole number')
-      .min(1, 'Event price is required')
-      .max(10000, 'Maximum quota is 1000'),
+      .number('Kuota harus berupa angka')
+      .int('Kuota harus bilangan bulat')
+      .min(1, 'Kuota minimal 1')
+      .max(10000, 'Kuota maksimal 10.000'),
   ),
 
-  startDate: z.preprocess(emptyToUndefined, dateTime('Start Date')),
-  endDate: z.preprocess(emptyToUndefined, dateTime('End Date')),
+  startDate: z.preprocess(emptyToUndefined, dateTime('Tanggal mulai')),
+  endDate: z.preprocess(emptyToUndefined, dateTime('Tanggal selesai')),
 });
 
 export type CreateVoucherInput = z.input<typeof createVoucherSchema>;

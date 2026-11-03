@@ -16,7 +16,7 @@ export default function PopoverFailed({
         <div className='flex justify-center'>
           <Image
             src={'/lost.svg'}
-            alt="robot-error"
+            alt="Ilustrasi gagal"
             width={100}
             height={100}
             className="w-70"
@@ -33,7 +33,7 @@ export default function PopoverFailed({
         </div>
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button>tutup</button>
       </form>
     </dialog>
   );

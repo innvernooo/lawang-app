@@ -8,35 +8,35 @@ const dateTime = (label: string) =>
     .datetime({
       local: true,
       offset: true,
-      message: `${label} must be a valid date-time`,
+      message: `${label} harus berupa tanggal dan waktu yang valid`,
     })
     .pipe(z.coerce.date());
 
 export const addTicketTypeSchema = z.object({
   name: z
     .string()
-    .min(1, 'Ticket type is required')
-    .max(100, 'Maximum input is 100 characters'),
+    .min(1, 'Nama tiket wajib diisi')
+    .max(100, 'Maksimal 100 karakter'),
 
   price: z.preprocess(
     emptyToUndefined,
     z.coerce
-      .number('Price must be a number')
-      .int('Price must be a whole number')
-      .min(0, 'Ticket price is required')
-      .max(2000000000, 'Price is too large'),
+      .number('Harga harus berupa angka')
+      .int('Harga harus bilangan bulat')
+      .min(0, 'Harga tiket tidak boleh negatif')
+      .max(2000000000, 'Harga terlalu besar'),
   ),
 
   quota: z.preprocess(
     emptyToUndefined,
     z.coerce
-      .number('Quota must be a number')
-      .int('Quota must be a whole number')
-      .min(1, 'Event price is required')
-      .max(10000, 'Maximum quota is 1000'),
+      .number('Kuota harus berupa angka')
+      .int('Kuota harus bilangan bulat')
+      .min(1, 'Kuota minimal 1')
+      .max(10000, 'Kuota maksimal 10.000'),
   ),
 
-  endSale: z.preprocess(emptyToUndefined, dateTime('End sale').optional()),
+  endSale: z.preprocess(emptyToUndefined, dateTime('Batas akhir penjualan').optional()),
 });
 
 export type TicketTypeInput = z.input<typeof addTicketTypeSchema>;

@@ -4,6 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
+import { id as localeId } from 'date-fns/locale';
 
 import { IoLocationOutline } from "react-icons/io5";
 import { IoMdPricetags, IoIosTime } from 'react-icons/io';
@@ -43,17 +44,17 @@ export default function MusicEvents() {
             >
               <Image
                 src={item.imageUrl ?? '/alternative.png'}
-                alt="Event"
+                alt="Gambar event"
                 width={736}
                 height={368}
-                className="aspect-2/1 h-auto w-full object-cover rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/30 group-focus-visible:-translate-y-2"
+                className="aspect-2/1 h-auto w-full object-cover rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/50 group-focus-visible:-translate-y-2"
               />
 
               <h1 className="font-bold text-xl md:text-lg lg:text-xl tracking-wide line-clamp-1 mt-2 text-black transition-colors duration-300 group-hover:text-blue-700 group-focus-visible:text-blue-700">
                 {item?.name}
               </h1>
               <p className="text-lg md:text-sm lg:text-lg">
-                Held by {item?.organizer?.organizerName}
+                Diselenggarakan oleh {item?.organizer?.organizerName}
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2 mt-4">
                 <MdOutlineCategory />
@@ -67,14 +68,18 @@ export default function MusicEvents() {
               </p>
               <p className="flex items-center text-lg md:text-sm lg:text-lg gap-2">
                 <TbClockHour3 />
-                <span>{format(new Date(item?.startDate), 'dd MMMM yyyy')}</span>
+                <span>{format(new Date(item?.startDate), 'dd MMMM yyyy', {
+                    locale: localeId,
+                  })}</span>
               </p>
               <p className="line-clamp-1">
                 _________________________________________________________________________________________________________________________________
               </p>
               <div className="flex items-center gap-2 mt-5 text-lg md:text-sm lg:text-lg">
                 <IoMdPricetags />
-                <p className="font-semibold">{item?.pricingType}</p>
+                <p className="font-semibold">
+                  {item?.pricingType === 'FREE' ? 'Gratis' : 'Berbayar'}
+                </p>
               </div>
             </div>
           </div>

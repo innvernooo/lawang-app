@@ -6,13 +6,13 @@ const emptyToUndefined = (v: unknown) =>
 const pointStep = 10000;
 
 export const createOrderSchema = z.object({
-  ticketTypeId: z.uuid('Tikcet type is not belong to this event'),
+  ticketTypeId: z.uuid('Pilih jenis tiket yang tersedia untuk event ini'),
 
   quantity: z.coerce
-    .number('Quantity input must be a number')
-    .int('Quantity must be a whole number')
-    .min(1, 'Minimum quantity is 1 ticket per order')
-    .max(4, 'Maximum quantity is 4 tickets per order')
+    .number('Jumlah tiket harus berupa angka')
+    .int('Jumlah tiket harus bilangan bulat')
+    .min(1, 'Minimal 1 tiket per pesanan')
+    .max(4, 'Maksimal 4 tiket per pesanan')
     .default(1),
 
   voucherCode: z.preprocess(
@@ -21,7 +21,7 @@ export const createOrderSchema = z.object({
       .string()
       .trim()
       .toUpperCase()
-      .max(30, 'Maximum input is 30 characters')
+      .max(30, 'Maksimal 30 karakter')
       .optional(),
   ),
 
@@ -31,20 +31,20 @@ export const createOrderSchema = z.object({
       .string()
       .trim()
       .toUpperCase()
-      .max(30, 'Maximum input is 30 characters')
+      .max(30, 'Maksimal 30 karakter')
       .optional(),
   ),
 
   pointsUsed: z.preprocess(
     emptyToUndefined,
     z.coerce
-      .number('Point input must be a number')
-      .int('Point must be a whole number')
-      .min(0, 'Point cannot be negative')
-      .max(50000, 'Maximum point used is 50.000')
+      .number('Poin harus berupa angka')
+      .int('Poin harus bilangan bulat')
+      .min(0, 'Poin tidak boleh negatif')
+      .max(50000, 'Poin yang dipakai maksimal 50.000')
       .multipleOf(
         pointStep,
-        `Points can only be used in multiple of ${pointStep}`,
+        `Poin hanya bisa dipakai dalam kelipatan ${pointStep}`,
       )
       .default(0),
   ),

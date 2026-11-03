@@ -26,7 +26,7 @@ export default function BacaanSeru() {
             className="min-w-0 flex-[0_0_100%] md:flex-[0_0_33.3333%] pl-4"
           >
             <article className="group h-full cursor-pointer p-3 text-black">
-              <div className="relative aspect-2/1 w-full overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/30">
+              <div className="relative aspect-2/1 w-full overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/50">
                 <Image
                   src={b.imageUrl ?? '/download.jpg'}
                   alt={b.title}

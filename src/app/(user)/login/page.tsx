@@ -57,7 +57,7 @@ export default function LoginPage() {
     onError: (err) => {
       setErrorMessage(
         (isAxiosError(err) && err.response?.data?.message) ||
-          'Terjadi Kesalahan, silahkan coba lagi',
+          'Terjadi kesalahan, silakan coba lagi',
       );
       failedRef?.current?.showModal();
     },
@@ -67,7 +67,7 @@ export default function LoginPage() {
     <>
       <PopoverFailed
         ref={failedRef}
-        title="Login Gagal"
+        title="Gagal Masuk"
         message={errorMessage}
       />
       <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8 sm:py-12">
@@ -83,11 +83,11 @@ export default function LoginPage() {
           >
             <div>
               <label htmlFor="identifier" className={labelClass}>
-                Email atau Username
+                Email atau Nama Pengguna
               </label>
               <input
                 id="identifier"
-                placeholder="nama@email.com atau username"
+                placeholder="nama@email.com atau nama pengguna"
                 autoComplete="username"
                 className={inputClass}
                 {...register('identifier')}
@@ -103,13 +103,13 @@ export default function LoginPage() {
                   htmlFor="password"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Password
+                  Kata Sandi
                 </label>
                 <Link
                   href="/forgot-password"
                   className="text-xs text-blue-600 hover:underline"
                 >
-                  Lupa password?
+                  Lupa kata sandi?
                 </Link>
               </div>
               <div className="relative">
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={
-                    showPassword ? 'Sembunyikan password' : 'Tampilkan password'
+                    showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'
                   }
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-blue-600 focus-visible:outline-none"

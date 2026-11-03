@@ -47,7 +47,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
             <div className="avatar">
               <div className="w-8 rounded-full">
                 <img
-                  alt="Organizer logo"
+                  alt="Logo Event Organizer"
                   src={event?.organizer?.profilePictureUrl ?? '/eo.svg'}
                   className="h-full w-full scale-125 object-center"
                 />
@@ -64,7 +64,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
         <div>
           <Image
             src={event?.imageUrl ?? '/alternative.png'}
-            alt="Event"
+            alt="Gambar event"
             width={500}
             height={368}
             className="aspect-2/1 h-auto w-full rounded-2xl object-cover md:max-w-xl lg:aspect-auto lg:h-65 lg:w-125 lg:max-w-full lg:rounded-b-none lg:rounded-t-2xl lg:object-fill"
@@ -111,7 +111,7 @@ export default async function EventBanner({ slug }: { slug: string }) {
                 <div className="avatar">
                   <div className="w-10 rounded-full">
                     <img
-                      alt="Organizer logo"
+                      alt="Logo Event Organizer"
                       src={event?.organizer?.profilePictureUrl ?? '/eo.svg'}
                       className="h-full w-full scale-125 object-cover"
                     />

@@ -7,6 +7,7 @@ import { LuMessageCircleQuestion } from 'react-icons/lu';
 import { FaSearch } from 'react-icons/fa';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
+import { SiWikibooks } from 'react-icons/si';
 
 export default function Navbar() {
   const { id, name, role, clearAuth } = useAuthStore();
@@ -15,9 +16,10 @@ export default function Navbar() {
       const res = await axiosInstance.post('/auth/logout');
 
       return res?.data;
-    }, onSuccess: () => {
-      clearAuth()
-    }
+    },
+    onSuccess: () => {
+      clearAuth();
+    },
   });
 
   return (
@@ -26,14 +28,25 @@ export default function Navbar() {
         <a href={'/'}>
           <Image
             src={'/lawang.svg'}
-            alt="Lawang logo"
+            alt="Logo Lawang"
             width={100}
             height={100}
             className="md:w-33 lg:w-30"
           />
         </a>
         {id ? (
-          <div className={role === 'CUSTOMER' ? 'flex' : 'hidden'}>
+          <div className={role === 'CUSTOMER' ? 'flex items-center' : 'hidden'}>
+            <ul className="menu menu-horizontal bg-white rounded-box">
+              <li>
+                <a
+                  href="/blog"
+                  className="flex items-center text-brand-200 font-semibold hover:text-yellow-500"
+                >
+                  <SiWikibooks />
+                  <p className="hidden md:flex">Baca Blog</p>
+                </a>
+              </li>
+            </ul>
             <ul className="menu menu-horizontal bg-white rounded-box">
               <li>
                 <a
@@ -41,7 +54,7 @@ export default function Navbar() {
                   className="flex items-center text-brand-200 font-semibold hover:text-yellow-500"
                 >
                   <FaSearch />
-                  <p>Cari Event</p>
+                  <p className="hidden md:flex">Cari Event</p>
                 </a>
               </li>
             </ul>
@@ -59,10 +72,7 @@ export default function Navbar() {
                 className="dropdown-content menu bg-white rounded-box w-50 p-2"
               >
                 <li>
-                  <a
-                    href={`/profile/customer/${id}`}
-                    className="flex items-center"
-                  >
+                  <a href="/profile/customer/me" className="flex items-center">
                     <div className="avatar">
                       <div className="w-10 rounded-full">
                         <img alt={name} src="/cus.svg" />
@@ -87,7 +97,7 @@ export default function Navbar() {
                     href="/review"
                     className="my-2 btn w-full bg-blue-200 text-blue-700"
                   >
-                    Review Event
+                    Ulasan Event
                   </a>
                 </li>
                 <li>
@@ -108,42 +118,66 @@ export default function Navbar() {
             </div>
           </div>
         ) : (
-          <div className="dropdown dropdown-end lg:mr-5">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn m-1 rounded-full text-white bg-brand-200"
-            >
-              <CgProfile />
-              <h1>Akun</h1>
-            </div>
-            <ul
-              tabIndex={-1}
-              className="dropdown-content menu bg-white rounded-box w-40 md:w-50 p-2"
-            >
+          <div className="flex items-center">
+            <ul className="menu menu-horizontal bg-white rounded-box">
               <li>
                 <a
-                  href="/register"
-                  className="mt-3 btn w-full bg-blue-200 text-black"
+                  href="/blog"
+                  className="flex items-center text-brand-200 font-semibold hover:text-yellow-500"
                 >
-                  Daftar
+                  <SiWikibooks />
+                  <p className="hidden md:flex">Baca Blog</p>
                 </a>
-              </li>
-              <li>
-                <a
-                  href="/login"
-                  className="my-3 btn w-full bg-blue-700 text-white"
-                >
-                  Masuk
-                </a>
-              </li>
-              <li>
-                <div className="flex gap-2 items-center text-base">
-                  <LuMessageCircleQuestion />
-                  <h2>Pusat Bantuan</h2>
-                </div>
               </li>
             </ul>
+            <ul className="menu menu-horizontal bg-white rounded-box">
+              <li>
+                <a
+                  href="/event"
+                  className="flex items-center text-brand-200 font-semibold hover:text-yellow-500"
+                >
+                  <FaSearch />
+                  <p className="hidden md:flex">Cari Event</p>
+                </a>
+              </li>
+            </ul>
+            <div className="dropdown dropdown-end lg:mr-5">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn m-1 rounded-full text-white hover:text-yellow-500 bg-brand-200"
+              >
+                <CgProfile />
+                <h1>Akun</h1>
+              </div>
+              <ul
+                tabIndex={-1}
+                className="dropdown-content menu bg-white rounded-box w-40 md:w-50 p-2"
+              >
+                <li>
+                  <a
+                    href="/register"
+                    className="mt-3 btn w-full bg-blue-200 text-black"
+                  >
+                    Daftar
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/login"
+                    className="my-3 btn w-full bg-blue-700 text-white"
+                  >
+                    Masuk
+                  </a>
+                </li>
+                <li>
+                  <div className="flex gap-2 items-center text-base">
+                    <LuMessageCircleQuestion />
+                    <h2>Pusat Bantuan</h2>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         )}
       </div>

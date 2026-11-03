@@ -27,8 +27,8 @@ export default function ReviewHeader({
           <h2>{customer?.username}</h2>
         </div>
         <label className="label md:flex md:justify-end text-[10px] md:text-[11px] lg:text-sm text-yellow-400 italic">
-          Klik pada <span className="underline">Beri rating</span> untuk
-          memberikan penilaian
+          Klik <span className="underline">Beri ulasan</span> untuk
+          membagikan pengalamanmu
         </label>
       </div>
     </>
