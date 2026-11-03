@@ -2,7 +2,7 @@ import HeroBanner from '@/features/home/components/heroBanner';
 import { Sansita } from 'next/font/google';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { GiSouthKorea, GiMaterialsScience } from 'react-icons/gi';
-import { SlBookOpen } from "react-icons/sl";
+import { SlBookOpen } from 'react-icons/sl';
 import { PiMicrophoneStage } from 'react-icons/pi';
 import UpcomingEvents from '@/features/home/components/upcomingEvents';
 import KpopEvents from '@/features/home/components/kpopEvents';
@@ -13,6 +13,12 @@ import CategoryButton from '@/features/event/components/categoryButton';
 import MusicEvents from '@/features/home/components/musicEvents';
 import ScienceEvents from '@/features/home/components/scienceEvents';
 import BacaanSeru from '@/features/home/components/bacaanSeru';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  description:
+    'Temukan dan beli tiket konser, K-Pop, sains, dan event seru lainnya.',
+};
 
 const sansita = Sansita({
   weight: '700',

@@ -5,7 +5,7 @@ export default function HocWarning() {
     <>
       <div className="w-full min-h-screen flex justify-center items-center">
         <ErrorImage
-          message="STOP! Role-mu tidak diizinkan mengakses halaman ini"
+          message="Maaf, akunmu tidak punya akses ke halaman ini"
           next="/"
           hook="Kembali ke halaman utama"
         />

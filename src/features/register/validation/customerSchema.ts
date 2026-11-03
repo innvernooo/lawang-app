@@ -20,37 +20,37 @@ export const customerRegisterSchema = z
     name: z
       .string()
       .trim()
-      .min(1, 'Fullname input is required')
-      .max(100, 'Fullname input has maximum 100 characters'),
+      .min(1, 'Nama lengkap wajib diisi')
+      .max(100, 'Nama lengkap maksimal 100 karakter'),
     username: z
       .string()
       .trim()
-      .min(5, 'Username input is required, minimum 5 characters')
-      .max(50, 'Username input has maximum 50 characters'),
+      .min(5, 'Nama pengguna wajib diisi, minimal 5 karakter')
+      .max(50, 'Nama pengguna maksimal 50 karakter'),
     email: z
-      .email('Invalid email format')
+      .email('Format email tidak valid')
       .trim()
-      .max(255, 'Email input has maximum 255 characters'),
+      .max(255, 'Email maksimal 255 karakter'),
 
     nik: z.preprocess(
       emptyToUndefined,
       z
         .string()
         .trim()
-        .regex(/^[0-9]{16}$/, 'NIK must be 16 digits')
+        .regex(/^[0-9]{16}$/, 'NIK harus 16 digit angka')
         .optional(),
     ),
     password: z
       .string()
-      .min(8, 'Password input is required, minimum 8 characters')
-      .max(15, 'Password input has maximum 15 characters'),
+      .min(8, 'Kata sandi wajib diisi, minimal 8 karakter')
+      .max(15, 'Kata sandi maksimal 15 karakter'),
     phoneNumber: z.preprocess(
       emptyToUndefined,
       z
         .string()
         .trim()
-        .max(20, 'Phone number input has maximum 20 characters')
-        .regex(/^\+?[0-9]+$/, 'Phone number must contain digits only')
+        .max(20, 'No. ponsel maksimal 20 karakter')
+        .regex(/^\+?[0-9]+$/, 'No. ponsel hanya boleh berisi angka')
         .optional(),
     ),
     referralCode: z.preprocess(
@@ -59,14 +59,14 @@ export const customerRegisterSchema = z
         .string()
         .trim()
         .toUpperCase()
-        .length(12, 'Referral code must be 12 characters')
+        .length(12, 'Kode referral harus 12 karakter')
         .optional(),
     ),
-    confirmPassword: z.string().min(1, 'Konfirmasi password wajib diisi'),
+    confirmPassword: z.string().min(1, 'Konfirmasi kata sandi wajib diisi'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
-    message: 'Konfirmasi password tidak sama',
+    message: 'Konfirmasi kata sandi tidak sama',
   });
 
 export type CustomerRegisterInput = z.input<typeof customerRegisterSchema>;

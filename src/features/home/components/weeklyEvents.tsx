@@ -5,6 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 import { useGetWeeklyEvent } from '@/hook/event/useGetWeeklyEvent';
 import { format } from 'date-fns';
+import { id as localeId } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -86,13 +87,13 @@ export default function WeeklyEvents() {
                       <div className="flex min-w-0 items-center gap-3 md:gap-5">
                         <div className="w-14 h-fit shrink-0 p-1 bg-gray-100 rounded-lg text-xs md:w-20 md:p-1.5 md:text-base">
                           <h1 className="flex justify-center bg-white font-semibold rounded items-center">
-                            {format(e.startDate, 'MMM').toUpperCase()}
+                            {format(e.startDate, 'MMM', { locale: localeId }).toUpperCase()}
                           </h1>
                           <h1 className="my-1 text-lg font-bold flex justify-center md:my-1.5 md:text-2xl">
                             {format(e.startDate, 'd').toUpperCase()}
                           </h1>
                           <h1 className="flex font-semibold justify-center">
-                            {format(e.startDate, 'iii').toUpperCase()}
+                            {format(e.startDate, 'iii', { locale: localeId }).toUpperCase()}
                           </h1>
                         </div>
                         <div className="min-w-0">
@@ -107,7 +108,7 @@ export default function WeeklyEvents() {
                           </h3>
                         </div>
                       </div>
-                      <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200 group-focus-visible:-translate-y-2 sm:block md:h-28 md:w-44 lg:h-40 lg:w-64">
+                      <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-brand-200/50 group-focus-visible:-translate-y-2 sm:block md:h-28 md:w-44 lg:h-40 lg:w-64">
                         <Image
                           src={e.imageUrl ?? '/alternative.png'}
                           alt={e.name}

@@ -20,7 +20,7 @@ import { useGetTicketByEventId } from '@/hook/ticket/useGetTicketByEventId';
 import { usePostCreateOrder } from '@/hook/transaction/usePostCreateOrder';
 import TicketOption from '@/features/order/components/ticketOption';
 import OrderHeader from '@/features/order/components/orderHeader';
-import AuthGuard from '@/features/general/components/authGuard';
+import AuthGuard from '@/hoc/authGuard';
 
 export default function OrderPage() {
   return (
@@ -62,7 +62,7 @@ export default function OrderPage() {
           onError: (err) => {
             const text =
               (isAxiosError(err) && err.response?.data?.message) ||
-              'Something went wrong, please try again';
+              'Terjadi kesalahan, silakan coba lagi';
 
             const msg = text.toLowerCase();
 
@@ -101,7 +101,7 @@ export default function OrderPage() {
                   <h2>Buat Pesanan Tiket</h2>
                 </div>
                 <label className="label mt-4 text-red-500">
-                  Anda hanya bisa membeli satu tipe tiket
+                  Kamu hanya bisa membeli satu jenis tiket per pesanan
                 </label>
                 <p className=" line-clamp-1">
                   _____________________________________________________________________________________________________________________________________________________
@@ -109,14 +109,14 @@ export default function OrderPage() {
                 <div className="grid grid-cols-2 gap-3 mt-3">
                   <fieldset className="fieldset">
                     <legend className="fieldset-legend text-black text-base">
-                      Pilih tipe tiket
+                      Pilih jenis tiket
                     </legend>
                     <select
                       defaultValue=""
                       className="select select-primary bg-white w-full"
                       {...register('ticketTypeId')}
                     >
-                      <option value="">Pick a ticket</option>
+                      <option value="">Pilih tiket</option>
                       {ticket.map((ticket: any, index: any) => (
                         <option key={index} value={ticket.id}>
                           {ticket.name}
@@ -156,10 +156,10 @@ export default function OrderPage() {
                     type="text"
                     disabled={event.pricingType === 'FREE'}
                     className="input input-primary w-full bg-white "
-                    placeholder="Type here"
+                    placeholder="Masukkan kode kupon"
                     {...register('couponCode')}
                   />
-                  <p className="label">Optional</p>
+                  <p className="label">Opsional</p>
                   <p className="label text-red-500">
                     {errors?.couponCode?.message}
                   </p>
@@ -172,10 +172,10 @@ export default function OrderPage() {
                     type="text"
                     disabled={event.pricingType === 'FREE'}
                     className="input input-primary w-full bg-white "
-                    placeholder="Type here"
+                    placeholder="Masukkan kode voucher"
                     {...register('voucherCode')}
                   />
-                  <p className="label">Optional</p>
+                  <p className="label">Opsional</p>
                   <p className="label text-red-500">
                     {errors?.voucherCode?.message}
                   </p>
@@ -183,7 +183,7 @@ export default function OrderPage() {
 
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend text-black text-base">
-                    Punya point?
+                    Mau pakai poin?
                   </legend>
                   <select
                     defaultValue={0}
@@ -198,7 +198,7 @@ export default function OrderPage() {
                       </option>
                     ))}
                   </select>
-                  <span className="label">Optional</span>
+                  <span className="label">Opsional</span>
                   <p className="label text-red-500">
                     {errors?.pointsUsed?.message}
                   </p>

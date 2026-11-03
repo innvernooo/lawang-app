@@ -227,7 +227,7 @@ function toStored(o: Organizer) {
 // Mengembalikan { namaField: "pesan error" }. Kosong berarti data valid.
 function validate(f: Organizer): Errors {
   const e: Errors = {};
-  if (f.organizerName.trim().length < 3) e.organizerName = "Nama organizer minimal 3 karakter.";
+  if (f.organizerName.trim().length < 3) e.organizerName = "Nama Event Organizer minimal 3 karakter.";
   if (f.organizerBio.length > 500) e.organizerBio = "Bio maksimal 500 karakter.";
   if (f.websiteUrl && !isUrl(f.websiteUrl))
     e.websiteUrl = "Gunakan format URL lengkap, contoh: https://namabrand.com";
@@ -380,11 +380,11 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
   // Validasi dulu, lalu buka popup konfirmasi
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!currentPw) return setMessage({ text: "Password saat ini wajib diisi.", ok: false });
-    if (newPw.length < 8) return setMessage({ text: "Password baru minimal 8 karakter.", ok: false });
+    if (!currentPw) return setMessage({ text: "Kata sandi saat ini wajib diisi.", ok: false });
+    if (newPw.length < 8) return setMessage({ text: "Kata sandi baru minimal 8 karakter.", ok: false });
     if (newPw === currentPw)
-      return setMessage({ text: "Password baru tidak boleh sama dengan password lama.", ok: false });
-    if (newPw !== confirmPw) return setMessage({ text: "Konfirmasi password tidak sama.", ok: false });
+      return setMessage({ text: "Kata sandi baru tidak boleh sama dengan kata sandi lama.", ok: false });
+    if (newPw !== confirmPw) return setMessage({ text: "Konfirmasi kata sandi tidak sama.", ok: false });
     setMessage(null);
     setShowConfirm(true);
   }
@@ -394,9 +394,9 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
     setIsSaving(true);
     await delay(800); // simulasi menunggu backend
 
-    let result: { text: string; ok: boolean } = { text: "Password berhasil diubah.", ok: true };
+    let result: { text: string; ok: boolean } = { text: "Kata sandi berhasil diubah.", ok: true };
     if (isDemo) {
-      result = { text: "Data contoh tidak bisa mengganti password.", ok: false };
+      result = { text: "Data contoh tidak bisa mengganti kata sandi.", ok: false };
     } else {
       try {
         const users = readUsers();
@@ -404,17 +404,17 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
         if (idx === -1) {
           // Akun contoh bawaan tidak tersimpan di localStorage
           result = {
-            text: "Akun contoh tidak bisa mengganti password. Daftar akun baru untuk mencobanya.",
+            text: "Akun contoh tidak bisa mengganti kata sandi. Daftar akun baru untuk mencobanya.",
             ok: false,
           };
         } else if (users[idx].password !== currentPw) {
-          result = { text: "Password saat ini salah.", ok: false };
+          result = { text: "Kata sandi saat ini salah.", ok: false };
         } else {
           users[idx].password = newPw; // hanya latihan; backend nanti menyimpan hash
           localStorage.setItem("users", JSON.stringify(users));
         }
       } catch {
-        result = { text: "Gagal menyimpan password.", ok: false };
+        result = { text: "Gagal menyimpan kata sandi.", ok: false };
       }
     }
 
@@ -433,26 +433,26 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 p-5 sm:p-6 lg:p-8">
       <div>
-        <h2 className="text-lg font-semibold text-gray-900">Ganti Password</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Ganti Kata Sandi</h2>
         <p className="text-sm text-gray-500">
           Gunakan password minimal 8 karakter yang belum pernah kamu pakai.
         </p>
       </div>
 
       <Text
-        id="currentPw" label="Password Saat Ini" type={type}
+        id="currentPw" label="Kata Sandi Saat Ini" type={type}
         value={currentPw} onChange={(e) => setCurrentPw(e.target.value)}
         autoComplete="current-password"
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Text
-          id="newPw" label="Password Baru" type={type}
+          id="newPw" label="Kata Sandi Baru" type={type}
           value={newPw} onChange={(e) => setNewPw(e.target.value)}
           autoComplete="new-password"
         />
         <Text
-          id="confirmPw" label="Konfirmasi Password Baru" type={type}
+          id="confirmPw" label="Konfirmasi Kata Sandi Baru" type={type}
           value={confirmPw} onChange={(e) => setConfirmPw(e.target.value)}
           autoComplete="new-password"
         />
@@ -464,7 +464,7 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
           onChange={(e) => setShowPw(e.target.checked)}
           className="h-4 w-4 accent-indigo-600"
         />
-        Tampilkan password
+        Tampilkan kata sandi
       </label>
 
       <Notice message={message} />
@@ -474,17 +474,17 @@ function PasswordTab({ userId, isDemo }: { userId: string; isDemo: boolean }) {
           type="submit"
           className="w-full rounded-lg bg-indigo-600 py-2 text-sm font-semibold text-white hover:bg-indigo-700 sm:w-auto sm:px-6"
         >
-          Ubah Password
+          Ubah Kata Sandi
         </button>
         <Link href="/forgot-password" className="text-sm text-indigo-600 hover:underline">
-          Lupa password saat ini? Reset lewat email
+          Lupa kata sandi saat ini? Atur ulang lewat email
         </Link>
       </div>
 
       <ConfirmDialog
         open={showConfirm}
-        title="Ubah password?"
-        message="Password akunmu akan diganti dengan password baru."
+        title="Ubah kata sandi?"
+        message="Kata sandi akunmu akan diganti dengan yang baru."
         confirmText="Ya, ubah"
         isLoading={isSaving}
         onConfirm={handleConfirm}
@@ -620,13 +620,13 @@ useEffect(() => {
     return (
       <div className="mx-auto max-w-lg p-6 text-center">
         <p className="rounded-xl bg-amber-50 p-6 text-amber-800">
-          Halaman ini khusus akun <b>Organizer</b>. Kamu masuk sebagai Customer.
+          Halaman ini khusus akun <b>Event Organizer</b>. Kamu masuk sebagai Customer.
         </p>
         <Link
           href={pathname.replace(/\/organizer$/, "/customer")}
           className="mt-4 inline-block text-sm text-indigo-600 hover:underline"
         >
-          Ke profil customer
+          Ke profil Customer
         </Link>
       </div>
     );
@@ -634,9 +634,9 @@ useEffect(() => {
 if (isError) {
   return (
     <div className="mx-auto max-w-lg p-8 text-center">
-      <p className="text-gray-700">Gagal memuat profil. Pastikan kamu sudah login.</p>
+      <p className="text-gray-700">Gagal memuat profil. Pastikan kamu sudah masuk.</p>
       <Link href="/login" className="mt-3 inline-block text-indigo-600 hover:underline">
-        Ke halaman login
+        Ke halaman masuk
       </Link>
     </div>
   );
@@ -665,7 +665,7 @@ if (isError) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold text-gray-900 lg:text-3xl">Profil Organizer</h1>
+            <h1 className="text-2xl font-bold text-gray-900 lg:text-3xl">Profil Event Organizer</h1>
             {editing && (
               <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
                 Mode ubah aktif
@@ -674,7 +674,7 @@ if (isError) {
           </div>
           <p className="mt-1 text-sm text-gray-500">
             {editing
-              ? "Ubah data yang diperlukan, lalu klik Update Profile."
+              ? "Ubah data yang diperlukan, lalu klik Perbarui Profil."
               : ""}
           </p>
         </div>
@@ -684,7 +684,7 @@ if (isError) {
             onClick={startEdit}
             className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
           >
-            Update Profile
+            Perbarui Profil
           </button>
         )}
       </div>
@@ -697,7 +697,7 @@ if (isError) {
             <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-xl font-bold text-gray-500">
               {f.profilePictureUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={f.profilePictureUrl} alt="Logo organizer" className="h-full w-full object-cover" />
+                <img src={f.profilePictureUrl} alt="Logo Event Organizer" className="h-full w-full object-cover" />
               ) : (
                 initial
               )}
@@ -777,7 +777,7 @@ if (isError) {
                   <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-2xl font-bold text-gray-500 lg:h-24 lg:w-24 lg:text-3xl">
                     {f.profilePictureUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={f.profilePictureUrl} alt="Logo organizer" className="h-full w-full object-cover" />
+                      <img src={f.profilePictureUrl} alt="Logo Event Organizer" className="h-full w-full object-cover" />
                     ) : (
                       initial
                     )}
@@ -802,22 +802,22 @@ if (isError) {
                 </div>
 
                 <Section title="Akun">
-                  <Text id="username" label="Username" locked readOnly placeholder="-" value={f.username} hint={lockedHint} />
+                  <Text id="username" label="Nama Pengguna" locked readOnly placeholder="-" value={f.username} hint={lockedHint} />
                   <Text
                     id="email" label="Email" type="email" maxLength={255} placeholder="-"
                     value={f.email} onChange={(e) => set("email", e.target.value)} error={errors.email}
                   />
                 </Section>
 
-                <Section title="Identitas Organizer">
+                <Section title="Identitas Event Organizer">
                   <Text
-                    id="organizerName" label="Nama Organizer / Brand" maxLength={150} placeholder="-"
+                    id="organizerName" label="Nama Event Organizer / Brand" maxLength={150} placeholder="-"
                     className="md:col-span-2"
                     value={f.organizerName} onChange={(e) => set("organizerName", e.target.value)}
                     error={errors.organizerName}
                   />
                   <Text
-                    id="organizerType" label="Jenis Organizer" locked readOnly placeholder="-"
+                    id="organizerType" label="Jenis Event Organizer" locked readOnly placeholder="-"
                     value={f.organizerType ? TYPE_LABEL[f.organizerType] : ""} hint={lockedHint}
                   />
                   <Text
@@ -825,7 +825,7 @@ if (isError) {
                     value={f.legalName} hint={lockedHint}
                   />
                   <Field
-                    id="organizerBio" label="Bio Organizer" className="md:col-span-2"
+                    id="organizerBio" label="Bio Event Organizer" className="md:col-span-2"
                     error={errors.organizerBio}
                     hint={editing ? `${f.organizerBio.length}/500 karakter` : undefined}
                   >
@@ -836,7 +836,7 @@ if (isError) {
                     />
                   </Field>
                   <Text
-                    id="websiteUrl" label="Website" maxLength={255} inputMode="url" placeholder="-"
+                    id="websiteUrl" label="Situs Web" maxLength={255} inputMode="url" placeholder="-"
                     value={f.websiteUrl} onChange={(e) => set("websiteUrl", e.target.value)}
                     error={errors.websiteUrl}
                   />
@@ -856,13 +856,13 @@ if (isError) {
                   />
                 </Section>
 
-                <Section title="Penanggung Jawab (PIC)">
+                <Section title="Penanggung Jawab">
                   <Text
                     id="picName" label="Nama Penanggung Jawab" maxLength={100} placeholder="-"
                     value={f.picName} onChange={(e) => set("picName", e.target.value)} error={errors.picName}
                   />
                   <Text
-                    id="picPhoneNumber" label="No. Ponsel PIC" type="tel" inputMode="tel" maxLength={20} placeholder="-"
+                    id="picPhoneNumber" label="No. Ponsel Penanggung Jawab" type="tel" inputMode="tel" maxLength={20} placeholder="-"
                     value={f.picPhoneNumber} onChange={(e) => set("picPhoneNumber", e.target.value)}
                     error={errors.picPhoneNumber}
                   />
@@ -943,7 +943,7 @@ if (isError) {
                       type="submit"
                       className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                     >
-                      Update Profile
+                      Perbarui Profil
                     </button>
                   </div>
                 )}
@@ -959,9 +959,9 @@ if (isError) {
       {/* Popup konfirmasi */}
       <ConfirmDialog
         open={showConfirm}
-        title="Update profil?"
-        message="Data profil organizer kamu akan diperbarui."
-        confirmText="Ya, update"
+        title="Perbarui profil?"
+        message="Data profil Event Organizer kamu akan diperbarui."
+        confirmText="Ya, perbarui"
         isLoading={isSaving}
         onConfirm={handleConfirm}
         onCancel={() => setShowConfirm(false)}

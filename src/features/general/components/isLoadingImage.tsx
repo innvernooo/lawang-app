@@ -8,12 +8,13 @@ export default function IsLoading() {
           <div className="flex justify-center">
             <Image
               src={'/isLoading.svg'}
-              alt="Is Loading"
+              alt="Sedang memuat"
               width={250}
               height={100}
+              className='w-50 md:w-70'
             />
           </div>
-          <h1 className="text-black text-lg font-medium">
+          <h1 className="text-black md:text-lg font-medium">
             Tunggu sebentar, data sedang dimuat...
           </h1>
         </div>

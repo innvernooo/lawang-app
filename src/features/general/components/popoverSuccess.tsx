@@ -16,7 +16,7 @@ export default function PopoverSuccess({
         <div className="flex justify-center">
           <Image
             src={'/success.svg'}
-            alt="robot-successful"
+            alt="Ilustrasi berhasil"
             width={100}
             height={100}
             className="w-70"
@@ -26,7 +26,7 @@ export default function PopoverSuccess({
         <p className="flex justify-center py-2 md:text-xl text-black">{message}</p>
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button>tutup</button>
       </form>
     </dialog>
   );

@@ -11,7 +11,7 @@ const dateTime = (label: string) =>
   z.iso
     .datetime({
       local: true,
-      message: `${label} must be a valid date and time`,
+      message: `${label} harus berupa tanggal dan waktu yang valid`,
     })
     .transform((v) => new Date(v));
 
@@ -31,45 +31,45 @@ export const createEventSchema = z
     name: z
       .string()
       .trim()
-      .min(1, 'Event name is required')
-      .max(200, 'Maximum input is 200 characters'),
+      .min(1, 'Nama event wajib diisi')
+      .max(200, 'Maksimal 200 karakter'),
 
-    description: z.string().trim().min(1, 'Event description is required'),
+    description: z.string().trim().min(1, 'Deskripsi event wajib diisi'),
 
     category: z.enum(
       categories.map(({ cat }) => cat),
-      'Pick one of the categories',
+      'Pilih salah satu kategori',
     ),
 
-    city: z.enum(cities, 'Pick one of the cities'),
+    city: z.enum(cities, 'Pilih salah satu kota'),
 
     venue: z
       .string()
-      .min(1, 'Event venue is required')
-      .max(200, 'Maximum input is 200 characters'),
+      .min(1, 'Lokasi event wajib diisi')
+      .max(200, 'Maksimal 200 karakter'),
 
-    pricingType: z.enum(['PAID', 'FREE'], 'Event can only be PAID or FREE'),
+    pricingType: z.enum(['PAID', 'FREE'], 'Pilih jenis harga: Berbayar atau Gratis'),
 
-    startDate: dateTime('Start date').refine(
+    startDate: dateTime('Tanggal mulai').refine(
       (d) => d.getTime() > Date.now(),
-      'Start date must be in the future',
+      'Tanggal mulai harus setelah waktu sekarang',
     ),
 
-    endDate: dateTime('End date'),
+    endDate: dateTime('Tanggal selesai'),
 
     totalSeats: z.preprocess(
       emptyToUndefined,
       z.coerce
-        .number('Total seats must be a number')
+        .number('Jumlah kursi harus berupa angka')
         .pipe(
           z
-            .int32('Total seats must be a whole number')
-            .min(1, 'Total seats must be at least 1'),
+            .int32('Jumlah kursi harus bilangan bulat')
+            .min(1, 'Jumlah kursi minimal 1'),
         ),
     ),
   })
   .refine((d) => d.endDate > d.startDate, {
-    message: 'End date must be after the start date',
+    message: 'Tanggal selesai harus setelah tanggal mulai',
     path: ['endDate'],
   });
 

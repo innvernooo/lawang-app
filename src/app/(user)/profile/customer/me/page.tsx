@@ -101,15 +101,15 @@ function PasswordTab() {
   return (
     <form className="space-y-5 p-5 sm:p-6 lg:p-8">
       <div>
-        <h2 className="text-lg font-semibold text-gray-900">Ganti Password</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Ganti Kata Sandi</h2>
         <p className="text-sm text-gray-500">
-          Gunakan password minimal 8 karakter yang belum pernah kamu pakai.
+          Gunakan kata sandi minimal 8 karakter yang belum pernah kamu pakai.
         </p>
       </div>
 
       <Text
         id="currentPw"
-        label="Password Saat Ini"
+        label="Kata Sandi Saat Ini"
         type="password"
         autoComplete="current-password"
       />
@@ -117,13 +117,13 @@ function PasswordTab() {
       <div className="grid gap-4 sm:grid-cols-2">
         <Text
           id="newPw"
-          label="Password Baru"
+          label="Kata Sandi Baru"
           type="password"
           autoComplete="new-password"
         />
         <Text
           id="confirmPw"
-          label="Konfirmasi Password Baru"
+          label="Konfirmasi Kata Sandi Baru"
           type="password"
           autoComplete="new-password"
         />
@@ -131,7 +131,7 @@ function PasswordTab() {
 
       <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
         <input type="checkbox" className="h-4 w-4 accent-indigo-600" />
-        Tampilkan password
+        Tampilkan kata sandi
       </label>
 
       <div className="flex flex-wrap items-center gap-4">
@@ -139,13 +139,13 @@ function PasswordTab() {
           type="submit"
           className="w-full rounded-lg bg-indigo-600 py-2 text-sm font-semibold text-white hover:bg-indigo-700 sm:w-auto sm:px-6"
         >
-          Ubah Password
+          Ubah Kata Sandi
         </button>
         <Link
           href="/forgot-password"
           className="text-sm text-indigo-600 hover:underline"
         >
-          Lupa password saat ini? Reset lewat email
+          Lupa kata sandi saat ini? Atur ulang lewat email
         </Link>
       </div>
     </form>
@@ -169,7 +169,7 @@ export default function CustomerProfilePage() {
             Profil Saya
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Klik Update Profile untuk mengubahnya.
+            Klik Perbarui Profil untuk mengubahnya.
           </p>
         </div>
         {tab === 'info' && (
@@ -177,7 +177,7 @@ export default function CustomerProfilePage() {
             type="button"
             className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
           >
-            Update Profile
+            Perbarui Profil
           </button>
         )}
       </div>
@@ -287,7 +287,7 @@ export default function CustomerProfilePage() {
                 <Section title="Data Akun">
                   <Text
                     id="username"
-                    label="Username"
+                    label="Nama Pengguna"
                     locked
                     readOnly
                     placeholder={customer.username}
@@ -297,7 +297,7 @@ export default function CustomerProfilePage() {
                     label="Jenis Akun"
                     locked
                     readOnly
-                    placeholder={customer.role}
+                    placeholder={customer.role === 'CUSTOMER' ? 'Customer' : customer.role}
                   />
                   <Text
                     id="email"
@@ -387,7 +387,7 @@ export default function CustomerProfilePage() {
                   type="submit"
                   className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                 >
-                  Update Profile
+                  Perbarui Profil
                 </button>
               </div>
             </form>

@@ -1,28 +1,40 @@
 import EventBanner from '@/features/event/components/eventBanner';
 import TermsAndConditions from '@/features/event/components/termsAndConditions';
 import TicketBox from '@/features/event/components/ticketBox';
-import AuthGuard from '@/features/general/components/authGuard';
+import type { Metadata } from 'next';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { Suspense } from 'react';
+import { getEventBySlug } from '@/api/event/getEventBySlug';
+
+export async function generateMetadata({
+  params,
+}: PageProps<'/event/[slug]'>): Promise<Metadata> {
+  const { slug } = await params;
+
+  const event = await getEventBySlug(slug);
+
+  return {
+    title: event.name,
+    description: event.description,
+  };
+}
 
 export default function DetailEventPage({
   params,
 }: PageProps<'/event/[slug]'>) {
   return (
     <>
-      <AuthGuard allowedRole={['CUSTOMER']}>
-        <Suspense fallback={<IsLoading />}>
-          <div>
-            <div className="h-fit">
-              <EventDetailContent params={params} />
-              <TicketTypeContent params={params} />
-              <TermsAndConditions />
-              <div className="h-20 lg:hidden" />
-            </div>
-            <div className="px-3"></div>
+      <Suspense fallback={<IsLoading />}>
+        <div>
+          <div className="h-fit">
+            <EventDetailContent params={params} />
+            <TicketTypeContent params={params} />
+            <TermsAndConditions />
+            <div className="h-20 lg:hidden" />
           </div>
-        </Suspense>
-      </AuthGuard>
+          <div className="px-3"></div>
+        </div>
+      </Suspense>
     </>
   );
 

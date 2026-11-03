@@ -2,16 +2,16 @@ import * as z from 'zod';
 
 export const createReviewSchema = z.object({
   rating: z.coerce
-    .number()
+    .number('Pilih rating bintang terlebih dahulu')
     .int()
-    .min(1, 'Minimum rating is 1')
-    .max(5, 'Maximum rating is 5'),
+    .min(1, 'Rating minimal 1 bintang')
+    .max(5, 'Rating maksimal 5 bintang'),
 
   comment: z
     .string()
     .trim()
-    .min(5, 'Minimum comment is 5 characters')
-    .max(1000, 'Maximum comment is 1000 characters'),
+    .min(5, 'Komentar minimal 5 karakter')
+    .max(1000, 'Komentar maksimal 1000 karakter'),
 });
 
 export type CreateReviewInput = z.input<typeof createReviewSchema>;

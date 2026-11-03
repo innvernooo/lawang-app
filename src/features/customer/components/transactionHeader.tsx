@@ -27,8 +27,8 @@ export default function TransactionHeader({
           <h2>{customer?.username}</h2>
         </div>
         <label className="label md:flex md:justify-end text-[10px] md:text-[11px] lg:text-sm text-yellow-400 italic">
-          Klik pada <span className="underline">Waiting payment</span> untuk
-          meyelesaikan pembayaran
+          Klik <span className="underline">Menunggu Pembayaran</span> untuk
+          menyelesaikan pembayaran
         </label>
       </div>
     </>

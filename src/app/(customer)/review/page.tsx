@@ -11,6 +11,7 @@ function ReviewPage() {
   const { data, isLoading, isError } = useGetEventByCustomer();
   const event = data?.data;
 
+  console.log(data);
   if (isLoading) return <IsLoading />;
   if (isError)
     return (
@@ -32,12 +33,14 @@ function ReviewPage() {
               <tr>
                 <th className="border-b border-gray-400 bg-white"></th>
                 <th className="border-b border-gray-400 bg-white">Event</th>
-                <th className="border-b border-gray-400 bg-white">Category</th>
+                <th className="border-b border-gray-400 bg-white">Kategori</th>
                 <th className="border-b border-gray-400 bg-white">
-                  Start Date
+                  Tanggal Mulai
                 </th>
-                <th className="border-b border-gray-400 bg-white">End Date</th>
-                <th className="border-b border-gray-400 bg-white">Action</th>
+                <th className="border-b border-gray-400 bg-white">
+                  Tanggal Selesai
+                </th>
+                <th className="border-b border-gray-400 bg-white">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -52,13 +55,13 @@ function ReviewPage() {
                   <td>{tanggal.format(new Date(e.event.endDate))}</td>
                   <td>
                     {e.event.reviews.length > 0 ? (
-                      <p className="text-green-500">Event sudah kamu nilai</p>
+                      <p className="text-green-500">Sudah kamu ulas</p>
                     ) : new Date(e.event.endDate) < new Date() ? (
                       <a
                         href={`/review/${e.event.slug}`}
                         className="underline text-blue-700"
                       >
-                        Beri rating
+                        Beri ulasan
                       </a>
                     ) : (
                       'Event belum selesai'

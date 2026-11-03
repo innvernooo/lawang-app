@@ -29,12 +29,12 @@ export default function ForgotPasswordPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-md sm:p-8">
-        <h1 className="text-2xl font-bold text-gray-900">Lupa Password</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Lupa Kata Sandi</h1>
 
         {isSent ? (
           <div className="mt-4 space-y-4">
             <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700">
-              Link reset password sudah dikirim ke <b>{email}</b>. Cek inbox
+              Link untuk mengatur ulang kata sandi sudah dikirim ke <b>{email}</b>. Cek inbox
               atau folder spam kamu.
             </p>
             <Link
@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <p className="text-sm text-gray-600">
               Masukkan email akunmu, kami akan mengirim link untuk mengatur
-              ulang password.
+              ulang kata sandi.
             </p>
 
             <div>
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
               disabled={isLoading}
               className="w-full rounded-lg bg-blue-600 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {isLoading ? "Mengirim..." : "Kirim Link Reset"}
+              {isLoading ? "Mengirim..." : "Kirim Link"}
             </button>
 
             <Link

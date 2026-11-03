@@ -32,7 +32,7 @@ const organizerTypeOptions = [
   {
     value: 'INDIVIDUAL',
     title: 'Perorangan',
-    desc: 'Penyelenggara atas nama pribadi',
+    desc: 'Event Organizer atas nama pribadi',
   },
   {
     value: 'COMPANY',
@@ -89,7 +89,7 @@ export default function OrganizerRegister() {
 
     if (step === 0 && getValues('password') !== getValues('confirmPassword')) {
       setError('confirmPassword', {
-        message: 'Konfirmasi password tidak sama',
+        message: 'Konfirmasi kata sandi tidak sama',
       });
       return;
     }
@@ -115,7 +115,7 @@ export default function OrganizerRegister() {
         isAxiosError(error)
           ? (error?.response?.data?.message ??
               'Tidak dapat terhubung ke server')
-          : 'Terjasi kesalahan',
+          : 'Terjadi kesalahan',
       );
       failedRef?.current?.showModal();
     },
@@ -132,8 +132,8 @@ export default function OrganizerRegister() {
         ref={successRef}
         title="Akun Berhasil Terdaftar"
         next="/login"
-        hook="Login"
-        message="Klik tombol berikut untuk lanjut ke halaman login"
+        hook="Masuk"
+        message="Klik tombol berikut untuk lanjut ke halaman masuk"
       />
       <main className="min-h-screen bg-gray-50 px-4 py-8 sm:py-12">
         <div className="mx-auto w-full max-w-lg rounded-xl border border-gray-100 bg-white p-5 shadow-md sm:p-8 md:max-w-2xl lg:max-w-3xl lg:p-10">
@@ -146,7 +146,7 @@ export default function OrganizerRegister() {
 
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
-              Daftar sebagai Organizer
+              Daftar sebagai Event Organizer
             </h1>
           </div>
           <p className="mt-1 text-sm text-gray-600">
@@ -218,7 +218,7 @@ export default function OrganizerRegister() {
 
                 <div>
                   <label htmlFor="username" className={labelClass}>
-                    Username
+                    Nama Pengguna
                   </label>
                   <input
                     id="username"
@@ -232,7 +232,7 @@ export default function OrganizerRegister() {
 
                 <div>
                   <label htmlFor="password" className={labelClass}>
-                    Password
+                    Kata Sandi
                   </label>
                   <div className="relative">
                     <input
@@ -247,8 +247,8 @@ export default function OrganizerRegister() {
                       onClick={() => setShowPassword((v) => !v)}
                       aria-label={
                         showPassword
-                          ? 'Sembunyikan password'
-                          : 'Tampilkan password'
+                          ? 'Sembunyikan kata sandi'
+                          : 'Tampilkan kata sandi'
                       }
                       aria-pressed={showPassword}
                       className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-purple-600 focus-visible:outline-none"
@@ -265,7 +265,7 @@ export default function OrganizerRegister() {
 
                 <div>
                   <label htmlFor="confirmPassword" className={labelClass}>
-                    Konfirmasi Password
+                    Konfirmasi Kata Sandi
                   </label>
                   <div className="relative">
                     <input
@@ -280,8 +280,8 @@ export default function OrganizerRegister() {
                       onClick={() => setShowPassword((v) => !v)}
                       aria-label={
                         showPassword
-                          ? 'Sembunyikan password'
-                          : 'Tampilkan password'
+                          ? 'Sembunyikan kata sandi'
+                          : 'Tampilkan kata sandi'
                       }
                       aria-pressed={showPassword}
                       className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-purple-600 focus-visible:outline-none"
@@ -302,15 +302,15 @@ export default function OrganizerRegister() {
 
             {/* ───── Langkah 2: Organisasi & Legalitas ───── */}
             <div className={stepClass(1)}>
-              <h2 className={sectionTitleClass}>Identitas Organizer</h2>
+              <h2 className={sectionTitleClass}>Identitas Event Organizer</h2>
               <div>
-                <span className={labelClass}>Logo Organizer (opsional)</span>
+                <span className={labelClass}>Logo Event Organizer (opsional)</span>
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-2xl font-bold text-gray-500 sm:h-20 sm:w-20">
                     {previewPicture ? (
                       <img
                         src={previewPicture}
-                        alt="Foto profil"
+                        alt="Logo Event Organizer"
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -335,7 +335,7 @@ export default function OrganizerRegister() {
 
               <div>
                 <label htmlFor="organizerName" className={labelClass}>
-                  Nama Organizer / Brand
+                  Nama Event Organizer / Brand
                 </label>
                 <input
                   id="organizerName"
@@ -349,7 +349,7 @@ export default function OrganizerRegister() {
                 <p className={errorClass}>{errors?.organizerName?.message}</p>
               </div>
               <fieldset>
-                <legend className={labelClass}>Jenis Organizer</legend>
+                <legend className={labelClass}>Jenis Event Organizer</legend>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {organizerTypeOptions.map((opt) => (
                     <label
@@ -393,12 +393,12 @@ export default function OrganizerRegister() {
 
               <div>
                 <label htmlFor="organizerBio" className={labelClass}>
-                  Bio Organizer (opsional)
+                  Bio Event Organizer (opsional)
                 </label>
                 <textarea
                   id="organizerBio"
                   rows={3}
-                  placeholder="Ceritakan singkat tentang organizer kamu"
+                  placeholder="Ceritakan singkat tentang Event Organizer kamu"
                   className={inputClass}
                   {...register('organizerBio')}
                 />
@@ -408,7 +408,7 @@ export default function OrganizerRegister() {
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                   <label htmlFor="websiteUrl" className={labelClass}>
-                    Website (opsional)
+                    Situs Web (opsional)
                   </label>
                   <input
                     id="websiteUrl"
@@ -495,7 +495,7 @@ export default function OrganizerRegister() {
 
                 <div>
                   <label htmlFor="picPhoneNumber" className={labelClass}>
-                    No. Ponsel PIC
+                    No. Ponsel Penanggung Jawab
                   </label>
                   <input
                     id="picPhoneNumber"

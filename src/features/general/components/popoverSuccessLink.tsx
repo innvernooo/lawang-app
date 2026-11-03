@@ -21,7 +21,7 @@ export default function PopoverSuccessLink({
         <div className="flex justify-center">
           <Image
             src={'/success.svg'}
-            alt="robot-successful"
+            alt="Ilustrasi berhasil"
             width={100}
             height={100}
             className="w-70"

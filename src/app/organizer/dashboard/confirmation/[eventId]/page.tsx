@@ -2,6 +2,7 @@
 
 import ErrorImage from '@/features/general/components/errorImage';
 import IsLoading from '@/features/general/components/isLoadingImage';
+import AuthGuard from '@/hoc/authGuard';
 import { useGetTransactionById } from '@/hook/event/useGetTransactionById';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { rupiah } from '@/utils/idr';
@@ -11,9 +12,11 @@ import { Suspense, useRef, useState } from 'react';
 
 export default function ConfirmationPage() {
   return (
-    <Suspense fallback={<IsLoading />}>
-      <ConfirmationPageContent />
-    </Suspense>
+    <AuthGuard allowedRole={['ORGANIZER']}>
+      <Suspense fallback={<IsLoading />}>
+        <ConfirmationPageContent />
+      </Suspense>
+    </AuthGuard>
   );
 
   function ConfirmationPageContent() {
@@ -32,7 +35,7 @@ export default function ConfirmationPage() {
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['transaction', 'confirmation'],
+          queryKey: ['transaction', eventId],
         });
       },
     });
@@ -47,7 +50,7 @@ export default function ConfirmationPage() {
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['transaction', 'confirmation'],
+          queryKey: ['transaction', eventId],
         });
       },
     });
@@ -61,18 +64,18 @@ export default function ConfirmationPage() {
       <>
         <div className="w-full min-h-screen p-5">
           {transaction?.length ? (
-            <div className="overflow-x-auto rounded-xl">
+            <div className="overflow-x-auto rounded-xl shadow-lg">
               <table className="table">
                 {/* head */}
-                <thead className="bg-brand-100 text-black">
+                <thead className="bg-brand-200 text-white">
                   <tr>
                     <th></th>
                     <th>Customer</th>
-                    <th>Ticket Type</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Payment Proof</th>
-                    <th>Actions</th>
+                    <th>Jenis Tiket</th>
+                    <th>Jumlah</th>
+                    <th>Total Harga</th>
+                    <th>Bukti Pembayaran</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,7 +94,7 @@ export default function ConfirmationPage() {
                             modalRef.current?.showModal();
                           }}
                         >
-                          View Payment Proof
+                          Lihat Bukti Pembayaran
                         </a>
                       </td>
                       <td className="flex gap-8">
@@ -99,13 +102,13 @@ export default function ConfirmationPage() {
                           className="px-2 py-1 bg-green-400 glass text-xs font-medium rounded-full cursor-pointer"
                           onClick={() => handleAccept.mutate(t.id)}
                         >
-                          Accept
+                          Terima
                         </a>
                         <a
                           className="px-2 py-1 bg-red-400 glass text-xs font-medium rounded-full cursor-pointer"
                           onClick={() => handleReject.mutate(t.id)}
                         >
-                          Reject
+                          Tolak
                         </a>
                       </td>
                     </tr>
@@ -117,13 +120,13 @@ export default function ConfirmationPage() {
                   {proofUrl && (
                     <img
                       src={proofUrl}
-                      alt="Payment Proof"
+                      alt="Bukti Pembayaran"
                       className="mx-auto max-h-[70vh] w-auto rounded-lg object-contain"
                     />
                   )}
                 </div>
                 <form method="dialog" className="modal-backdrop">
-                  <button>close</button>
+                  <button>tutup</button>
                 </form>
               </dialog>
             </div>
