@@ -158,7 +158,6 @@ export default function CustomerProfilePage() {
   const { data: customer, isLoading } = useGetCustomerData();
 
   if (isLoading) return <IsLoading />;
-  console.log(customer);
 
   return (
     <main className="mx-auto max-w-6xl space-y-6 p-4 sm:p-8">

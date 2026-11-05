@@ -41,7 +41,6 @@ export default function LoginPage() {
   const handleLoginUser = useMutation({
     mutationFn: async (data: LoginRequest) => {
       const res = await axiosInstance.post('/auth/login', data);
-      console.log(res);
       return res?.data;
     },
     onSuccess: (res) => {
@@ -51,7 +50,6 @@ export default function LoginPage() {
       const name = res?.data?.name;
       const imageUrl = res?.data?.profilePictureUrl;
       setAuth(id, email, name, role, imageUrl);
-      console.log(setAuth);
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },
     onError: (err) => {

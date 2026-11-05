@@ -2,7 +2,6 @@
 
 import { ReactNode, useSyncExternalStore } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useAuthStore } from '@/stores/useAuthStore';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import HocWarning from '@/features/general/components/hocWarning';
 import { axiosInstance } from '@/lib/axiosInstance.lib';

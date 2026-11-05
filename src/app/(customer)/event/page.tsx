@@ -1,7 +1,6 @@
 'use client';
 
 import CategoryButton from '@/features/event/components/categoryButton';
-import AuthGuard from '@/hoc/authGuard';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import { useGetEventByCategory } from '@/hook/event/useGetEventByCategory';
 import { tanggal } from '@/utils/localDate';
