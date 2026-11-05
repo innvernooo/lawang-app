@@ -16,6 +16,7 @@ export default function WeeklyEvents() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: 'y',
     align: 'start',
+    watchDrag: false,
     slidesToScroll: 1,
   });
   const [canPrev, setCanPrev] = useState(false);
@@ -87,13 +88,17 @@ export default function WeeklyEvents() {
                       <div className="flex min-w-0 items-center gap-3 md:gap-5">
                         <div className="w-14 h-fit shrink-0 p-1 bg-gray-100 rounded-lg text-xs md:w-20 md:p-1.5 md:text-base">
                           <h1 className="flex justify-center bg-white font-semibold rounded items-center">
-                            {format(e.startDate, 'MMM', { locale: localeId }).toUpperCase()}
+                            {format(e.startDate, 'MMM', {
+                              locale: localeId,
+                            }).toUpperCase()}
                           </h1>
                           <h1 className="my-1 text-lg font-bold flex justify-center md:my-1.5 md:text-2xl">
                             {format(e.startDate, 'd').toUpperCase()}
                           </h1>
                           <h1 className="flex font-semibold justify-center">
-                            {format(e.startDate, 'iii', { locale: localeId }).toUpperCase()}
+                            {format(e.startDate, 'iii', {
+                              locale: localeId,
+                            }).toUpperCase()}
                           </h1>
                         </div>
                         <div className="min-w-0">
