@@ -11,7 +11,7 @@ import {
   loginSchema,
 } from '@/features/login/validation/loginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { useRouter } from 'next/navigation';
 import PopoverFailed from '@/features/general/components/popoverFailed';
@@ -27,6 +27,7 @@ export default function LoginPage() {
   const failedRef = useRef<HTMLDialogElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
@@ -43,13 +44,14 @@ export default function LoginPage() {
       const res = await axiosInstance.post('/auth/login', data);
       return res?.data;
     },
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       const id = res?.data?.id;
       const email = res?.data?.email;
       const role = res?.data?.role;
       const name = res?.data?.name;
       const imageUrl = res?.data?.profilePictureUrl;
       setAuth(id, email, name, role, imageUrl);
+      await queryClient.invalidateQueries({ queryKey: ['me'] });
       router.push(role === 'ORGANIZER' ? 'organizer/dashboard' : '/');
     },
     onError: (err) => {
@@ -122,7 +124,9 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={
-                    showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'
+                    showPassword
+                      ? 'Sembunyikan kata sandi'
+                      : 'Tampilkan kata sandi'
                   }
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800 focus-visible:text-blue-600 focus-visible:outline-none"
