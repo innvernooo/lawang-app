@@ -11,7 +11,6 @@ function ReviewPage() {
   const { data, isLoading, isError } = useGetEventByCustomer();
   const event = data?.data;
 
-  console.log(data);
   if (isLoading) return <IsLoading />;
   if (isError)
     return (

@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 
 import { IoLocationOutline } from "react-icons/io5";
-import { IoMdPricetags, IoIosTime } from 'react-icons/io';
+import { IoMdPricetags } from 'react-icons/io';
 import { MdOutlineCategory } from 'react-icons/md';
 import { TbClockHour3 } from "react-icons/tb";
 import { useGetKpopEvent } from '@/hook/event/useGetKpopEvent';

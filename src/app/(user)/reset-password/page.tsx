@@ -29,7 +29,6 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
     // MOCK: nanti diganti dengan:
     // await authService.resetPassword(token, password)
-    console.log("token dari URL:", token);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoading(false);
     setIsDone(true);

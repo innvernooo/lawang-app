@@ -57,7 +57,6 @@ export default function ConfirmationPage() {
 
     const { data: transaction, isLoading } = useGetTransactionById(eventId);
 
-    console.log(transaction);
     if (isLoading) return <IsLoading />;
 
     return (

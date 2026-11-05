@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { Sansita } from 'next/font/google';
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { rupiah } from '@/utils/idr';
 import { useForm } from 'react-hook-form';
@@ -18,7 +18,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PostCancelTrans } from '@/api/transaction/postCancelTrans';
 import { PostPaymentProof } from '@/api/transaction/postPaymentProof';
 import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
-import { CiBank } from 'react-icons/ci';
 
 const sansita = Sansita({
   weight: '700',
@@ -77,7 +76,6 @@ export default function PaymentPage() {
     const transaction = data?.data;
     const transfer = data?.meta;
 
-    console.log(data);
 
     if (isLoading) return <IsLoading />;
     if (isError || !transaction)
