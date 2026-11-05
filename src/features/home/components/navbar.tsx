@@ -8,9 +8,12 @@ import { FaSearch } from 'react-icons/fa';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
 import { SiWikibooks } from 'react-icons/si';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const { id, name, role, clearAuth } = useAuthStore();
+  const router = useRouter();
+
   const handleLogout = useMutation({
     mutationFn: async () => {
       const res = await axiosInstance.post('/auth/logout');
@@ -19,6 +22,7 @@ export default function Navbar() {
     },
     onSuccess: () => {
       clearAuth();
+      router.push('/');
     },
   });
 
