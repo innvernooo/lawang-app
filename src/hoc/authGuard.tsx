@@ -1,11 +1,13 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useSyncExternalStore } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/useAuthStore';
 import IsLoading from '@/features/general/components/isLoadingImage';
 import HocWarning from '@/features/general/components/hocWarning';
 import { axiosInstance } from '@/lib/axiosInstance.lib';
+
+const noop = () => () => {};
 
 export default function AuthGuard({
   allowedRole,
@@ -14,9 +16,13 @@ export default function AuthGuard({
   allowedRole: string[];
   children: ReactNode;
 }) {
-  const { role } = useAuthStore();
+  const mounted = useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  );
 
-  const { isPending } = useQuery({
+  const { data: user, isPending } = useQuery({
     queryKey: ['me'],
     queryFn: async () => {
       const res = await axiosInstance.get('/auth/me');
@@ -27,8 +33,8 @@ export default function AuthGuard({
     enabled: false,
   });
 
-  if (isPending) return <IsLoading />;
-  if (!allowedRole.includes(role)) return <HocWarning />;
+  if (!mounted || isPending) return <IsLoading />;
+  if (!allowedRole.includes(user?.role)) return <HocWarning />;
 
   return <>{children}</>;
 }

@@ -1,9 +1,8 @@
 'use client';
 import Image from 'next/image';
 import { Sansita } from 'next/font/google';
-import { paymentMethods } from '@/utils/paymentMethod';
 import { Suspense, useRef, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { rupiah } from '@/utils/idr';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +18,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PostCancelTrans } from '@/api/transaction/postCancelTrans';
 import { PostPaymentProof } from '@/api/transaction/postPaymentProof';
 import PopoverSuccessLink from '@/features/general/components/popoverSuccessLink';
+import { CiBank } from 'react-icons/ci';
 
 const sansita = Sansita({
   weight: '700',
@@ -36,7 +36,6 @@ export default function PaymentPage() {
 
   function PaymentPageContent() {
     const { transId } = useParams<{ transId: string }>();
-    const [method, setMethod] = useState('');
     const successRef = useRef<HTMLDialogElement>(null);
     const queryClient = useQueryClient();
 
@@ -74,7 +73,11 @@ export default function PaymentPage() {
 
     const proof = watch('paymentProof');
 
-    const { data: transaction, isLoading, isError } = useTransDetail(transId);
+    const { data, isLoading, isError } = useTransDetail(transId);
+    const transaction = data?.data;
+    const transfer = data?.meta;
+
+    console.log(data);
 
     if (isLoading) return <IsLoading />;
     if (isError || !transaction)
@@ -217,27 +220,27 @@ export default function PaymentPage() {
                   {rupiah.format(transaction.totalPrice)}
                 </h2>
               </div>
-              <fieldset className="fieldset  mt-5">
-                <legend className="fieldset-legend text-black text-base">
-                  Metode Pembayaran
-                </legend>
-                <select
-                  value={method}
-                  disabled={transaction.event.pricingType === 'FREE'}
-                  onChange={(e) => setMethod(e.target.value)}
-                  className="select select-neutral w-full bg-white"
-                >
-                  <option value="" disabled className="text-black">
-                    Pilih metode pembayaran
-                  </option>
-                  {paymentMethods.map((m, index) => (
-                    <option key={index} value={m} className="text-black">
-                      {m}
-                    </option>
-                  ))}
-                </select>
-              </fieldset>
-              <fieldset className="fieldset">
+              <div
+                className={
+                  transaction.event.pricingType == 'FREE' ? 'hidden' : ''
+                }
+              >
+                <h1 className="mt-4 mb-2 font-semibold">
+                  Transfer ke nomor rekening berikut
+                </h1>
+                <div className="w-full h-fit bg-brand-300 text-white rounded-xl p-2.5">
+                  <h2>Nama Bank: {transfer.bankName}</h2>
+                  <h2>Nomor Rekening: {transfer.bankAccountNumber}</h2>
+                  <h2>Pemilik Akun Rekening: {transfer.bankAccountHolder}</h2>
+                </div>
+              </div>
+              <fieldset
+                className={
+                  transaction.event.pricingType === 'FREE'
+                    ? 'hidden'
+                    : 'fieldset'
+                }
+              >
                 <legend className="fieldset-legend text-black text-base">
                   Unggah bukti pembayaran
                 </legend>
@@ -264,7 +267,7 @@ export default function PaymentPage() {
                   type="submit"
                   disabled={
                     transaction.event.pricingType === 'PAID' &&
-                    (!method || !proof?.length || handlePayment.isPending)
+                    (!proof?.length || handlePayment.isPending)
                   }
                   className="btn bg-brand-300 lg:text-base text-white"
                 >

@@ -11,9 +11,10 @@ const dateTime = (label: string) =>
   z.iso
     .datetime({
       local: true,
+      offset: true,
       message: `${label} harus berupa tanggal dan waktu yang valid`,
     })
-    .transform((v) => new Date(v));
+    .pipe(z.coerce.date());
 
 export const createEventSchema = z
   .object({
@@ -48,7 +49,10 @@ export const createEventSchema = z
       .min(1, 'Lokasi event wajib diisi')
       .max(200, 'Maksimal 200 karakter'),
 
-    pricingType: z.enum(['PAID', 'FREE'], 'Pilih jenis harga: Berbayar atau Gratis'),
+    pricingType: z.enum(
+      ['PAID', 'FREE'],
+      'Pilih jenis harga: Berbayar atau Gratis',
+    ),
 
     startDate: dateTime('Tanggal mulai').refine(
       (d) => d.getTime() > Date.now(),

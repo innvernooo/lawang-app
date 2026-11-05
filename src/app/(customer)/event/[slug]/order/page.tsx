@@ -66,15 +66,15 @@ export default function OrderPage() {
 
             const msg = text.toLowerCase();
 
-            const field = msg.includes('coupon')
+            const field = msg.includes('kupon')
               ? 'couponCode'
               : msg.includes('voucher')
                 ? 'voucherCode'
-                : msg.includes('not enough ticket')
+                : msg.includes('sisa tiket')
                   ? 'quantity'
-                  : msg.includes('ticket')
+                  : msg.includes('tiket')
                     ? 'ticketTypeId'
-                    : msg.includes('point')
+                    : msg.includes('poin')
                       ? 'pointsUsed'
                       : 'root.server';
 
@@ -100,7 +100,7 @@ export default function OrderPage() {
                   <GiTicket className="text-3xl  text-blue-700" />
                   <h2>Buat Pesanan Tiket</h2>
                 </div>
-                <label className="label mt-4 text-red-500">
+                <label className="label text-xs md:text-sm mt-4 text-red-500">
                   Kamu hanya bisa membeli satu jenis tiket per pesanan
                 </label>
                 <p className=" line-clamp-1">
