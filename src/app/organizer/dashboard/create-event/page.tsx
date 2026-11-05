@@ -48,7 +48,7 @@ function CreateEventPage() {
     return () => {
       if (previewPicture) URL.revokeObjectURL(previewPicture);
     };
-  });
+  }, [previewPicture]);
 
   const handleCreateEvent = useMutation({
     mutationFn: CreateEventFormData,
@@ -138,6 +138,7 @@ function CreateEventPage() {
                   {...register('imageUrl')}
                 />
               </label>
+              <p className="label text-red-600">{errors?.imageUrl?.message}</p>
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-brand-200 text-sm md:text-base">
