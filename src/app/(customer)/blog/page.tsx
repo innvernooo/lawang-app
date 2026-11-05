@@ -49,7 +49,7 @@ export default function BlogListPage() {
                 <h1 className="md:text-xl font-semibold transition-colors duration-300 group-hover:text-blue-700">
                   {r.title}
                 </h1>
-                <p className="label text-sm">
+                <p className="label text-sm line-clamp-1">
                   {r.author} • {tanggal.format(new Date(r.createdAt))}
                 </p>
               </div>
